@@ -14,6 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+
     title: "Mabar Olahraga Hari Ini 🔥",
     description: "Database mabar olahraga hari ini di sekitarmu. Temukan lokasi, jadwal, dan teman untuk bermain olahraga favoritmu. Bergabunglah dengan komunitas olahraga lokal dan nikmati pengalaman mabar yang seru!",
     openGraph: {
@@ -42,17 +43,18 @@ export const metadata: Metadata = {
 export default function RootLayout({children,}: Readonly<{ children: React.ReactNode; }>) {
     return (
         <html
-            lang="en"
+            lang="id"
             className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+            suppressHydrationWarning
         >
         <body className="min-h-full flex flex-col">
-            <ThemeProvider
-                attribute="class"
-                defaultTheme="light"
-                enableSystem
-                disableTransitionOnChange>
-                {children}
-            </ThemeProvider>
+        {children}
+            {/*<ThemeProvider*/}
+            {/*    attribute="class"*/}
+            {/*    defaultTheme="light"*/}
+            {/*    disableTransitionOnChange>*/}
+            {/*    {children}*/}
+            {/*</ThemeProvider>*/}
         </body>
         </html>
     );
