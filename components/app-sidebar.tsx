@@ -6,9 +6,7 @@ import {
     SidebarHeader,
 } from "@/components/ui/sidebar";
 import Image from "next/image";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import CollapsibleCommunity from "@/components/map/community/collapsible-community";
-import PlaceList from "@/components/map/place/place-list";
+import ScheduleList from "@/components/map/schedule/schedule-list";
 
 export function AppSidebar() {
     return (
@@ -25,17 +23,7 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent className="mt-10">
-               <ScrollArea className="h-[calc(100vh-8rem)] flex flex-col gap-y-4">
-                    <PlaceList/>
-                   {/*<div className="flex flex-col gap-3 lg:pl-4 lg:pr-5 pt-1 px-3 md:px-0">*/}
-                   {/*    <CollapsibleCommunity Community="PB. Harjog" Place="ARARI Badminton dan Tennis " />*/}
-                   {/*    <CollapsibleCommunity Community="PB. Harjog" Place="ARARI Badminton dan Tennis " />*/}
-                   {/*    <CollapsibleCommunity Community="PB. Harjog" Place="ARARI Badminton dan Tennis " />*/}
-                   {/*    <CollapsibleCommunity Community="PB. Harjog" Place="ARARI Badminton dan Tennis " />*/}
-                   {/*    <CollapsibleCommunity Community="PB. Harjog" Place="ARARI Badminton dan Tennis " />*/}
-                   {/*    <CollapsibleCommunity Community="PB. Harjog" Place="ARARI Badminton dan Tennis " />*/}
-                   {/*</div>*/}
-               </ScrollArea>
+                <ScheduleList/>
             </SidebarContent>
         </Sidebar>
     );

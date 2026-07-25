@@ -48,13 +48,13 @@ export default function RootLayout({children,}: Readonly<{ children: React.React
             suppressHydrationWarning
         >
         <body className="min-h-full flex flex-col">
-        {children}
-            {/*<ThemeProvider*/}
-            {/*    attribute="class"*/}
-            {/*    defaultTheme="light"*/}
-            {/*    disableTransitionOnChange>*/}
-            {/*    {children}*/}
-            {/*</ThemeProvider>*/}
+        {/*{children}*/}
+            <ThemeProvider
+                attribute="class"
+                defaultTheme="light"
+                disableTransitionOnChange>
+                {children}
+            </ThemeProvider>
         </body>
         </html>
     );
