@@ -34,9 +34,12 @@ export default function ScheduleCard({Schedule}: { Schedule: Schedule}) {
                         className="group/button flex flex-col w-full items-center justify-between rounded-md py-2  hover:cursor-pointer">
 
                         <div className="flex flex-row items-center w-full">
+
                             <Item className="flex flex-row items-center justify-between">
+
                                 <div className="flex flex-row gap-x-2 items-center justify-between w-full">
-                                    <div className="flex flex-row ">
+
+                                    <div className="flex flex-row items-center">
                                         <ItemMedia variant="image">
                                             <Image
                                                 src={Schedule.community.image }
@@ -46,7 +49,19 @@ export default function ScheduleCard({Schedule}: { Schedule: Schedule}) {
                                                 className="object-contain rounded-full border-primary  w-5 md:w-12"
                                             />
                                         </ItemMedia>
+
                                         <ItemContent className="pl-2">
+                                            {/*<ItemContent className="flex-none block md:hidden">*/}
+                                            {/*    <ItemDescription className="text-subtitle text-xs text-center ">*/}
+
+                                            {/*        <Badge className="bg-green-100 text-green-700">*/}
+                                            {/*            2 km*/}
+                                            {/*        </Badge>*/}
+                                            {/*    </ItemDescription>*/}
+                                            {/*</ItemContent>*/}
+                                            <Badge className="bg-green-100 text-green-700 md:hidden">
+                                                2 km
+                                            </Badge>
                                             <ItemTitle className="line-clamp-1 text-left">
                                                 <h2 className="line-clamp-1 text-md font-semibold text-title text-nowrap text-ellipsis">{Schedule.community.name}</h2>
                                             </ItemTitle>
@@ -55,14 +70,7 @@ export default function ScheduleCard({Schedule}: { Schedule: Schedule}) {
                                             </ItemDescription>
                                         </ItemContent>
                                     </div>
-                                    <ItemContent className="flex-none block md:hidden">
-                                        <ItemDescription className="text-subtitle text-xs text-center ">
 
-                                            <Badge className="bg-green-100 text-green-700">
-                                                2 km
-                                            </Badge>
-                                        </ItemDescription>
-                                    </ItemContent>
                                 </div>
 
                             </Item>
@@ -77,7 +85,7 @@ export default function ScheduleCard({Schedule}: { Schedule: Schedule}) {
                         </div>
 
 
-                        <CollapsibleContent className=" items-start pl-4 pt-0 text-sm">
+                        <CollapsibleContent className=" items-start pl-4 pt-0 text-sm w-full">
                             <ItemGroup className=" border-t-2 border-[#084D1D]">
                                 <Item role="listitem" className="grid grid-cols-2 px-0 pt-2">
                                     <ItemContent className="flex flex-row items-center">
