@@ -7,7 +7,7 @@ import {useScheduleStore} from "@/src/stores/schedule-store";
 import {DBScheduleList} from "@/src/types/DBScheduleList";
 import {DBVenue} from "@/src/types/DBVenue";
 import Image from "next/image";
-import {toSchedule} from "@/src/mappers/schedule-mapper";
+import {useSidebar} from "@/components/ui/sidebar";
 
 function MapController() {
     const map = useMap();
@@ -32,8 +32,10 @@ export default function MapView() {
     const schedules = useScheduleStore((s) => s.schedules);
     const setSelectedVenue = useVenueStore((s) => s.setSelectedVenue);
     const selectedVenue = useVenueStore((s) => s.selectedVenue);
+    const { setOpenMobile } = useSidebar();
     const map = useMap();
     const [markerRef, marker] = useAdvancedMarkerRef();
+
     const places = useMemo(() => {
         return Object.values(
             schedules.reduce((acc, schedule) => {
@@ -87,7 +89,10 @@ export default function MapView() {
                         lat: place.latitude,
                         lng: place.longitude,
                     }}
-                    onClick={() => setSelectedVenue(place)}
+                    onClick={() => {
+                        setSelectedVenue(place);
+                        setOpenMobile(true);
+                    }}
                 >
                     <div className="relative">
                         <div className="flex z-100 flex-row max-w-md items-center gap-x-2 pl-1 pr-4 bg-white rounded-full">
