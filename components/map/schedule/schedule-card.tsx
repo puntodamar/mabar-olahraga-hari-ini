@@ -36,7 +36,7 @@ export default function ScheduleCard({Schedule}: { Schedule: Schedule}) {
                         <div className="flex flex-row items-center w-full">
                             <Item className="flex flex-row items-center justify-between">
                                 <div className="flex flex-row gap-x-2 items-center justify-between w-full">
-                                    <div className="flex flex-row gap-x-2 ">
+                                    <div className="flex flex-row ">
                                         <ItemMedia variant="image">
                                             <Image
                                                 src={Schedule.community.image }
@@ -46,7 +46,7 @@ export default function ScheduleCard({Schedule}: { Schedule: Schedule}) {
                                                 className="object-contain rounded-full border-primary  w-5 md:w-12"
                                             />
                                         </ItemMedia>
-                                        <ItemContent>
+                                        <ItemContent className="pl-2">
                                             <ItemTitle className="line-clamp-1 text-left">
                                                 <h2 className="line-clamp-1 text-md font-semibold text-title text-nowrap text-ellipsis">{Schedule.community.name}</h2>
                                             </ItemTitle>
@@ -78,27 +78,27 @@ export default function ScheduleCard({Schedule}: { Schedule: Schedule}) {
 
 
                         <CollapsibleContent className=" items-start pl-4 pt-0 text-sm">
-                            <ItemGroup className="gap-y-2 border-t-2 border-[#084D1D]">
-                                <Item role="listitem" className="grid grid-cols-2">
+                            <ItemGroup className=" border-t-2 border-[#084D1D]">
+                                <Item role="listitem" className="grid grid-cols-2 px-0 pt-2">
                                     <ItemContent className="flex flex-row items-center">
                                         <Clock3Icon className="mr-2 h-4 w-4 text-primary"/>
                                         <ItemDescription
-                                            className="text-body">{Schedule.timeStart} - {Schedule.timeEnd}</ItemDescription>
+                                            className="text-body text-xs md:text-sm">{Schedule.timeStart} - {Schedule.timeEnd}</ItemDescription>
                                     </ItemContent>
                                     <ItemContent className="flex flex-row items-center">
                                         <Wallet className="mr-2 h-4 w-4 text-primary"/>
-                                        <ItemDescription className="text-body">{Schedule.fee}</ItemDescription>
+                                        <ItemDescription className="text-body text-xs md:text-sm">{Schedule.fee}</ItemDescription>
                                     </ItemContent>
                                     <ItemContent className="flex flex-row items-center">
                                         <Trophy className="mr-2 h-4 w-4 text-primary"/>
-                                        <ItemDescription className="text-body">{Schedule.level}</ItemDescription>
+                                        <ItemDescription className="text-body text-xs md:text-sm">{Schedule.level}</ItemDescription>
                                     </ItemContent>
                                     <ItemContent className="flex flex-row items-center">
                                         <SquareSplitHorizontal className="mr-2 h-4 w-4 text-primary"/>
-                                        <ItemDescription className="text-body">{Schedule.courts}</ItemDescription>
+                                        <ItemDescription className="text-body text-xs md:text-sm">{Schedule.courts}</ItemDescription>
                                     </ItemContent>
                                 </Item>
-                                <Item className="grid grid-cols-2 md:grid-cols-1">
+                                <Item className="grid grid-cols-1 p-0">
                                     {Schedule.community.contacts?.whatsapp && (
                                         <a href={`https://wa.me/${Schedule.community.contacts?.whatsapp}`} target="_blank"
                                            rel="noopener noreferrer" className="flex flex-row gap-x-2 items-center">
@@ -115,7 +115,7 @@ export default function ScheduleCard({Schedule}: { Schedule: Schedule}) {
                                             <Image src="/images/icons/instagram.svg" width={16} height={16}
                                                    alt="Instagram"/>
                                             <span
-                                                className="text-body hover:underline text-nowrap line-clamp-1 text-ellipsis">{Schedule.community.contacts?.instagram}</span>
+                                                className="text-body text-xs md:text-sm hover:underline text-nowrap line-clamp-1 text-ellipsis">{Schedule.community.contacts?.instagram}</span>
                                         </a>
                                     )}
 
@@ -133,7 +133,7 @@ export default function ScheduleCard({Schedule}: { Schedule: Schedule}) {
                                                 alt="TikTok"
                                             />
                                             <span
-                                                className="text-body hover:underline text-nowrap line-clamp-1 text-ellipsis">
+                                                className="text-body text-xs md:text-base hover:underline text-nowrap line-clamp-1 text-ellipsis">
                                                     {Schedule.community.contacts.tiktok}
                                             </span>
                                         </a>
@@ -143,7 +143,7 @@ export default function ScheduleCard({Schedule}: { Schedule: Schedule}) {
 
                             </ItemGroup>
 
-                            <Item>
+                            <Item className="p-0 pt-4">
                                 {Schedule.additionalInfo && (
                                     <div className="text-left mt-2 w-full">
                                         <span className="text-title">Info Tambahan:</span>
