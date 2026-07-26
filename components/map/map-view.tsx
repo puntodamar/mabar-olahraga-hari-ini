@@ -87,7 +87,7 @@ export default function MapView() {
                         lat: place.latitude,
                         lng: place.longitude,
                     }}
-                    onClick={() => setSelectedVenue(place, schedules.map((schedule) => toSchedule(schedule)))}
+                    onClick={() => setSelectedVenue(place)}
                 >
                     <div className="relative">
                         <div className="flex z-100 flex-row max-w-md items-center gap-x-2 pl-1 pr-4 bg-white rounded-full">
