@@ -1,7 +1,7 @@
 import { unstable_cache } from "next/cache";
 import { supabase } from "@/lib/supabase";
 import { DBScheduleList } from "@/src/types/DBScheduleList";
-import { GetSchedulesParams } from "@/src/database/params/schedule_params";
+import { GetSchedulesParams } from "@/src/database/params/schedule-params";
 
 export const getSchedules = unstable_cache(
     async ({ placeId, day, level }: GetSchedulesParams = {}) => {

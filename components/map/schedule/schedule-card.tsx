@@ -1,19 +1,36 @@
 import {Card, CardContent} from "@/components/ui/card";
 import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@/components/ui/collapsible";
-import {ChevronDownIcon, Clock3Icon, MapPinHouse, SquareSplitHorizontal, Trophy, Wallet} from "lucide-react";
+import {
+    ChevronDownIcon,
+    Clock3Icon,
+    MapPinHouse,
+    MapPinSearch,
+    SquareSplitHorizontal,
+    Trophy,
+    Wallet
+} from "lucide-react";
+
+import { Badge } from "@/components/ui/badge"
 import {Item, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle} from "@/components/ui/item";
 import Image from "next/image";
 import {Button} from "@/components/ui/button";
-import {Schedule} from "@/src/mappers/schedule_mappers";
+import {Schedule} from "@/src/mappers/schedule-mapper";
+import { useVenueStore } from "@/src/stores/venue-store";
 
 
-export default function CollapsibleSchedule({Schedule}: { Schedule: Schedule }) {
+export default function ScheduleCard({Schedule}: { Schedule: Schedule}) {
+
+    const setSelectedVenue = useVenueStore(
+        (state) => state.setSelectedVenue
+    );
+
     return (
         <Card
             className="mx-auto w-full py-0  max-w-sm hover:shadow-md shadow-primary/20 dark:hover:shadow-primary dark:shadow-lg bg-white">
             <CardContent className="py-0 pl-0 pr-2">
                 <Collapsible className="rounded-md pl-0">
                     <CollapsibleTrigger
+                        onClick={() => setSelectedVenue(Schedule.place)}
                         className="group/button flex flex-col w-full items-center justify-between rounded-md py-2  hover:cursor-pointer">
 
                         <div className="flex flex-row items-center w-full">
@@ -22,11 +39,11 @@ export default function CollapsibleSchedule({Schedule}: { Schedule: Schedule }) 
                                     <div className="flex flex-row gap-x-2 ">
                                         <ItemMedia variant="image">
                                             <Image
-                                                src={"https://imageipsum.com/32x32"}
-                                                alt={"Midnight City Lights"}
-                                                width={32}
-                                                height={32}
-                                                className="object-cover grayscale w-5 md:w-12"
+                                                src={Schedule.community.image }
+                                                alt={Schedule.community.name}
+                                                width={25}
+                                                height={25}
+                                                className="object-contain rounded-full border-primary  w-5 md:w-12"
                                             />
                                         </ItemMedia>
                                         <ItemContent>
@@ -34,18 +51,27 @@ export default function CollapsibleSchedule({Schedule}: { Schedule: Schedule }) 
                                                 <h2 className="line-clamp-1 text-md font-semibold text-title text-nowrap text-ellipsis">{Schedule.community.name}</h2>
                                             </ItemTitle>
                                             <ItemDescription
-                                                className="text-xs italic line-clamp-1 text-subtitle text-nowrap text-ellipsis">{Schedule.place.name}</ItemDescription>
+                                                className="text-xs italic line-clamp-1 text-subtitle text-nowrap text-ellipsis">{Schedule.place.name}
+                                            </ItemDescription>
                                         </ItemContent>
                                     </div>
                                     <ItemContent className="flex-none block md:hidden">
-                                        <ItemDescription className="text-subtitle text-xs text-center ">2
-                                            km</ItemDescription>
+                                        <ItemDescription className="text-subtitle text-xs text-center ">
+
+                                            <Badge className="bg-green-100 text-green-700">
+                                                2 km
+                                            </Badge>
+                                        </ItemDescription>
                                     </ItemContent>
                                 </div>
 
                             </Item>
                             <ItemContent className="flex-none  hidden mr-2 md:block ">
-                                <ItemDescription className="text-subtitle text-xs text-center ">2 km</ItemDescription>
+                                <ItemDescription className="text-subtitle text-xs text-center ">
+                                    <Badge className="bg-green-100  text-green-700">
+                                        2 km
+                                    </Badge>
+                                </ItemDescription>
                             </ItemContent>
                             <ChevronDownIcon className="h-4 w-4 group-data-panel-open/button:rotate-180"/>
                         </div>
@@ -113,28 +139,39 @@ export default function CollapsibleSchedule({Schedule}: { Schedule: Schedule }) 
                                         </a>
                                     )}
 
-                                    {Schedule.additionalInfo && (
-                                        <div className="text-left mt-2">
-                                            <span className="text-title">Info Tambahan:</span>
-                                            <p className="border-dashed border-2 p-2 text-body text-xs whitespace-pre-line">
-                                                {Schedule.additionalInfo}
-                                            </p>
-                                        </div>
-
-                                    )}
-
                                 </Item>
 
                             </ItemGroup>
+
+                            <Item>
+                                {Schedule.additionalInfo && (
+                                    <div className="text-left mt-2 w-full">
+                                        <span className="text-title">Info Tambahan:</span>
+                                        <p className="border-dashed border-2 p-2 text-body text-xs whitespace-pre-line">
+                                            {Schedule.additionalInfo}
+                                        </p>
+                                    </div>
+
+                                )}
+                            </Item>
 
                         </CollapsibleContent>
                     </CollapsibleTrigger>
                     <CollapsibleContent>
                         <Item>
-                            <Button size="sm" className="hover:cursor-pointer w-full text-white">
-                                <MapPinHouse data-icon="inline-start "/> <span>Cek Lokasi</span>
+                            <Button
+                                onClick={() =>
+                                    window.open(
+                                        `https://www.google.com/maps/dir/?api=1&destination=${Schedule.place.latitude},${Schedule.place.longitude}`,
+                                        "_blank"
+                                    )
+                                }
+                                size="sm"
+                                className="hover:cursor-pointer w-full text-white">
+                                <MapPinHouse data-icon="inline-start "/> <span>Buka Google Map</span>
                             </Button>
                         </Item>
+
                     </CollapsibleContent>
                 </Collapsible>
             </CardContent>

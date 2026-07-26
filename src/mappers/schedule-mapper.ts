@@ -2,7 +2,7 @@ import {DBScheduleList} from "@/src/types/DBScheduleList";
 import {Day} from "@/src/types/enums/Day";
 import {Level} from "@/src/types/enums/Level";
 import {Gender} from "@/src/types/enums/Gender";
-import {DBPlace} from "@/src/types/DBPlace";
+import {DBVenue} from "@/src/types/DBVenue";
 import {DBCommunity} from "@/src/types/DBCommunity";
 
 export interface Schedule {
@@ -16,10 +16,19 @@ export interface Schedule {
     courts: string | null;
     additionalInfo: string | null;
     community: DBCommunity;
-    place: DBPlace;
+    place: DBVenue;
 }
 
 export function toSchedule(db: DBScheduleList): Schedule {
+
+    const community: DBCommunity = {
+        id: db.community.id,
+        name: db.community.name,
+        image: db.community.image == null ? `images/icons/${db.community.type}.svg` : db.community.image,
+        type: db.community.type,
+        contacts: db.community.contacts,
+    }
+
     return {
         id: db.id,
         day: Day[db.day],
@@ -30,7 +39,7 @@ export function toSchedule(db: DBScheduleList): Schedule {
         gender: db.gender == null ? '-' : Gender[db.gender],
         courts: db.courts == null ? '-' : `${db.courts} lapangan`,
         additionalInfo: db.additional_info,
-        community: db.community,
+        community: community,
         place: db.place,
-    };
+    }
 }

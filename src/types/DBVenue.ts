@@ -1,4 +1,4 @@
-export interface DBPlace {
+export interface DBVenue {
     id: number;
     name: string;
     latitude: number;

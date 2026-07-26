@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { DBScheduleList } from "@/src/types/DBScheduleList";
-import { toSchedule } from "@/src/mappers/schedule_mappers";
-import CollapsibleSchedule from "@/components/map/schedule/collapsible-schedule";
+import { toSchedule } from "@/src/mappers/schedule-mapper";
+import ScheduleCard from "@/components/map/schedule/schedule-card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {SkeletonAvatar} from "@/components/skeleton";
+import {useScheduleStore} from "@/src/stores/schedule-store";
 
 interface ScheduleListProps {
     placeId?: number;
@@ -17,6 +18,8 @@ export default function ScheduleList({placeId, day, level,}: ScheduleListProps) 
     const [schedules, setSchedules] = useState<DBScheduleList[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
+    const setSchedulesStore = useScheduleStore((state) => state.setSchedules);
 
     useEffect(() => {
         const controller = new AbortController();
@@ -53,6 +56,7 @@ export default function ScheduleList({placeId, day, level,}: ScheduleListProps) 
 
                 const data: DBScheduleList[] = await response.json();
                 setSchedules(data);
+                setSchedulesStore(data);
             } catch (e) {
                 if (e instanceof DOMException && e.name === "AbortError") {
                     return;
@@ -68,7 +72,7 @@ export default function ScheduleList({placeId, day, level,}: ScheduleListProps) 
         fetchSchedules().then(r => r).catch(e => console.error(e));
 
         return () => controller.abort();
-    }, [placeId, day, level]);
+    }, [placeId, day, level, setSchedulesStore]);
 
     if (loading) {
         return (
@@ -102,12 +106,15 @@ export default function ScheduleList({placeId, day, level,}: ScheduleListProps) 
     }
 
     return (
-        <ScrollArea className="h-[calc(100vh-8rem)]">
-            <div className="flex flex-col gap-3 px-3 pt-1 md:px-0 lg:pl-4 lg:pr-5">
-                {schedules.map((schedule) => (
-                    <CollapsibleSchedule key={schedule.id} Schedule={toSchedule(schedule)} />
-                ))}
-            </div>
-        </ScrollArea>
+        <div className="h-[calc(100vh-8rem)]">
+            <h2 className="text-title text-2xl font-bold text-center dark:text-white mb-2">Jadwal Hari Ini</h2>
+            <ScrollArea className="h-full">
+                <div className="flex flex-col gap-3 px-3 pt-1 md:px-0 lg:pl-4 lg:pr-5">
+                    {schedules.map((schedule) => (
+                        <ScheduleCard key={schedule.id} Schedule={toSchedule(schedule)} />
+                    ))}
+                </div>
+            </ScrollArea>
+        </div>
     );
 }
