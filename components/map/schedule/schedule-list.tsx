@@ -19,6 +19,7 @@ export default function ScheduleList({placeId, day, level,}: ScheduleListProps) 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
+
     const setSchedulesStore = useScheduleStore((state) => state.setSchedules);
 
     useEffect(() => {
@@ -51,7 +52,7 @@ export default function ScheduleList({placeId, day, level,}: ScheduleListProps) 
                 );
 
                 if (!response.ok) {
-                    throw new Error("Failed to fetch schedules");
+                    throw new Error("Gagal memuat database jadwal. Silakan coba beberapa saat lagi.");
                 }
 
                 const data: DBScheduleList[] = await response.json();
@@ -63,7 +64,7 @@ export default function ScheduleList({placeId, day, level,}: ScheduleListProps) 
                 }
 
                 console.error(e);
-                setError("Failed to load schedules.");
+                setError("Gagal memuat database jadwal. Silakan coba beberapa saat lagi.");
             } finally {
                 setLoading(false);
             }
@@ -74,47 +75,45 @@ export default function ScheduleList({placeId, day, level,}: ScheduleListProps) 
         return () => controller.abort();
     }, [placeId, day, level, setSchedulesStore]);
 
-    if (loading) {
-        return (
-            <ScrollArea className="h-[calc(100vh-8rem)]">
-                <div className="flex flex-col gap-3 px-3 ">
-                    <h2 className="text-title text-2xl font-bold text-center dark:text-white">Mencari Jadwal...</h2>
-                    {Array.from({ length: 10 }).map((_, i) => (
-                        <div className="mt-4" key={i}>
-                            <SkeletonAvatar />
-                        </div>
-                    ))}
-                </div>
-            </ScrollArea>
-        );
-    }
 
-    if (error) {
-        return (
-            <div className="p-4 text-center text-sm text-destructive">
-                {error}
-            </div>
-        );
-    }
-
-    if (schedules.length === 0) {
-        return (
-            <div className="p-4 text-center text-muted-foreground">
-                Belum ada jadwal yang tersedia.
-            </div>
-        );
-    }
 
     return (
         <div className="h-[calc(100vh-8rem)]">
-            <h2 className="text-title text-2xl font-bold text-center dark:text-white mb-2">Jadwal Hari Ini</h2>
-            <ScrollArea className="h-full">
-                <div className="flex flex-col gap-3 px-3 pt-1 md:px-0 lg:pl-4 lg:pr-5">
-                    {schedules.map((schedule) => (
-                        <ScheduleCard key={schedule.id} Schedule={toSchedule(schedule)} />
-                    ))}
+
+            {loading && (
+                <ScrollArea className="h-[calc(100vh-8rem)]">
+                    <div className="flex flex-col gap-3 px-3">
+                        <h2 className="text-title text-2xl font-bold text-center dark:text-white">Mencari Jadwal...</h2>
+                        {Array.from({ length: 10 }).map((_, i) => (
+                            <div className="mt-4" key={i}>
+                                <SkeletonAvatar />
+                            </div>
+                        ))}
+                    </div>
+                </ScrollArea>
+            )}
+
+            {!loading && schedules.length > 0 && (
+                <ScrollArea className="h-full">
+                    <div className="flex flex-col gap-3 px-3 pt-1 md:px-0 lg:pl-4 lg:pr-5 pb-10">
+                        {schedules.map((schedule) => (
+                            <ScheduleCard key={schedule.id} Schedule={toSchedule(schedule)} />
+                        ))}
+                    </div>
+                </ScrollArea>
+            )}
+
+            {!loading && schedules.length === 0 && (
+                <div className="p-4 text-center text-muted-foreground">
+                    Belum ada jadwal yang tersedia.
                 </div>
-            </ScrollArea>
+            )}
+
+            {error && (
+                <div className="p-4 text-center text-sm text-destructive">
+                    {error}
+                </div>
+            )}
         </div>
     );
 }

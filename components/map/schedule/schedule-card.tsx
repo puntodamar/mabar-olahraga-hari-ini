@@ -4,7 +4,6 @@ import {
     ChevronDownIcon,
     Clock3Icon,
     MapPinHouse,
-    MapPinSearch,
     SquareSplitHorizontal,
     Trophy,
     Wallet
@@ -35,11 +34,11 @@ export default function ScheduleCard({Schedule}: { Schedule: Schedule}) {
 
                         <div className="flex flex-row items-center w-full">
 
-                            <Item className="flex flex-row items-center justify-between">
+                            <Item className="flex flex-row items-center justify-between w-full">
 
                                 <div className="flex flex-row gap-x-2 items-center justify-between w-full">
 
-                                    <div className="flex flex-row items-center">
+                                    <div className="flex flex-row items-center w-full">
                                         <ItemMedia variant="image">
                                             <Image
                                                 src={Schedule.community.image }
@@ -59,29 +58,30 @@ export default function ScheduleCard({Schedule}: { Schedule: Schedule}) {
                                             {/*        </Badge>*/}
                                             {/*    </ItemDescription>*/}
                                             {/*</ItemContent>*/}
-                                            <Badge className="bg-green-100 text-green-700 md:hidden">
-                                                2 km
-                                            </Badge>
-                                            <ItemTitle className="line-clamp-1 text-left">
-                                                <h2 className="line-clamp-1 text-md font-semibold text-title text-nowrap text-ellipsis">{Schedule.community.name}</h2>
-                                            </ItemTitle>
-                                            <ItemDescription
-                                                className="text-xs italic line-clamp-1 text-subtitle text-nowrap text-ellipsis">{Schedule.place.name}
-                                            </ItemDescription>
+
+                                            <div className="flex w-full items-center gap-2 text-left ">
+                                                <ItemContent className="pl-2">
+                                                    <ItemTitle className="font-semibold text-title line-clamp-2">
+                                                        {Schedule.community.name}
+                                                    </ItemTitle>
+
+                                                    <ItemDescription className="truncate text-xs italic">
+                                                        {Schedule.place.name}
+                                                    </ItemDescription>
+                                                </ItemContent>
+
+                                                <Badge className="shrink-0 bg-green-100 text-green-700">
+                                                    2 km
+                                                </Badge>
+                                            </div>
                                         </ItemContent>
                                     </div>
 
                                 </div>
 
                             </Item>
-                            <ItemContent className="flex-none  hidden mr-2 md:block ">
-                                <ItemDescription className="text-subtitle text-xs text-center ">
-                                    <Badge className="bg-green-100  text-green-700">
-                                        2 km
-                                    </Badge>
-                                </ItemDescription>
-                            </ItemContent>
-                            <ChevronDownIcon className="h-4 w-4 group-data-panel-open/button:rotate-180"/>
+
+                            <ChevronDownIcon className="h-3 w-3 shrink-0 group-data-panel-open/button:rotate-180"/>
                         </div>
 
 

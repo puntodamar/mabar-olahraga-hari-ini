@@ -47,7 +47,7 @@ export default function RootLayout({children,}: Readonly<{ children: React.React
             className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
             suppressHydrationWarning
         >
-        <body className="min-h-full flex flex-col">
+        <body className="h-dvh flex flex-col">
         {/*{children}*/}
             <ThemeProvider
                 attribute="class"

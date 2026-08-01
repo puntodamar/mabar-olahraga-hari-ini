@@ -31,7 +31,7 @@ export const getSchedules = unstable_cache(
     },
     ["schedules"],
     {
-        // revalidate: 1,
-        revalidate: 60 * 60 * 24,
+        revalidate: 1,
+        // revalidate: 60 * 60 * 24,
     }
 );
