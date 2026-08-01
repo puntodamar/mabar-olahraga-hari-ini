@@ -12,9 +12,12 @@ interface ScheduleListProps {
     placeId?: number;
     day?: number;
     level?: number;
+    gender?: number;
+    scoring?: number;
+
 }
 
-export default function ScheduleList({placeId, day, level,}: ScheduleListProps) {
+export default function ScheduleList({placeId, day, level, gender, scoring,}: ScheduleListProps) {
     const [schedules, setSchedules] = useState<DBScheduleList[]>([]);
     const [error, setError] = useState<string | null>(null);
 
@@ -48,6 +51,14 @@ export default function ScheduleList({placeId, day, level,}: ScheduleListProps) 
                     params.set("level", level.toString());
                 }
 
+                if (gender != null) {
+                    params.set("gender", gender.toString());
+                }
+
+                if (scoring != null) {
+                    params.set("scoring", scoring.toString());
+                }
+
                 const response = await fetch(
                     `/api/schedules?${params.toString()}`,
                     {
@@ -77,7 +88,7 @@ export default function ScheduleList({placeId, day, level,}: ScheduleListProps) 
         fetchSchedules().then(r => r).catch(e => console.error(e));
 
         return () => controller.abort();
-    }, [placeId, day, level, setSchedulesStore]);
+    }, [placeId, day, level, gender, scoring, setSchedulesStore, setLoading, setInit]);
 
 
 

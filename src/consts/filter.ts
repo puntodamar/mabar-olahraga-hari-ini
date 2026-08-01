@@ -1,5 +1,5 @@
 const DayLabel = [
-    { label: "Pilih Hari", value: null },
+    { label: "Semua", value: null },
     { label: "Senin", value: "1" },
     { label: "Selasa", value: "2" },
     { label: "Rabu", value: "3" },
@@ -10,7 +10,7 @@ const DayLabel = [
 ]
 
 const LevelLabel = [
-    { label: "Pilih Level", value: null },
+    { label: "Semua", value: null },
     { label: "Pemula", value: "1" },
     { label: "Pra Menengah", value: "2" },
     { label: "Menengah", value: "3" },
@@ -19,25 +19,25 @@ const LevelLabel = [
 ]
 
 const GenderLabel = [
-    { label: "Pilih Gender", value: null },
+    { label: "Semua", value: null },
     {label: 'Mix', value: '1'},
     { label: "Laki-laki", value: "2" },
     { label: "Perempuan", value: "3" },
 ]
 
 const ScoringLabel = [
-    { label: "Pilih Aturan Main", value: null },
+    { label: "Semua", value: null },
     {label: '15 poin', value: '1'},
     { label: "21 poin", value: "2" },
     { label: "25 poin", value: "3" },
-    { label: "50 poin", value: "4" },
     {label: "42 poin", value: "6" },
+    { label: "50 poin", value: "4" },
     { label: "klasik", value: "5" },
 
 ]
 
 const CourtLabel = [
-    { label: "Jumlah Lapangan", value: null },
+    { label: "Semua", value: null },
     {label: '1', value: '1'},
     {label: '2', value: '2'},
     {label: '3', value: '3'},

@@ -19,11 +19,12 @@ type SelectFilterProps<T extends string | number> = {
     value?: T | null;
     onValueChange?: (value: T | null) => void;
     placeholder?: string;
+    defaultValue?: Item<T> | null;
 };
 
-export default function SelectFilter<T extends string | number>({items, value, onValueChange, placeholder = "Select an option"}: SelectFilterProps<T>) {
+export default function SelectFilter<T extends string | number>({items, value, onValueChange, placeholder = "Select an option", defaultValue}: SelectFilterProps<T>) {
     return (
-        <Select items={items} value={value} onValueChange={onValueChange}>
+        <Select items={items} value={value} onValueChange={onValueChange} defaultValue={defaultValue?.value ?? null}>
             <SelectTrigger className="w-full">
                 <SelectValue placeholder={placeholder} />
             </SelectTrigger>
