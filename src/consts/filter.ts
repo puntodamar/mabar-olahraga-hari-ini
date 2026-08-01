@@ -44,5 +44,10 @@ const CourtLabel = [
     {label: '4', value: '4'},
 ]
 
+const CommunityLabel = [
+    { label: "Semua", value: null },
+    {label: 'Badminton', value: '1'},
+]
 
-export { DayLabel, LevelLabel, GenderLabel, ScoringLabel, CourtLabel }
+
+export { DayLabel, LevelLabel, GenderLabel, ScoringLabel, CourtLabel, CommunityLabel }

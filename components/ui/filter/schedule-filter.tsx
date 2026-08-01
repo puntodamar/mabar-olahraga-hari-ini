@@ -8,6 +8,7 @@ import {
 import { Button } from "@/components/ui/button";
 import SelectFilter from "@/components/ui/filter/select-filter";
 import {
+    CommunityLabel,
     CourtLabel,
     DayLabel,
     GenderLabel,
@@ -50,7 +51,7 @@ export default function ScheduleFilter() {
 
             <CollapsibleContent className="mt-2 flex w-full flex-col gap-y-2 rounded-md border p-4">
                 <div className="flex items-center gap-x-2">
-                    <span className="w-25 text-title">Hari</span>
+                    <span className="w-25 text-title text-sm">Hari</span>
                     <SelectFilter
                         items={DayLabel}
                         value={day}
@@ -59,7 +60,7 @@ export default function ScheduleFilter() {
                 </div>
 
                 <div className="flex items-center gap-x-2">
-                    <span className="w-25 text-title">Level</span>
+                    <span className="w-25 text-title text-sm">Level</span>
                     <SelectFilter
                         items={LevelLabel}
                         value={searchParams.get("level")}
@@ -68,7 +69,7 @@ export default function ScheduleFilter() {
                 </div>
 
                 <div className="flex items-center gap-x-2">
-                    <span className="w-25 text-title">Gender</span>
+                    <span className="w-25 text-title text-sm">Gender</span>
                     <SelectFilter
                         items={GenderLabel}
                         value={searchParams.get("gender")}
@@ -77,11 +78,20 @@ export default function ScheduleFilter() {
                 </div>
 
                 <div className="flex items-center gap-x-2">
-                    <span className="w-25 text-title">Aturan Main</span>
+                    <span className="w-25 text-title text-sm">Aturan Main</span>
                     <SelectFilter
                         items={ScoringLabel}
                         value={searchParams.get("scoring")}
                         onValueChange={(value) => updateFilter("scoring", value)}
+                    />
+                </div>
+
+                <div className="flex items-center gap-x-2">
+                    <span className="w-25 text-title text-sm">Jenis Komunitas</span>
+                    <SelectFilter
+                        items={CommunityLabel}
+                        value="1"
+
                     />
                 </div>
 
