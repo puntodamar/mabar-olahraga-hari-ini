@@ -32,56 +32,41 @@ export default function ScheduleCard({Schedule}: { Schedule: Schedule}) {
                         onClick={() => setSelectedVenue(Schedule.place)}
                         className="group/button flex flex-col w-full items-center justify-between rounded-md py-2  hover:cursor-pointer">
 
-                        <div className="flex flex-row items-center w-full">
+                        <div className="flex items-center w-full">
+                            <Item className="flex-1 min-w-0 pr-0">
+                                <div className="flex items-center gap-2 w-full min-w-0">
 
-                            <Item className="flex flex-row items-center justify-between w-full">
+                                    <ItemMedia variant="image">
+                                        <Image
+                                            src={Schedule.community.image}
+                                            alt={Schedule.community.name}
+                                            width={25}
+                                            height={25}
+                                            className="h-5 w-5 rounded-full border-primary object-contain md:h-12 md:w-12"
+                                        />
+                                    </ItemMedia>
 
-                                <div className="flex flex-row gap-x-2 items-center justify-between w-full">
+                                    <div className="flex flex-1 items-center gap-2 min-w-0">
+                                        <ItemContent className="flex-1 min-w-0 w-full text-left">
+                                            <ItemTitle className="line-clamp-1 text-title font-semibold">
+                                                {Schedule.community.name}
+                                            </ItemTitle>
 
-                                    <div className="flex flex-row items-center w-full">
-                                        <ItemMedia variant="image">
-                                            <Image
-                                                src={Schedule.community.image }
-                                                alt={Schedule.community.name}
-                                                width={25}
-                                                height={25}
-                                                className="object-contain rounded-full border-primary  w-5 md:w-12"
-                                            />
-                                        </ItemMedia>
-
-                                        <ItemContent className="pl-2">
-                                            {/*<ItemContent className="flex-none block md:hidden">*/}
-                                            {/*    <ItemDescription className="text-subtitle text-xs text-center ">*/}
-
-                                            {/*        <Badge className="bg-green-100 text-green-700">*/}
-                                            {/*            2 km*/}
-                                            {/*        </Badge>*/}
-                                            {/*    </ItemDescription>*/}
-                                            {/*</ItemContent>*/}
-
-                                            <div className="flex w-full items-center gap-2 text-left ">
-                                                <ItemContent className="pl-2">
-                                                    <ItemTitle className="font-semibold text-title line-clamp-2">
-                                                        {Schedule.community.name}
-                                                    </ItemTitle>
-
-                                                    <ItemDescription className="truncate text-xs italic">
-                                                        {Schedule.place.name}
-                                                    </ItemDescription>
-                                                </ItemContent>
-
-                                                <Badge className="shrink-0 bg-green-100 text-green-700">
-                                                    2 km
-                                                </Badge>
-                                            </div>
+                                            <ItemDescription className="truncate text-xs italic">
+                                                {Schedule.place.name}
+                                            </ItemDescription>
                                         </ItemContent>
+
+                                        <Badge className="shrink-0 bg-green-100 text-green-700">
+                                            2 km
+                                        </Badge>
                                     </div>
-
                                 </div>
-
                             </Item>
 
-                            <ChevronDownIcon className="h-3 w-3 shrink-0 group-data-panel-open/button:rotate-180"/>
+                            <ChevronDownIcon
+                                className="ml-1 h-4 w-4 shrink-0 transition-transform group-data-panel-open/button:rotate-180"
+                            />
                         </div>
 
 

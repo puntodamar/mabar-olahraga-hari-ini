@@ -3,6 +3,8 @@ import { supabase } from "@/lib/supabase";
 import { DBScheduleList } from "@/src/types/DBScheduleList";
 import { GetSchedulesParams } from "@/src/database/params/schedule-params";
 
+
+
 export const getSchedules = unstable_cache(
     async ({ placeId, day, level }: GetSchedulesParams = {}) => {
         let query = supabase
@@ -31,7 +33,7 @@ export const getSchedules = unstable_cache(
     },
     ["schedules"],
     {
-        revalidate: 1,
-        // revalidate: 60 * 60 * 24,
+        // revalidate: 1,
+        revalidate: 60 * 60 * 24,
     }
 );

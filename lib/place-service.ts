@@ -4,15 +4,16 @@ import { unstable_cache } from "next/cache"
 import {supabase} from "@/lib/supabase";
 
 
-export const getPlaces = unstable_cache(
+export const getVenues = unstable_cache(
     async () => {
-        const {data, error} = await supabase.from("places").select("*");
+        const {data, error} = await supabase.from("venues").select("*");
         if (error) throw error;
         return data;
     },
-    ["places"],
+    ["venues"],
     {
-        revalidate: 60 * 60 * 24,
+        // revalidate: 60 * 60 * 24,
+        revalidate: 1
     }
 )
 

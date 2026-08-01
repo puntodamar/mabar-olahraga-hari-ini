@@ -17,3 +17,25 @@ export function useIsMobile() {
 
   return !!isMobile
 }
+
+
+export function useAppHeight() {
+  React.useEffect(() => {
+    const update = () => {
+      document.documentElement.style.setProperty(
+          "--app-height",
+          `${window.innerHeight}px`
+      );
+    };
+
+    update();
+
+    window.addEventListener("resize", update);
+    window.addEventListener("orientationchange", update);
+
+    return () => {
+      window.removeEventListener("resize", update);
+      window.removeEventListener("orientationchange", update);
+    };
+  }, []);
+}

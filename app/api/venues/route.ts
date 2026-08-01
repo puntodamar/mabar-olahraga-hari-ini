@@ -1,11 +1,11 @@
 // app/api/places/route.ts
 
 import { NextResponse } from "next/server"
-import { getPlaces } from "@/lib/place-service"
+import { getVenues } from "@/lib/place-service"
 
 export async function GET() {
     try {
-        const data = await getPlaces();
+        const data = await getVenues();
         console.log("Fetched places:", data);
         return NextResponse.json(data);
     } catch (e) {
@@ -13,3 +13,4 @@ export async function GET() {
         return NextResponse.json({ error: "failed" }, { status: 500 });
     }
 }
+

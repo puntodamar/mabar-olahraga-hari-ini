@@ -26,7 +26,7 @@ const GenderLabel = [
 ]
 
 const ScoringLabel = [
-    { label: "Pilih Scoring", value: null },
+    { label: "Pilih Aturan Main", value: null },
     {label: '15 poin', value: '1'},
     { label: "21 poin", value: "2" },
     { label: "25 poin", value: "3" },
@@ -36,4 +36,13 @@ const ScoringLabel = [
 
 ]
 
-export { DayLabel, LevelLabel, GenderLabel, ScoringLabel }
+const CourtLabel = [
+    { label: "Jumlah Lapangan", value: null },
+    {label: '1', value: '1'},
+    {label: '2', value: '2'},
+    {label: '3', value: '3'},
+    {label: '4', value: '4'},
+]
+
+
+export { DayLabel, LevelLabel, GenderLabel, ScoringLabel, CourtLabel }

@@ -16,18 +16,22 @@ interface ScheduleListProps {
 
 export default function ScheduleList({placeId, day, level,}: ScheduleListProps) {
     const [schedules, setSchedules] = useState<DBScheduleList[]>([]);
-    const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-
     const setSchedulesStore = useScheduleStore((state) => state.setSchedules);
+    const setLoading = useScheduleStore((state) => state.setLoading);
+    const loading = useScheduleStore((state) => state.getLoading());
+    const init = useScheduleStore((state) => state.getInit());
+    const setInit = useScheduleStore((state) => state.setInit);
 
     useEffect(() => {
         const controller = new AbortController();
 
         async function fetchSchedules() {
             try {
+
                 setLoading(true);
+                setInit();
                 setError(null);
 
                 const params = new URLSearchParams();
@@ -83,7 +87,7 @@ export default function ScheduleList({placeId, day, level,}: ScheduleListProps) 
             {loading && (
                 <ScrollArea className="h-[calc(100vh-8rem)]">
                     <div className="flex flex-col gap-3 px-3">
-                        <h2 className="text-title text-2xl font-bold text-center dark:text-white">Mencari Jadwal...</h2>
+
                         {Array.from({ length: 10 }).map((_, i) => (
                             <div className="mt-4" key={i}>
                                 <SkeletonAvatar />
@@ -103,7 +107,7 @@ export default function ScheduleList({placeId, day, level,}: ScheduleListProps) 
                 </ScrollArea>
             )}
 
-            {!loading && schedules.length === 0 && (
+            {!init && !loading && schedules.length === 0 && (
                 <div className="p-4 text-center text-muted-foreground">
                     Belum ada jadwal yang tersedia.
                 </div>
