@@ -1,96 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { DBScheduleList } from "@/src/types/DBScheduleList";
 import { toSchedule } from "@/src/mappers/schedule-mapper";
 import ScheduleCard from "@/components/map/schedule/schedule-card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {SkeletonAvatar} from "@/components/skeleton";
 import {useScheduleStore} from "@/src/stores/schedule-store";
 
-interface ScheduleListProps {
-    placeId?: number;
-    day?: number;
-    level?: number;
-    gender?: number;
-    scoring?: number;
+export default function ScheduleList() {
 
-}
-
-export default function ScheduleList({placeId, day, level, gender, scoring,}: ScheduleListProps) {
-    const [schedules, setSchedules] = useState<DBScheduleList[]>([]);
-    const [error, setError] = useState<string | null>(null);
-
-    const setSchedulesStore = useScheduleStore((state) => state.setSchedules);
-    const setLoading = useScheduleStore((state) => state.setLoading);
-    const loading = useScheduleStore((state) => state.getLoading());
-    const init = useScheduleStore((state) => state.getInit());
-    const setInit = useScheduleStore((state) => state.setInit);
-
-    useEffect(() => {
-        const controller = new AbortController();
-
-        async function fetchSchedules() {
-            try {
-
-                setLoading(true);
-                setInit();
-                setError(null);
-
-                const params = new URLSearchParams();
-
-                if (placeId != null) {
-                    params.set("placeId", placeId.toString());
-                }
-
-                if (day != null) {
-                    params.set("day", day.toString());
-                }
-
-                if (level != null) {
-                    params.set("level", level.toString());
-                }
-
-                if (gender != null) {
-                    params.set("gender", gender.toString());
-                }
-
-                if (scoring != null) {
-                    params.set("scoring", scoring.toString());
-                }
-
-                const response = await fetch(
-                    `/api/schedules?${params.toString()}`,
-                    {
-                        signal: controller.signal,
-                    }
-                );
-
-                if (!response.ok) {
-                    throw new Error("Gagal memuat database jadwal. Silakan coba beberapa saat lagi.");
-                }
-
-                const data: DBScheduleList[] = await response.json();
-                setSchedules(data);
-                setSchedulesStore(data);
-            } catch (e) {
-                if (e instanceof DOMException && e.name === "AbortError") {
-                    return;
-                }
-
-                console.error(e);
-                setError("Gagal memuat database jadwal. Silakan coba beberapa saat lagi.");
-            } finally {
-                setLoading(false);
-            }
-        }
-
-        fetchSchedules().then(r => r).catch(e => console.error(e));
-
-        return () => controller.abort();
-    }, [placeId, day, level, gender, scoring, setSchedulesStore, setLoading, setInit]);
-
-
+    const loading = useScheduleStore((state) => state.loading);
+    const schedules = useScheduleStore((state) => state.schedules);
+    const init = useScheduleStore((state) => state.init);
+    // const error = useScheduleStore((state) => state.error);
 
     return (
         <div className="h-[calc(100vh-8rem)]">
@@ -124,11 +45,11 @@ export default function ScheduleList({placeId, day, level, gender, scoring,}: Sc
                 </div>
             )}
 
-            {error && (
-                <div className="p-4 text-center text-sm text-destructive">
-                    {error}
-                </div>
-            )}
+            {/*{error && (*/}
+            {/*    <div className="p-4 text-center text-sm text-destructive">*/}
+            {/*        {error}*/}
+            {/*    </div>*/}
+            {/*)}*/}
         </div>
     );
 }

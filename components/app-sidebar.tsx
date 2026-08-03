@@ -12,8 +12,8 @@ import ScheduleFilter from "@/components/ui/filter/schedule-filter";
 import {Suspense} from "react";
 
 export function AppSidebar() {
-    const loading = useScheduleStore((state) => state.getLoading());
-    const init = useScheduleStore((state) => state.getInit());
+    const loading = useScheduleStore((state) => state.loading);
+    const init = useScheduleStore((state) => state.init);
 
     return (
         <Sidebar className="bg-black">

@@ -11,7 +11,7 @@ import {DialogTrigger} from "@base-ui/react";
 
 type Props = {
     open: boolean;
-    onOpenChange: (open: boolean) => void;
+    onOpenChange?: (open: boolean) => void;
     onAllow: () => void;
 };
 

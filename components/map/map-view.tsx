@@ -1,37 +1,37 @@
 "use client";
 
-import {Map, AdvancedMarker, useMap, useAdvancedMarkerRef,} from "@vis.gl/react-google-maps";
-import {useEffect, useMemo, useState} from "react";
+import {Map, AdvancedMarker, useMap,} from "@vis.gl/react-google-maps";
+import { useEffect, useMemo } from "react";
 import Image from "next/image";
 
-import {useVenueStore} from "@/src/stores/venue-store";
-import {useScheduleStore} from "@/src/stores/schedule-store";
-import {usePermissionStore} from "@/src/stores/map-store";
+import { useVenueStore } from "@/src/stores/venue-store";
+import { useScheduleStore } from "@/src/stores/schedule-store";
+import { usePermissionStore } from "@/src/stores/map-store";
 
-import {DBVenue} from "@/src/types/DBVenue";
-import {DBScheduleList} from "@/src/types/DBScheduleList";
+import { DBVenue } from "@/src/types/DBVenue";
+import { DBScheduleList } from "@/src/types/DBScheduleList";
 
-import {useSidebar} from "@/components/ui/sidebar";
-import {LocationPermissionDialog} from "@/components/ui/dialog/location-permission-dialog";
+import { useSidebar } from "@/components/ui/sidebar";
+import { LocationPermissionDialog } from "@/components/ui/dialog/location-permission-dialog";
 
 export default function MapView() {
     const map = useMap();
-    const [markerRef] = useAdvancedMarkerRef();
-
-    const schedules = useScheduleStore((s) => s.schedules);
+    const {schedules} = useScheduleStore();
     const {selectedVenue, setSelectedVenue} = useVenueStore();
+    const geolocation = usePermissionStore((s) => s.geolocation);
 
     const {
         getPermissionState,
         getUserLocation,
         lastKnownLocation,
         setLastKnownLocation,
+        listenPermissionChanges,
     } = usePermissionStore();
 
-    const {setOpenMobile} = useSidebar();
+    const { setOpenMobile } = useSidebar();
 
-    const [openPermissionDialog, setOpenPermissionDialog] = useState(false);
-
+    // custom map marker
+    // show only one marker per place, with all schedules for that place
     const places = useMemo(() => {
         return Object.values(
             schedules.reduce(
@@ -55,8 +55,6 @@ export default function MapView() {
     }, [schedules]);
 
     const handleAllow = async () => {
-        setOpenPermissionDialog(false);
-
         try {
             const location = await getUserLocation();
             setLastKnownLocation(location);
@@ -65,10 +63,11 @@ export default function MapView() {
         }
     };
 
+    // Register permission listener once
     useEffect(() => {
-        async function init() {
-            if (!navigator.geolocation) return;
+        void listenPermissionChanges();
 
+        async function init() {
             const permission = await getPermissionState();
 
             if (permission === "granted") {
@@ -78,22 +77,36 @@ export default function MapView() {
                 } catch (err) {
                     console.error(err);
                 }
-            } else {
-                setOpenPermissionDialog(true);
             }
         }
 
-        init();
-    }, [getPermissionState, getUserLocation, setLastKnownLocation]);
+        void init();
+    }, []);
 
-    // Move map when user location changes
+    // React to permission changes
+    useEffect(() => {
+        if (geolocation !== "granted") return;
+
+        async function loadLocation() {
+            try {
+                const location = await getUserLocation();
+                setLastKnownLocation(location);
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        void loadLocation();
+    }, [geolocation]);
+
+    // Pan to user location
     useEffect(() => {
         if (!map || !lastKnownLocation || selectedVenue) return;
 
         map.panTo(lastKnownLocation);
     }, [map, lastKnownLocation, selectedVenue]);
 
-    // Move map when venue changes
+    // Pan to selected venue
     useEffect(() => {
         if (!map || !selectedVenue) return;
 
@@ -114,20 +127,19 @@ export default function MapView() {
                     lng: 110.3670608,
                 }
             }
+            gestureHandling="greedy"
             defaultZoom={14}
             mapId="95551f0836631fd51401ffbd"
             disableDefaultUI
         >
             <LocationPermissionDialog
-                open={openPermissionDialog}
-                onOpenChange={setOpenPermissionDialog}
+                open={geolocation !== "granted"}
                 onAllow={handleAllow}
             />
 
-            {places.map(({place, schedules}) => (
+            {places.map(({ place, schedules }) => (
                 <AdvancedMarker
                     key={place.id}
-                    ref={markerRef}
                     position={{
                         lat: place.latitude,
                         lng: place.longitude,
@@ -135,10 +147,10 @@ export default function MapView() {
                     onClick={() => {
                         setSelectedVenue(place);
                         setOpenMobile(true);
-                    }}>
+                    }}
+                >
                     <div className="relative">
-                        <div
-                            className="flex z-100 flex-row max-w-md items-center gap-x-2 pl-1 pr-4 bg-white rounded-full">
+                        <div className="flex z-100 flex-row max-w-md items-center gap-x-2 pl-1 pr-4 bg-white rounded-full">
                             <Image
                                 src="/images/icons/court.svg"
                                 alt={place.name}
@@ -149,11 +161,11 @@ export default function MapView() {
 
                             <div className="flex flex-col">
                                 <span className="font-semibold text-xs md:text-md line-clamp-1 text-nowrap">
-                                  {place.name}
+                                    {place.name}
                                 </span>
 
                                 <span className="text-xs italic">
-                                  {schedules.length} jadwal
+                                    {schedules.length} jadwal
                                 </span>
                             </div>
                         </div>
@@ -162,7 +174,7 @@ export default function MapView() {
             ))}
 
             {lastKnownLocation && (
-                <AdvancedMarker position={lastKnownLocation}/>
+                <AdvancedMarker position={lastKnownLocation} />
             )}
         </Map>
     );

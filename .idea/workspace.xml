@@ -8,27 +8,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="043acdff-3f68-4fbf-a078-a9b5362853a4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/api/schedules/route.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/map/schedule/schedule-list.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/skeleton.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/schedule-service.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/database/params/schedule_params.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/mappers/schedule_mappers.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/types/DBCommunity.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/types/DBCommunityContact.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/types/DBCommunityType.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/types/DBPlace.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/types/DBScheduleList.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/types/enums/Day.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/types/enums/Gender.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/types/enums/Level.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/ShadcnHelperSettings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ShadcnHelperSettings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/app-sidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/app-sidebar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/map/community/collapsible-community.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/map/schedule/collapsible-schedule.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/map/map-view.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/map/map-view.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/map/schedule/schedule-list.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/map/schedule/schedule-list.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/schedule-store.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/schedule-store.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,20 +77,20 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/public/images/icons" />
       <recent name="$PROJECT_DIR$/public/images" />
       <recent name="$PROJECT_DIR$/app" />
       <recent name="$PROJECT_DIR$/public" />
-      <recent name="$PROJECT_DIR$/public/images/icons" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/stores" />
       <recent name="$PROJECT_DIR$/components/map/schedule" />
       <recent name="$PROJECT_DIR$/components/map/place" />
       <recent name="$PROJECT_DIR$/app" />
       <recent name="$PROJECT_DIR$/components" />
-      <recent name="$PROJECT_DIR$/components/ui/theme" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.db:types">
+  <component name="RunManager" selected="npm.dev">
     <configuration name="Next.js: debug client-side" type="JavascriptDebugType" uri="http://localhost:3000/">
       <method v="2" />
     </configuration>
@@ -131,8 +116,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.db:types" />
         <item itemvalue="npm.dev" />
+        <item itemvalue="npm.db:types" />
       </list>
     </recent_temporary>
   </component>
@@ -154,7 +139,11 @@
       <workItem from="1784372990732" duration="21322000" />
       <workItem from="1784463648867" duration="73000" />
       <workItem from="1784463828971" duration="3184000" />
-      <workItem from="1784944244193" duration="12431000" />
+      <workItem from="1784944244193" duration="12893000" />
+      <workItem from="1784966792696" duration="6047000" />
+      <workItem from="1785022423595" duration="11226000" />
+      <workItem from="1785569755916" duration="16739000" />
+      <workItem from="1785766747262" duration="6223000" />
     </task>
     <servers />
   </component>

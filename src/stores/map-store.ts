@@ -13,6 +13,7 @@ interface MapStore {
     getUserLocation: () => Promise<LatLng>;
     getLastKnownLocation: () => LatLng | null;
     setLastKnownLocation: (location: LatLng) => void;
+    listenPermissionChanges: () => Promise<void>;
 }
 
 export const usePermissionStore = create<MapStore>((set, get) => ({
@@ -42,6 +43,20 @@ export const usePermissionStore = create<MapStore>((set, get) => ({
             set({ geolocation: null });
             return null;
         }
+    },
+
+    listenPermissionChanges: async () => {
+        if (!("permissions" in navigator)) return;
+
+        const permission = await navigator.permissions.query({
+            name: "geolocation",
+        });
+
+        set({ geolocation: permission.state });
+
+        permission.onchange = () => {
+            set({ geolocation: permission.state });
+        };
     },
 
     getUserLocation: () =>
