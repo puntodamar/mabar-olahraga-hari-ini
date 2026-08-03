@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { DBVenue } from "@/src/types/DBVenue";
-import {Schedule} from "@/src/mappers/schedule-mapper";
 
 export interface LatLng {
     lat: number;
@@ -11,19 +10,11 @@ interface VenueStore {
     selectedVenue: DBVenue | null;
     setSelectedVenue: (place: DBVenue) => void;
     clearSelectedVenue: () => void;
-
-    userLocation: LatLng | null;
-    setUserLocation: (location: LatLng | null) => void;
-    getUserLocation: () => LatLng | null;
 }
 
 export const useVenueStore = create<VenueStore>((set, get) => ({
     selectedVenue: null,
     selectedVenueSchedules: [],
-    userLocation: null,
-
-    setUserLocation: (location: LatLng | null) =>
-        set({ userLocation: location }),
 
     setSelectedVenue: function(place: DBVenue) {
         if (get().selectedVenue?.id !== place?.id) {
@@ -34,7 +25,6 @@ export const useVenueStore = create<VenueStore>((set, get) => ({
         }
     },
 
-    getUserLocation: () => get().userLocation,
 
     clearSelectedVenue: () =>
         set({

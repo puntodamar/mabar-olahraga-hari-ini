@@ -48,7 +48,7 @@ export default function ScheduleCard({Schedule}: { Schedule: Schedule}) {
 
                                     <div className="flex flex-1 items-center gap-2 min-w-0">
                                         <ItemContent className="flex-1 min-w-0 w-full text-left">
-                                            <ItemTitle className="line-clamp-1 text-title font-semibold">
+                                            <ItemTitle className="line-clamp-2 text-title font-bold lg:font-semibold">
                                                 {Schedule.community.name}
                                             </ItemTitle>
 

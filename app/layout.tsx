@@ -2,6 +2,7 @@ import type {Metadata} from "next";
 import {Geist, Geist_Mono} from "next/font/google";
 import "./globals.css";
 import {ThemeProvider} from "next-themes";
+import {useAppHeight} from "@/hooks/use-mobile";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -41,6 +42,7 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({children,}: Readonly<{ children: React.ReactNode; }>) {
+
     return (
         <html
             lang="id"
@@ -48,13 +50,13 @@ export default function RootLayout({children,}: Readonly<{ children: React.React
             suppressHydrationWarning
         >
         <body className="flex flex-col" style={{ height: "var(--app-height)" }}>
-        {/*{children}*/}
-            <ThemeProvider
-                attribute="class"
-                defaultTheme="light"
-                disableTransitionOnChange>
-                {children}
-            </ThemeProvider>
+        {children}
+        {/*    <ThemeProvider*/}
+        {/*        attribute="class"*/}
+        {/*        defaultTheme="light"*/}
+        {/*        disableTransitionOnChange>*/}
+        {/*        {children}*/}
+        {/*    </ThemeProvider>*/}
         </body>
         </html>
     );
