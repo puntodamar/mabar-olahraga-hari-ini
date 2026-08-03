@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import {Suspense, useEffect} from "react";
 
 import { APIProvider } from "@vis.gl/react-google-maps";
 import { useSearchParams } from "next/navigation";
@@ -16,6 +16,14 @@ import { useScheduleStore } from "@/src/stores/schedule-store";
 export default function Home() {
     useAppHeight();
 
+    return (
+        <Suspense fallback={null}>
+            <HomeContent />
+        </Suspense>
+    );
+}
+
+function HomeContent() {
     const searchParams = useSearchParams();
 
     const fetchSchedules = useScheduleStore((s) => s.fetchSchedules);
@@ -38,7 +46,9 @@ export default function Home() {
                                 process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""
                             }
                         >
-                            <MapView />
+                            <Suspense fallback={null}>
+                                <MapView />
+                            </Suspense>
                         </APIProvider>
                     </div>
 
