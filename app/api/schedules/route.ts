@@ -1,17 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSchedules } from "@/lib/schedule-service";
+import {DayLabel, GenderLabel, LevelLabel, ScoringLabel} from "@/src/consts/filter";
 
 export async function GET(req: NextRequest) {
     const search = req.nextUrl.searchParams;
 
     const placeId = search.get("placeId");
-    const day = search.get("day");
-    const level = search.get("level");
+    const day = DayLabel.findIndex((day) => day.value === search.get("day"));
+    const level = LevelLabel.findIndex((level) => level.value === search.get("level"));
+    const gender = GenderLabel.findIndex((gender) => gender.value === search.get("gender"));
+    const scoring = ScoringLabel.findIndex((scoring) => scoring.value === search.get("scoring"));
+    const lat = search.get("lat");
+    const lng = search.get("lng");
 
     const schedules = await getSchedules({
         placeId: placeId ? Number(placeId) : undefined,
         day: day ? Number(day) : undefined,
         level: level ? Number(level) : undefined,
+        lat: lat ? Number(lat) : undefined,
+        lng: lng ? Number(lng) : undefined,
+        gender: gender ? Number(gender) : undefined,
+        scoring: scoring ? Number(scoring) : undefined,
     });
 
     return NextResponse.json(schedules);

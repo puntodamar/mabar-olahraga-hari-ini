@@ -6,7 +6,7 @@ import Image from "next/image";
 
 import { useVenueStore } from "@/src/stores/venue-store";
 import { useScheduleStore } from "@/src/stores/schedule-store";
-import { usePermissionStore } from "@/src/stores/map-store";
+import { useMapStore } from "@/src/stores/map-store";
 
 import { DBVenue } from "@/src/types/DBVenue";
 import { DBScheduleList } from "@/src/types/DBScheduleList";
@@ -18,7 +18,7 @@ export default function MapView() {
     const map = useMap();
     const {schedules} = useScheduleStore();
     const {selectedVenue, setSelectedVenue} = useVenueStore();
-    const geolocation = usePermissionStore((s) => s.geolocation);
+    const {geolocation} = useMapStore();
 
     const {
         getPermissionState,
@@ -26,7 +26,7 @@ export default function MapView() {
         lastKnownLocation,
         setLastKnownLocation,
         listenPermissionChanges,
-    } = usePermissionStore();
+    } = useMapStore();
 
     const { setOpenMobile } = useSidebar();
 

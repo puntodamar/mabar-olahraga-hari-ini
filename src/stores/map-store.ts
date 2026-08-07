@@ -1,9 +1,5 @@
 import { create } from "zustand";
 
-interface LatLng {
-    lat: number;
-    lng: number;
-}
 
 interface MapStore {
     geolocation: PermissionState | null;
@@ -16,7 +12,8 @@ interface MapStore {
     listenPermissionChanges: () => Promise<void>;
 }
 
-export const usePermissionStore = create<MapStore>((set, get) => ({
+export const useMapStore = create<MapStore>((set, get) => ({
+    
     geolocation: null,
     lastKnownLocation: null,
 

@@ -12,6 +12,7 @@ import MapView from "@/components/map/map-view";
 
 import { useAppHeight } from "@/hooks/use-mobile";
 import { useScheduleStore } from "@/src/stores/schedule-store";
+import {useMapStore} from "@/src/stores/map-store";
 
 export default function Home() {
     useAppHeight();
@@ -26,11 +27,43 @@ export default function Home() {
 function HomeContent() {
     const searchParams = useSearchParams();
 
-    const fetchSchedules = useScheduleStore((s) => s.fetchSchedules);
+    const {fetchSchedules} = useScheduleStore();
+    const {
+        getLastKnownLocation,
+        getPermissionState,
+        getUserLocation,
+        setLastKnownLocation,
+    } = useMapStore();
 
     useEffect(() => {
-        fetchSchedules(searchParams.toString());
-    }, [fetchSchedules, searchParams]);
+        async function initSchedules() {
+            let location = getLastKnownLocation();
+
+            if (!location) {
+                const permission = await getPermissionState();
+
+                if (permission === "granted") {
+                    try {
+                        location = await getUserLocation();
+                        setLastKnownLocation(location);
+                    } catch (error) {
+                        console.error(error);
+                    }
+                }
+            }
+
+            await fetchSchedules(searchParams.toString(), location);
+        }
+
+        void initSchedules();
+    }, [
+        fetchSchedules,
+        searchParams,
+        getLastKnownLocation,
+        getPermissionState,
+        getUserLocation,
+        setLastKnownLocation,
+    ]);
 
     return (
         <SidebarProvider>

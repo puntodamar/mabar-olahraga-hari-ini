@@ -4,8 +4,8 @@ import {
     ChevronDownIcon,
     Clock3Icon,
     MapPinHouse,
-    SquareSplitHorizontal,
-    Trophy,
+    SquareSplitHorizontal, Tally5,
+    Trophy, VenusAndMars,
     Wallet
 } from "lucide-react";
 
@@ -19,9 +19,7 @@ import { useVenueStore } from "@/src/stores/venue-store";
 
 export default function ScheduleCard({Schedule}: { Schedule: Schedule}) {
 
-    const setSelectedVenue = useVenueStore(
-        (state) => state.setSelectedVenue
-    );
+    const {setSelectedVenue, setSelectedSchedule} = useVenueStore();
 
     return (
         <Card
@@ -29,7 +27,16 @@ export default function ScheduleCard({Schedule}: { Schedule: Schedule}) {
             <CardContent className="py-0 pl-0 pr-2">
                 <Collapsible className="rounded-md pl-0">
                     <CollapsibleTrigger
-                        onClick={() => setSelectedVenue(Schedule.place)}
+                        onClick={() => {
+                            setSelectedVenue(Schedule.place);
+                            setSelectedSchedule(Schedule);
+                            alert("Selected venue changed:\n" +
+                                "ID: " + Schedule.place.id + "\n" +
+                                "Latitude: " + Schedule.place.latitude + "\n" +
+                                "Longitude: " + Schedule.place.longitude
+                            );
+                        }}
+
                         className="group/button flex flex-col w-full items-center justify-between rounded-md py-2  hover:cursor-pointer">
 
                         <div className="flex items-center w-full">
@@ -57,9 +64,12 @@ export default function ScheduleCard({Schedule}: { Schedule: Schedule}) {
                                             </ItemDescription>
                                         </ItemContent>
 
-                                        <Badge className="shrink-0 bg-green-100 text-green-700">
-                                            2 km
-                                        </Badge>
+                                        {Schedule.distance_meters && (
+                                            <Badge className="shrink-0 bg-green-100 text-green-700">
+                                                {Math.round(Schedule.distance_meters / 1000)} km
+                                            </Badge>
+                                        )}
+
                                     </div>
                                 </div>
                             </Item>
@@ -89,6 +99,14 @@ export default function ScheduleCard({Schedule}: { Schedule: Schedule}) {
                                     <ItemContent className="flex flex-row items-center">
                                         <SquareSplitHorizontal className="mr-2 h-4 w-4 text-primary"/>
                                         <ItemDescription className="text-body text-xs md:text-sm">{Schedule.courts}</ItemDescription>
+                                    </ItemContent>
+                                    <ItemContent className="flex flex-row items-center">
+                                        <Tally5 className="mr-2 h-4 w-4 text-primary"/>
+                                        <ItemDescription className="text-body text-xs md:text-sm">{Schedule.scoring}</ItemDescription>
+                                    </ItemContent>
+                                    <ItemContent className="flex flex-row items-center">
+                                        <VenusAndMars className="mr-2 h-4 w-4 text-primary"/>
+                                        <ItemDescription className="text-body text-xs md:text-sm">{Schedule.gender}</ItemDescription>
                                     </ItemContent>
                                 </Item>
                                 <Item className="grid grid-cols-1 p-0">

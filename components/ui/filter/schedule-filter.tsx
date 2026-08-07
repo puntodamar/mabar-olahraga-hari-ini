@@ -54,13 +54,13 @@ export default function ScheduleFilter() {
                     <span className="w-25 text-title text-sm">Hari</span>
                     <SelectFilter
                         items={DayLabel}
-                        value={day}
+                        value={searchParams.get('day')}
                         onValueChange={(value) => updateFilter("day", value)}
                     />
                 </div>
 
                 <div className="flex items-center gap-x-2">
-                    <span className="w-25 text-title text-sm">Level</span>
+                    <span className="w-25 text-title text-sm">Min. Level</span>
                     <SelectFilter
                         items={LevelLabel}
                         value={searchParams.get("level")}
@@ -90,7 +90,7 @@ export default function ScheduleFilter() {
                     <span className="w-25 text-title text-sm">Jenis Komunitas</span>
                     <SelectFilter
                         items={CommunityLabel}
-                        value="1"
+                        value="badminton"
 
                     />
                 </div>

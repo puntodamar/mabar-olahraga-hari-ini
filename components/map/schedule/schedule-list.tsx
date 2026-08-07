@@ -5,6 +5,8 @@ import ScheduleCard from "@/components/map/schedule/schedule-card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {SkeletonAvatar} from "@/components/skeleton";
 import {useScheduleStore} from "@/src/stores/schedule-store";
+import {useRef, useEffect} from "react";
+import {useVenueStore} from "@/src/stores/venue-store";
 
 export default function ScheduleList() {
 
@@ -12,6 +14,17 @@ export default function ScheduleList() {
     const schedules = useScheduleStore((state) => state.schedules);
     const init = useScheduleStore((state) => state.init);
     // const error = useScheduleStore((state) => state.error);
+    const cardRefs = useRef<Record<number, HTMLDivElement | null>>({});
+    const {selectedSchedule} = useVenueStore();
+
+    useEffect(() => {
+        if (!selectedSchedule) return;
+
+        cardRefs.current[selectedSchedule.id]?.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest",
+        });
+    }, [selectedSchedule]);
 
     return (
         <div className="h-[calc(100vh-8rem)]">
@@ -33,7 +46,11 @@ export default function ScheduleList() {
                 <ScrollArea className="h-full">
                     <div className="flex flex-col gap-3 px-3 pt-1 md:px-0 lg:pl-4 lg:pr-5 pb-10">
                         {schedules.map((schedule) => (
-                            <ScheduleCard key={schedule.id} Schedule={toSchedule(schedule)} />
+                            <div key={schedule.id} ref={(el) => {
+                                cardRefs.current[schedule.id] = el;
+                            }}>
+                                <ScheduleCard  Schedule={toSchedule(schedule)}  />
+                            </div>
                         ))}
                     </div>
                 </ScrollArea>

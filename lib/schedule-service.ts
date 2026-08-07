@@ -1,31 +1,27 @@
-import { unstable_cache } from "next/cache";
-import { supabase } from "@/lib/supabase";
-import { DBScheduleList } from "@/src/types/DBScheduleList";
-import { GetSchedulesParams } from "@/src/database/params/schedule-params";
-
+import {unstable_cache} from "next/cache";
+import {supabase} from "@/lib/supabase";
+import {GetSchedulesParams} from "@/src/database/params/schedule-params";
 
 
 export const getSchedules = unstable_cache(
-    async ({ placeId, day, level }: GetSchedulesParams = {}) => {
-        let query = supabase
-            .from("schedule_list")
-            .select("*");
+    async ({ placeId, day, level, lat, lng, gender, scoring }: GetSchedulesParams = {}) => {
 
-        if (placeId != null) {
-            query = query.eq("place_id", placeId);
+        if (day == null) {
+            const today = new Date().getDay();
+            day = today === 0 ? 7 : today;
         }
 
-        if (day != null) {
-            query = query.eq("day", day);
-        }
-
-        if (level != null) {
-            query = query.or(`level.is.null,level.lte.${level}`);
-        }
-
-        const { data, error } = await query
-            .order("time_start")
-            .overrideTypes<DBScheduleList[]>();
+        const { data, error } = await supabase.rpc("get_schedules", {
+            p_lat: lat,
+            p_lng: lng,
+            p_day: day,
+            p_level: level,
+            p_gender: gender,
+            p_scoring: scoring,
+            p_venue_id: placeId,
+        });
+        console.log("getSchedules called with params:", { placeId, day, level, lat, lng, gender, scoring });
+        console.log(data);
 
         if (error) throw error;
 
@@ -33,7 +29,7 @@ export const getSchedules = unstable_cache(
     },
     ["schedules"],
     {
-        // revalidate: 1,
-        revalidate: 60 * 60 * 24,
+        revalidate: 1,
+        // revalidate: 60 * 60 * 24,
     }
 );

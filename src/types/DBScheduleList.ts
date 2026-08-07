@@ -14,4 +14,6 @@ export interface DBScheduleList {
     additional_info: string | null;
     community: DBCommunity;
     place: DBVenue;
+    distance_meters: number | null;
+    scoring: number | null;
 }
