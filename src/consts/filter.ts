@@ -45,7 +45,7 @@ const CourtLabel = [
 ]
 
 const CommunityLabel = [
-    { label: "Semua", value: null },
+    // { label: "Semua", value: null },
     {label: 'Badminton', value: 'badminton'},
 ]
 

@@ -229,7 +229,7 @@ export default function ScheduleFilter() {
 
                     <SelectFilter
                         items={CommunityLabel}
-                        value={communityType}
+                        value={'badminton'}
                         onValueChange={(value) => {
                             setCommunityType(value);
                             setCommunity(null);
