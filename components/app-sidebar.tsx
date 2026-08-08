@@ -10,10 +10,18 @@ import ScheduleList from "@/components/map/schedule/schedule-list";
 import {useScheduleStore} from "@/src/stores/schedule-store";
 import ScheduleFilter from "@/components/ui/filter/schedule-filter";
 import {Suspense} from "react";
+import {useSearchParams} from "next/navigation";
+import {DayLabel} from "@/src/consts/filter";
 
 export function AppSidebar() {
     const loading = useScheduleStore((state) => state.loading);
     const init = useScheduleStore((state) => state.init);
+
+    const searchParams = useSearchParams();
+    const day = searchParams.get("day");
+
+    const dayLabel =
+        DayLabel.find((item) => item.value === day)?.label ?? "Hari Ini";
 
     return (
         <Sidebar className="bg-black">
@@ -30,7 +38,9 @@ export function AppSidebar() {
                     <ScheduleFilter/>
                 </Suspense>
                 <h2 className="text-title text-2xl font-bold text-center dark:text-white mb-2 mt-10">
-                    {loading || init ? "Mencari Jadwal..." : "Jadwal Hari Ini"}
+                    {loading || init
+                        ? "Mencari Jadwal..."
+                        : `Jadwal Hari ${dayLabel}`}
                 </h2>
 
             </SidebarHeader>
