@@ -34,6 +34,7 @@ export function AppSidebar() {
                     height={196}
                     className="h-auto w-40 mx-auto sm:w-25 md:w-64 lg:w-72"
                 />
+                <div className="text-xs mx-auto text-gray-500">Made by <a href="https://puntodamar.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-blue-400 font-semibold">Punto Damar P.</a></div>
                 <Suspense fallback={null}>
                     <ScheduleFilter/>
                 </Suspense>
