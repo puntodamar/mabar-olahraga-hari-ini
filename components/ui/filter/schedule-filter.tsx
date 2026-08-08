@@ -18,14 +18,13 @@ import { ListFilter, Search } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCommunityStore } from "@/src/stores/community-store";
 import { useScheduleStore } from "@/src/stores/schedule-store";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useVenueStore } from "@/src/stores/venue-store";
 
 export default function ScheduleFilter() {
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
-    const initializedDay = useRef(false);
 
     const communities = useCommunityStore((state) => state.communities);
     const setCommunities = useCommunityStore((state) => state.setCommunities);
@@ -37,8 +36,14 @@ export default function ScheduleFilter() {
 
     const [filterOpen, setFilterOpen] = useState(true);
 
+    const jsDay = new Date().getDay();
+    const dayIndex = jsDay === 0 ? 7 : jsDay;
+
+    const defaultDay =
+        DayLabel[dayIndex]?.value ?? null;
+
     const [day, setDay] = useState<string | null>(
-        searchParams.get("day")
+        searchParams.get("day") ?? defaultDay
     );
 
     const [level, setLevel] = useState<string | null>(
@@ -92,19 +97,6 @@ export default function ScheduleFilter() {
             })
             .then((data) => setVenues(data));
     }, [setVenues]);
-
-    useEffect(() => {
-        if (initializedDay.current) return;
-
-        initializedDay.current = true;
-
-        if (searchParams.has("day")) return;
-
-        const jsDay = new Date().getDay();
-        const dayIndex = jsDay === 0 ? 7 : jsDay;
-
-        setDay(DayLabel[dayIndex]?.value ?? null);
-    }, [searchParams]);
 
     useEffect(() => {
         if (schedules.length > 0) {
@@ -229,7 +221,7 @@ export default function ScheduleFilter() {
 
                     <SelectFilter
                         items={CommunityLabel}
-                        value={'badminton'}
+                        value={"badminton"}
                         onValueChange={(value) => {
                             setCommunityType(value);
                             setCommunity(null);
@@ -273,3 +265,4 @@ export default function ScheduleFilter() {
         </Collapsible>
     );
 }
+

@@ -1,5 +1,5 @@
 const DayLabel = [
-    { label: "Semua", value: null },
+    // { label: "Semua", value: null },
     { label: "Senin", value: "senin" },
     { label: "Selasa", value: "selasa" },
     { label: "Rabu", value: "rabu" },
