@@ -9,15 +9,22 @@ export interface LatLng {
 
 interface VenueStore {
     selectedVenue: DBVenue | null;
+    venues: DBVenue[] | null;
     selectedSchedule: Schedule | null;
     setSelectedVenue: (place: DBVenue) => void;
     clearSelectedVenue: () => void;
     setSelectedSchedule: (schedule: Schedule) => void;
+    setVenues: (venues: DBVenue[]) => void;
 }
 
 export const useVenueStore = create<VenueStore>((set, get) => ({
     selectedVenue: null,
     selectedSchedule: null,
+    venues: null,
+
+    setVenues: (venues: DBVenue[]) => {
+        set({ venues });
+    },
 
     setSelectedSchedule: (schedule: Schedule) => {
         set({ selectedSchedule: schedule });

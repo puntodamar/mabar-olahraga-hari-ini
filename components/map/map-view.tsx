@@ -1,7 +1,7 @@
 "use client";
 
-import {Map, AdvancedMarker, useMap,} from "@vis.gl/react-google-maps";
-import { useEffect, useMemo } from "react";
+import { Map, AdvancedMarker, useMap } from "@vis.gl/react-google-maps";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 
 import { useVenueStore } from "@/src/stores/venue-store";
@@ -16,11 +16,12 @@ import { LocationPermissionDialog } from "@/components/ui/dialog/location-permis
 
 export default function MapView() {
     const map = useMap();
-    const {schedules} = useScheduleStore();
-    const {selectedVenue, setSelectedVenue} = useVenueStore();
-    const {geolocation} = useMapStore();
+
+    const { schedules } = useScheduleStore();
+    const { selectedVenue, setSelectedVenue } = useVenueStore();
 
     const {
+        geolocation,
         getPermissionState,
         getUserLocation,
         lastKnownLocation,
@@ -28,10 +29,12 @@ export default function MapView() {
         listenPermissionChanges,
     } = useMapStore();
 
+    const [locationDialogOpen, setLocationDialogOpen] = useState(false);
+
     const { setOpenMobile } = useSidebar();
 
-    // custom map marker
-    // show only one marker per place, with all schedules for that place
+    // Custom map marker
+    // Show only one marker per place, with all schedules for that place
     const places = useMemo(() => {
         return Object.values(
             schedules.reduce(
@@ -49,7 +52,13 @@ export default function MapView() {
 
                     return acc;
                 },
-                {} as Record<number, { place: DBVenue; schedules: DBScheduleList[]; }>
+                {} as Record<
+                    number,
+                    {
+                        place: DBVenue;
+                        schedules: DBScheduleList[];
+                    }
+                >
             )
         );
     }, [schedules]);
@@ -77,6 +86,8 @@ export default function MapView() {
                 } catch (err) {
                     console.error(err);
                 }
+            } else {
+                setLocationDialogOpen(true);
             }
         }
 
@@ -86,6 +97,8 @@ export default function MapView() {
     // React to permission changes
     useEffect(() => {
         if (geolocation !== "granted") return;
+
+        setLocationDialogOpen(false);
 
         async function loadLocation() {
             try {
@@ -133,7 +146,8 @@ export default function MapView() {
             disableDefaultUI
         >
             <LocationPermissionDialog
-                open={geolocation !== "granted"}
+                open={locationDialogOpen}
+                onOpenChange={setLocationDialogOpen}
                 onAllow={handleAllow}
             />
 
@@ -150,17 +164,17 @@ export default function MapView() {
                     }}
                 >
                     <div className="relative">
-                        <div className="flex z-100 flex-row max-w-md items-center gap-x-2 pl-1 pr-4 bg-white rounded-full">
+                        <div className="z-100 flex max-w-md flex-row items-center gap-x-2 rounded-full bg-white pl-1 pr-4">
                             <Image
                                 src="/images/icons/court.svg"
                                 alt={place.name}
                                 width={25}
                                 height={25}
-                                className="object-contain rounded-full border-primary w-10"
+                                className="w-10 rounded-full border-primary object-contain"
                             />
 
                             <div className="flex flex-col">
-                                <span className="font-semibold text-xs md:text-md line-clamp-1 text-nowrap">
+                                <span className="line-clamp-1 text-nowrap text-xs font-semibold md:text-md">
                                     {place.name}
                                 </span>
 

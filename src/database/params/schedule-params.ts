@@ -1,5 +1,5 @@
 export interface GetSchedulesParams {
-    placeId?: number;
+    // placeId?: number;
     day?: number;
     level?: number;
     lat?: number;
@@ -7,4 +7,5 @@ export interface GetSchedulesParams {
     gender?: number;
     scoring?: number;
     community?: number;
+    venue?: number;
 }

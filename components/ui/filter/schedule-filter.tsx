@@ -18,37 +18,51 @@ import { ListFilter, Search } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCommunityStore } from "@/src/stores/community-store";
 import { useScheduleStore } from "@/src/stores/schedule-store";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useVenueStore } from "@/src/stores/venue-store";
 
 export default function ScheduleFilter() {
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
+    const initializedDay = useRef(false);
 
     const communities = useCommunityStore((state) => state.communities);
     const setCommunities = useCommunityStore((state) => state.setCommunities);
 
     const schedules = useScheduleStore((state) => state.schedules);
 
+    const venues = useVenueStore((state) => state.venues);
+    const setVenues = useVenueStore((state) => state.setVenues);
+
     const [filterOpen, setFilterOpen] = useState(true);
 
     const [day, setDay] = useState<string | null>(
         searchParams.get("day")
     );
+
     const [level, setLevel] = useState<string | null>(
         searchParams.get("level")
     );
+
     const [gender, setGender] = useState<string | null>(
         searchParams.get("gender")
     );
+
     const [scoring, setScoring] = useState<string | null>(
         searchParams.get("scoring")
     );
+
     const [communityType, setCommunityType] = useState<string | null>(
         searchParams.get("communityType")
     );
+
     const [community, setCommunity] = useState<string | null>(
         searchParams.get("community")
+    );
+
+    const [venue, setVenue] = useState<string | null>(
+        searchParams.get("venue")
     );
 
     useEffect(() => {
@@ -66,13 +80,31 @@ export default function ScheduleFilter() {
     }, [setCommunities]);
 
     useEffect(() => {
-        if (day) return;
+        fetch("/api/venues")
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error(
+                        `Error fetching venues: ${res.status} ${res.statusText}`
+                    );
+                }
+
+                return res.json();
+            })
+            .then((data) => setVenues(data));
+    }, [setVenues]);
+
+    useEffect(() => {
+        if (initializedDay.current) return;
+
+        initializedDay.current = true;
+
+        if (searchParams.has("day")) return;
 
         const jsDay = new Date().getDay();
         const dayIndex = jsDay === 0 ? 7 : jsDay;
 
         setDay(DayLabel[dayIndex]?.value ?? null);
-    }, [day]);
+    }, [searchParams]);
 
     useEffect(() => {
         if (schedules.length > 0) {
@@ -97,6 +129,16 @@ export default function ScheduleFilter() {
         ];
     }, [communities, communityType]);
 
+    const venueNameOptions = useMemo(() => {
+        return [
+            { label: "Semua", value: null },
+            ...(venues?.map((venue) => ({
+                label: venue.name,
+                value: venue.id.toString(),
+            })) ?? []),
+        ];
+    }, [venues]);
+
     const handleSearch = () => {
         const params = new URLSearchParams();
 
@@ -106,6 +148,7 @@ export default function ScheduleFilter() {
         if (scoring) params.set("scoring", scoring);
         if (communityType) params.set("communityType", communityType);
         if (community) params.set("community", community);
+        if (venue) params.set("venue", venue);
 
         const query = params.toString();
 
@@ -196,13 +239,25 @@ export default function ScheduleFilter() {
 
                 <div className="flex items-center gap-x-2">
                     <span className="w-25 text-title text-sm">
-                        Nama Komunitas
+                        Komunitas
                     </span>
 
                     <SelectFilter
                         items={communityNameOptions}
                         value={community}
                         onValueChange={setCommunity}
+                    />
+                </div>
+
+                <div className="flex items-center gap-x-2">
+                    <span className="w-25 text-title text-sm">
+                        Lokasi
+                    </span>
+
+                    <SelectFilter
+                        items={venueNameOptions}
+                        value={venue}
+                        onValueChange={setVenue}
                     />
                 </div>
 

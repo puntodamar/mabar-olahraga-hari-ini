@@ -1,5 +1,6 @@
 import {
     Dialog,
+    DialogClose,
     DialogContent,
     DialogDescription,
     DialogFooter,
@@ -7,7 +8,6 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import {DialogTrigger} from "@base-ui/react";
 
 type Props = {
     open: boolean;
@@ -22,25 +22,27 @@ export function LocationPermissionDialog({
                                          }: Props) {
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent>
-            <DialogHeader>
-                <DialogTitle>Aktifkan Lokasi</DialogTitle>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Aktifkan Lokasi</DialogTitle>
 
-    <DialogDescription>
-        Kami membutuhkan izin lokasi untuk menampilkan lokasi mabar terdekat dengan Anda. Silakan aktifkan izin lokasi untuk melanjutkan.
-    </DialogDescription>
-    </DialogHeader>
+                    <DialogDescription>
+                        Kami membutuhkan izin lokasi untuk menampilkan lokasi
+                        mabar terdekat dengan Anda. Silakan aktifkan izin
+                        lokasi untuk melanjutkan.
+                    </DialogDescription>
+                </DialogHeader>
 
-    <DialogFooter>
+                <DialogFooter>
+                    <DialogClose render={<Button variant="outline" />}>
+                        Nanti
+                    </DialogClose>
 
-    <Button
-    onClick={onAllow}
-        >
-        Aktifkan Lokasi
-    </Button>
-    </DialogFooter>
-    </DialogContent>
-    </Dialog>
-);
+                    <Button onClick={onAllow}>
+                        Aktifkan Lokasi
+                    </Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    );
 }
-
