@@ -6,7 +6,7 @@ export async function GET(req: NextRequest) {
     const search = req.nextUrl.searchParams;
 
     // const placeId = search.get("placeId");
-    const day = DayLabel.findIndex((day) => day.value === search.get("day"));
+    const day = DayLabel.findIndex((day) => day.value === search.get("day")) + 1;
     const level = LevelLabel.findIndex((level) => level.value === search.get("level"));
     const gender = GenderLabel.findIndex((gender) => gender.value === search.get("gender"));
     const scoring = ScoringLabel.findIndex((scoring) => scoring.value === search.get("scoring"));
