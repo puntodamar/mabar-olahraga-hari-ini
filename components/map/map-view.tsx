@@ -23,7 +23,6 @@ export default function MapView() {
     const {
         geolocation,
         getPermissionState,
-        getUserLocation,
         lastKnownLocation,
         setLastKnownLocation,
         listenPermissionChanges,
@@ -63,30 +62,70 @@ export default function MapView() {
         );
     }, [schedules]);
 
-    const handleAllow = async () => {
-        try {
-            const location = await getUserLocation();
-            setLastKnownLocation(location);
-        } catch (err) {
-            console.error(err);
+    /**
+     * Request the user's location.
+     *
+     * Use the browser API directly here instead of
+     * waiting for the Permissions API to report "granted".
+     */
+    const handleAllow = () => {
+        if (!navigator.geolocation) {
+            console.error("Geolocation is not supported by this browser.");
+            return;
         }
+
+        console.log("Requesting user location...");
+
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const location = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                };
+
+                console.log("Location acquired:", location);
+                console.log("Accuracy:", position.coords.accuracy);
+
+                setLastKnownLocation(location);
+                setLocationDialogOpen(false);
+            },
+            (error) => {
+                console.error("Geolocation error:", {
+                    code: error.code,
+                    message: error.message,
+                });
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 15000,
+                maximumAge: 0,
+            }
+        );
     };
 
-    // Register permission listener once
+    /**
+     * Initialize location handling.
+     *
+     * If permission was already granted, try to get the location.
+     * Otherwise show the permission dialog.
+     */
     useEffect(() => {
         void listenPermissionChanges();
 
         async function init() {
-            const permission = await getPermissionState();
+            try {
+                const permission = await getPermissionState();
 
-            if (permission === "granted") {
-                try {
-                    const location = await getUserLocation();
-                    setLastKnownLocation(location);
-                } catch (err) {
-                    console.error(err);
+                console.log("Initial geolocation permission:", permission);
+
+                if (permission === "granted") {
+                    handleAllow();
+                } else {
+                    setLocationDialogOpen(true);
                 }
-            } else {
+            } catch (err) {
+                console.error("Failed to initialize geolocation:", err);
+
                 setLocationDialogOpen(true);
             }
         }
@@ -94,32 +133,21 @@ export default function MapView() {
         void init();
     }, []);
 
-    // React to permission changes
+    // close the location dialog if permission is granted
     useEffect(() => {
-        if (geolocation !== "granted") return;
-
-        setLocationDialogOpen(false);
-
-        async function loadLocation() {
-            try {
-                const location = await getUserLocation();
-                setLastKnownLocation(location);
-            } catch (err) {
-                console.error(err);
-            }
+        if (geolocation === "granted") {
+            setLocationDialogOpen(false);
         }
-
-        void loadLocation();
     }, [geolocation]);
 
-    // Pan to user location
+    // pan to user location
     useEffect(() => {
         if (!map || !lastKnownLocation || selectedVenue) return;
 
         map.panTo(lastKnownLocation);
     }, [map, lastKnownLocation, selectedVenue]);
 
-    // Pan to selected venue
+    // pan to selected venue
     useEffect(() => {
         if (!map || !selectedVenue) return;
 
