@@ -30,11 +30,6 @@ export default function ScheduleCard({Schedule}: { Schedule: Schedule}) {
                         onClick={() => {
                             setSelectedVenue(Schedule.place);
                             setSelectedSchedule(Schedule);
-                            alert("Selected venue changed:\n" +
-                                "ID: " + Schedule.place.id + "\n" +
-                                "Latitude: " + Schedule.place.latitude + "\n" +
-                                "Longitude: " + Schedule.place.longitude
-                            );
                         }}
 
                         className="group/button flex flex-col w-full items-center justify-between rounded-md py-2  hover:cursor-pointer">

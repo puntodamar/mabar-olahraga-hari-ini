@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import SelectFilter from "@/components/ui/filter/select-filter";
 import {
     CommunityLabel,
-    CourtLabel,
     DayLabel,
     GenderLabel,
     LevelLabel,
@@ -17,31 +16,113 @@ import {
 } from "@/src/consts/filter";
 import { ListFilter, Search } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCommunityStore } from "@/src/stores/community-store";
+import { useScheduleStore } from "@/src/stores/schedule-store";
+import { useEffect, useMemo, useState } from "react";
 
 export default function ScheduleFilter() {
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
-    const today = new Date().getDay();
-    const day = searchParams.get("day") ?? String(today);
 
-    const updateFilter = (key: string, value: string | null) => {
-        const params = new URLSearchParams(searchParams.toString());
+    const communities = useCommunityStore((state) => state.communities);
+    const setCommunities = useCommunityStore((state) => state.setCommunities);
 
-        if (!value) {
-            params.delete(key);
-        } else {
-            params.set(key, value);
+    const schedules = useScheduleStore((state) => state.schedules);
+
+    const [filterOpen, setFilterOpen] = useState(true);
+
+    const [day, setDay] = useState<string | null>(
+        searchParams.get("day")
+    );
+    const [level, setLevel] = useState<string | null>(
+        searchParams.get("level")
+    );
+    const [gender, setGender] = useState<string | null>(
+        searchParams.get("gender")
+    );
+    const [scoring, setScoring] = useState<string | null>(
+        searchParams.get("scoring")
+    );
+    const [communityType, setCommunityType] = useState<string | null>(
+        searchParams.get("communityType")
+    );
+    const [community, setCommunity] = useState<string | null>(
+        searchParams.get("community")
+    );
+
+    useEffect(() => {
+        fetch("/api/communities")
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error(
+                        `Error fetching communities: ${res.status} ${res.statusText}`
+                    );
+                }
+
+                return res.json();
+            })
+            .then((data) => setCommunities(data));
+    }, [setCommunities]);
+
+    useEffect(() => {
+        if (day) return;
+
+        const jsDay = new Date().getDay();
+        const dayIndex = jsDay === 0 ? 7 : jsDay;
+
+        setDay(DayLabel[dayIndex]?.value ?? null);
+    }, [day]);
+
+    useEffect(() => {
+        if (schedules.length > 0) {
+            setFilterOpen(false);
         }
+    }, [schedules]);
 
-        router.replace(`${pathname}?${params.toString()}`, {
-            scroll: false,
-        });
+    const communityNameOptions = useMemo(() => {
+        const filtered = communityType
+            ? communities.filter(
+                (community) =>
+                    community.type?.type === communityType
+            )
+            : communities;
+
+        return [
+            { label: "Semua", value: null },
+            ...filtered.map((community) => ({
+                label: community.name,
+                value: community.id.toString(),
+            })),
+        ];
+    }, [communities, communityType]);
+
+    const handleSearch = () => {
+        const params = new URLSearchParams();
+
+        if (day) params.set("day", day);
+        if (level) params.set("level", level);
+        if (gender) params.set("gender", gender);
+        if (scoring) params.set("scoring", scoring);
+        if (communityType) params.set("communityType", communityType);
+        if (community) params.set("community", community);
+
+        const query = params.toString();
+
+        router.replace(
+            query ? `${pathname}?${query}` : pathname,
+            {
+                scroll: false,
+            }
+        );
     };
 
-
     return (
-        <Collapsible className="mx-auto mt-5 w-full px-4">
+        <Collapsible
+            open={filterOpen}
+            onOpenChange={setFilterOpen}
+            className="mx-auto mt-5 w-full px-4"
+        >
             <div className="flex justify-center">
                 <CollapsibleTrigger className="inline-flex items-center rounded-sm bg-primary px-3 py-2 text-white hover:cursor-pointer">
                     <ListFilter className="mr-2 h-4 w-4" />
@@ -51,51 +132,85 @@ export default function ScheduleFilter() {
 
             <CollapsibleContent className="mt-2 flex w-full flex-col gap-y-2 rounded-md border p-4">
                 <div className="flex items-center gap-x-2">
-                    <span className="w-25 text-title text-sm">Hari</span>
+                    <span className="w-25 text-title text-sm">
+                        Hari
+                    </span>
+
                     <SelectFilter
                         items={DayLabel}
-                        value={searchParams.get('day')}
-                        onValueChange={(value) => updateFilter("day", value)}
+                        value={day}
+                        onValueChange={setDay}
                     />
                 </div>
 
                 <div className="flex items-center gap-x-2">
-                    <span className="w-25 text-title text-sm">Min. Level</span>
+                    <span className="w-25 text-title text-sm">
+                        Min. Level
+                    </span>
+
                     <SelectFilter
                         items={LevelLabel}
-                        value={searchParams.get("level")}
-                        onValueChange={(value) => updateFilter("level", value)}
+                        value={level}
+                        onValueChange={setLevel}
                     />
                 </div>
 
                 <div className="flex items-center gap-x-2">
-                    <span className="w-25 text-title text-sm">Gender</span>
+                    <span className="w-25 text-title text-sm">
+                        Gender
+                    </span>
+
                     <SelectFilter
                         items={GenderLabel}
-                        value={searchParams.get("gender")}
-                        onValueChange={(value) => updateFilter("gender", value)}
+                        value={gender}
+                        onValueChange={setGender}
                     />
                 </div>
 
                 <div className="flex items-center gap-x-2">
-                    <span className="w-25 text-title text-sm">Aturan Main</span>
+                    <span className="w-25 text-title text-sm">
+                        Aturan Main
+                    </span>
+
                     <SelectFilter
                         items={ScoringLabel}
-                        value={searchParams.get("scoring")}
-                        onValueChange={(value) => updateFilter("scoring", value)}
+                        value={scoring}
+                        onValueChange={setScoring}
                     />
                 </div>
 
                 <div className="flex items-center gap-x-2">
-                    <span className="w-25 text-title text-sm">Jenis Komunitas</span>
+                    <span className="w-25 text-title text-sm">
+                        Jenis Komunitas
+                    </span>
+
                     <SelectFilter
                         items={CommunityLabel}
-                        value="badminton"
-
+                        value={communityType}
+                        onValueChange={(value) => {
+                            setCommunityType(value);
+                            setCommunity(null);
+                        }}
                     />
                 </div>
 
-                <Button size="sm" className="mx-auto mt-2 w-full text-white hover:cursor-pointer">
+                <div className="flex items-center gap-x-2">
+                    <span className="w-25 text-title text-sm">
+                        Nama Komunitas
+                    </span>
+
+                    <SelectFilter
+                        items={communityNameOptions}
+                        value={community}
+                        onValueChange={setCommunity}
+                    />
+                </div>
+
+                <Button
+                    size="sm"
+                    className="mx-auto mt-2 w-full text-white hover:cursor-pointer"
+                    onClick={handleSearch}
+                >
                     <Search className="mr-2 h-4 w-4" />
                     Cari
                 </Button>
