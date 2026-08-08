@@ -36,11 +36,16 @@ export default function ScheduleFilter() {
 
     const [filterOpen, setFilterOpen] = useState(true);
 
-    const jsDay = new Date().getDay();
-    const dayIndex = jsDay === 0 ? 7 : jsDay;
+    // GMT+7 / Asia-Jakarta
+    const jakartaDay = new Date(
+        new Date().toLocaleString("en-US", {
+            timeZone: "Asia/Jakarta",
+        })
+    ).getDay();
 
-    const defaultDay =
-        DayLabel[dayIndex]?.value ?? null;
+    const dayIndex = jakartaDay === 0 ? 7 : jakartaDay;
+
+    const defaultDay = DayLabel[dayIndex]?.value ?? null;
 
     const [day, setDay] = useState<string | null>(
         searchParams.get("day") ?? defaultDay
