@@ -12,8 +12,8 @@ export const getVenues = unstable_cache(
     },
     ["venues"],
     {
-        // revalidate: 60 * 60 * 24,
-        revalidate: 1
+        revalidate: 3600,
+        // revalidate: 1
     }
 )
 
