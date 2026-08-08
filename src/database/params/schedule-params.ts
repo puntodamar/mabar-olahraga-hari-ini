@@ -6,4 +6,5 @@ export interface GetSchedulesParams {
     lng?: number;
     gender?: number;
     scoring?: number;
+    community?: number;
 }

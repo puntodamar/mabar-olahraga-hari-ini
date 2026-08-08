@@ -11,7 +11,7 @@ export const getCommunityOptions = unstable_cache(
     },
     ["community_list_options"],
     {
-        // revalidate: 1,
-        revalidate: 60 * 60 * 24,
+        revalidate: 1,
+        // revalidate: 60 * 60 * 24,
     }
 );

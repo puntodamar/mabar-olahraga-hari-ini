@@ -12,6 +12,7 @@ export async function GET(req: NextRequest) {
     const scoring = ScoringLabel.findIndex((scoring) => scoring.value === search.get("scoring"));
     const lat = search.get("lat");
     const lng = search.get("lng");
+    const community = search.get("community");
 
     const schedules = await getSchedules({
         placeId: placeId ? Number(placeId) : undefined,
@@ -21,6 +22,7 @@ export async function GET(req: NextRequest) {
         lng: lng ? Number(lng) : undefined,
         gender: gender ? Number(gender) : undefined,
         scoring: scoring ? Number(scoring) : undefined,
+        community: community ? Number(community) : undefined,
     });
 
     return NextResponse.json(schedules);

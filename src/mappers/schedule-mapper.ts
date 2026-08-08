@@ -26,7 +26,7 @@ export function toSchedule(db: DBScheduleList): Schedule {
 
     const community: DBCommunity = {
         id: db.community.id,
-        name: db.community.name,
+        name: `PB. ${db.community.name}`,
         image: db.community.image == null ? `images/icons/${db.community.type}.svg` : db.community.image,
         type: db.community.type,
         contacts: db.community.contacts,

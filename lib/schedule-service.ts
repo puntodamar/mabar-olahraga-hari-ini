@@ -4,7 +4,7 @@ import {GetSchedulesParams} from "@/src/database/params/schedule-params";
 
 
 export const getSchedules = unstable_cache(
-    async ({ placeId, day, level, lat, lng, gender, scoring }: GetSchedulesParams = {}) => {
+    async ({ placeId, day, level, lat, lng, gender, scoring, community }: GetSchedulesParams = {}) => {
 
         if (day == null) {
             const today = new Date().getDay();
@@ -19,8 +19,9 @@ export const getSchedules = unstable_cache(
             p_gender: gender,
             p_scoring: scoring,
             p_venue_id: placeId,
+            p_community: community,
         });
-        console.log("getSchedules called with params:", { placeId, day, level, lat, lng, gender, scoring });
+        console.log("getSchedules called with params:", { placeId, day, level, lat, lng, gender, scoring, community });
         console.log(data);
 
         if (error) throw error;
