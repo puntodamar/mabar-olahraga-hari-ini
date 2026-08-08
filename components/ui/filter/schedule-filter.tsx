@@ -1,3 +1,4 @@
+
 "use client";
 
 import {
@@ -156,6 +157,37 @@ export default function ScheduleFilter() {
             }
         );
     };
+
+    useEffect(() => {
+        // Don't automatically query if filters are already
+        // present in the URL.
+        if (searchParams.toString()) {
+            return;
+        }
+
+        if (!navigator.geolocation) {
+            handleSearch();
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+            () => {
+                // Location has been successfully obtained.
+                // Trigger the initial query.
+                handleSearch();
+            },
+            () => {
+                // Permission denied / location unavailable.
+                // Still perform the initial query.
+                handleSearch();
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 300000,
+            }
+        );
+    }, []);
 
     return (
         <Collapsible
