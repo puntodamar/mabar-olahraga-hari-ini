@@ -20,6 +20,11 @@ export function LocationPermissionDialog({
                                              onOpenChange,
                                              onAllow,
                                          }: Props) {
+    const handleAllow = () => {
+        onOpenChange?.(false);
+        onAllow();
+    };
+
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent>
@@ -38,7 +43,7 @@ export function LocationPermissionDialog({
                         Nanti
                     </DialogClose>
 
-                    <Button onClick={onAllow}>
+                    <Button onClick={handleAllow}>
                         Aktifkan Lokasi
                     </Button>
                 </DialogFooter>
