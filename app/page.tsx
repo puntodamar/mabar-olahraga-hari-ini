@@ -71,7 +71,7 @@ function HomeContent() {
 
             <main className="flex w-full h-screen overflow-hidden">
                 <div className="relative flex flex-1 flex-col">
-                    <SidebarTrigger className="absolute ml-3 p-3 bg-white size-10 top-2 z-50 lg:hidden" />
+                    <SidebarTrigger className="absolute ml-3 p-3 bg-primary text-white size-10 top-2 z-50 lg:hidden hover:bg-primary hover:text-white hover:cursor-pointer" />
 
                     <div className="flex-1 bg-muted">
                         <APIProvider
