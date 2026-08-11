@@ -1,7 +1,7 @@
 // app/api/places/route.ts
 
 import { NextResponse } from "next/server"
-import { getVenues } from "@/lib/place-service"
+import { getVenues } from "@/lib/venue-service"
 
 export async function GET() {
     try {

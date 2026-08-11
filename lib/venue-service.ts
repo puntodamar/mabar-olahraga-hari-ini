@@ -6,7 +6,7 @@ import {supabase} from "@/lib/supabase";
 
 export const getVenues = unstable_cache(
     async () => {
-        const {data, error} = await supabase.from("venues").select("*");
+        const {data, error} = await supabase.from("venues").select("*").order("name", { ascending: true });
         if (error) throw error;
         return data;
     },
