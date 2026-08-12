@@ -74,7 +74,7 @@ export default function MapView() {
             return;
         }
 
-        console.log("Requesting user location...");
+        // console.log("Requesting user location...");
 
         navigator.geolocation.getCurrentPosition(
             (position) => {
@@ -83,8 +83,8 @@ export default function MapView() {
                     lng: position.coords.longitude,
                 };
 
-                console.log("Location acquired:", location);
-                console.log("Accuracy:", position.coords.accuracy);
+                // console.log("Location acquired:", location);
+                // console.log("Accuracy:", position.coords.accuracy);
 
                 setLastKnownLocation(location);
                 setLocationDialogOpen(false);
@@ -116,7 +116,7 @@ export default function MapView() {
             try {
                 const permission = await getPermissionState();
 
-                console.log("Initial geolocation permission:", permission);
+                // console.log("Initial geolocation permission:", permission);
 
                 if (permission === "granted") {
                     handleAllow();
