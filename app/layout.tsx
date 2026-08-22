@@ -3,6 +3,7 @@ import {Geist, Geist_Mono} from "next/font/google";
 import "./globals.css";
 import {ThemeProvider} from "next-themes";
 import {useAppHeight} from "@/hooks/use-mobile";
+import { Analytics } from "@vercel/analytics/next"
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -39,6 +40,10 @@ export const metadata: Metadata = {
         description: "Database mabar olahraga hari ini di sekitarmu. Temukan lokasi, jadwal, dan teman untuk bermain olahraga favoritmu. Bergabunglah dengan komunitas olahraga lokal dan nikmati pengalaman mabar yang seru!",
         images: ["https://mabarolahraga.vercel.app/og-image.png"],
     },
+    verification: {
+        google: "dvl_kmQDFqUYeGLo6rWTxp0u0wZCcmoUQoilqtFzBHw",
+    },
+
 };
 
 export default function RootLayout({children,}: Readonly<{ children: React.ReactNode; }>) {
@@ -49,6 +54,7 @@ export default function RootLayout({children,}: Readonly<{ children: React.React
             className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
             suppressHydrationWarning
         >
+        <Analytics/>
         <body className="flex flex-col" style={{ height: "var(--app-height)" }}>
         {children}
         {/*    <ThemeProvider*/}
