@@ -8,6 +8,7 @@ import { useSearchParams } from "next/navigation";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import MapView from "@/components/map/map-view";
+import InstallButton from "@/components/pwa-install";
 // import { ThemeModeToggle } from "@/components/ui/theme/theme-mode-toggle";
 
 import { useAppHeight } from "@/hooks/use-mobile";
@@ -69,9 +70,13 @@ function HomeContent() {
         <SidebarProvider>
             <AppSidebar />
 
-            <main className="flex w-full h-screen overflow-hidden">
+            <main className="flex flex-col w-full justify-center h-screen overflow-hidden">
                 <div className="relative flex flex-1 flex-col">
-                    <SidebarTrigger className="absolute ml-3 p-3 bg-primary text-white size-10 top-2 z-50 lg:hidden hover:bg-primary hover:text-white hover:cursor-pointer" />
+                    <div className="flex flex-row items-center gap-x-2 absolute pt-3 pl-2 z-50">
+                        <SidebarTrigger className=" bg-primary text-white size-10 lg:hidden hover:bg-primary hover:text-white hover:cursor-pointer" />
+                        <InstallButton className="md:hidden"/>
+                    </div>
+
 
                     <div className="flex-1 bg-muted">
                         <APIProvider
@@ -92,7 +97,11 @@ function HomeContent() {
                         </div>
                     </div>
                     */}
+                    <div className="hidden md:block w-full absolute left-2 bottom-2">
+                        <InstallButton/>
+                    </div>
                 </div>
+
             </main>
         </SidebarProvider>
     );

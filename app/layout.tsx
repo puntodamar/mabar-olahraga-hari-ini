@@ -18,7 +18,13 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
 
     title: "Mabar Olahraga Hari Ini 🔥",
+    manifest: '/manifest.json',
     description: "Database mabar olahraga hari ini di sekitarmu. Temukan lokasi, jadwal, dan teman untuk bermain olahraga favoritmu. Bergabunglah dengan komunitas olahraga lokal dan nikmati pengalaman mabar yang seru!",
+    appleWebApp: {
+        capable: true,
+        statusBarStyle: 'default',
+        title: 'Mabar Olahraga Hari Ini 🔥',
+    },
     openGraph: {
         title: "Mabar Olahraga Hari Ini 🔥",
         description: "Database mabar olahraga hari ini di sekitarmu. Temukan lokasi, jadwal, dan teman untuk bermain olahraga favoritmu. Bergabunglah dengan komunitas olahraga lokal dan nikmati pengalaman mabar yang seru!",

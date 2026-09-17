@@ -13,6 +13,7 @@ import { DBScheduleList } from "@/src/types/DBScheduleList";
 
 import { useSidebar } from "@/components/ui/sidebar";
 import { LocationPermissionDialog } from "@/components/ui/dialog/location-permission-dialog";
+import InstallButton from "@/components/pwa-install";
 
 export default function MapView() {
     const map = useMap();
@@ -218,6 +219,7 @@ export default function MapView() {
             {lastKnownLocation && (
                 <AdvancedMarker position={lastKnownLocation} />
             )}
+
         </Map>
     );
 }
