@@ -74,7 +74,7 @@ function HomeContent() {
                 <div className="relative flex flex-1 flex-col">
                     <div className="flex flex-row items-center gap-x-2 absolute pt-3 pl-2 z-50">
                         <SidebarTrigger className=" bg-primary text-white size-10 lg:hidden hover:bg-primary hover:text-white hover:cursor-pointer" />
-                        <InstallButton className="md:hidden"/>
+                        <InstallButton/>
                     </div>
 
 
@@ -97,9 +97,9 @@ function HomeContent() {
                         </div>
                     </div>
                     */}
-                    <div className="hidden md:block w-full absolute left-2 bottom-2">
-                        <InstallButton/>
-                    </div>
+                    {/*<div className="hidden md:block w-full absolute left-2 bottom-2">*/}
+                    {/*    <InstallButton/>*/}
+                    {/*</div>*/}
                 </div>
 
             </main>
