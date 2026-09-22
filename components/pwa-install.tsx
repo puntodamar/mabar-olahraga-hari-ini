@@ -8,7 +8,7 @@ export default function InstallButton({className}: {className?: string}) {
     const [isBrowserInstallable, setIsBrowserInstallable] = useState(false);
 
     // MANUAL OVERRIDE: Set to true if you want to force-preview the button in dev mode
-    const [manualOverride, setManualOverride] = useState(false);
+    const [manualOverride, setManualOverride] = useState(true);
 
     useEffect(() => {
         const handleBeforeInstallPrompt = (e: Event) => {
@@ -37,7 +37,6 @@ export default function InstallButton({className}: {className?: string}) {
         }
     };
 
-    // The button shows if either the browser says it's ready OR your manual override is on
     const showButton = isBrowserInstallable || manualOverride;
 
     if (!showButton) return null;
