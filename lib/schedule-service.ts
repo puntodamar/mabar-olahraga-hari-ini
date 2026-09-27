@@ -47,6 +47,7 @@ export const getSchedules = async ({
             String(scoring ?? ""),
             String(community ?? ""),
             String(venue ?? ""),
+            String(time ?? "")
         ],
         {
             revalidate: 3600,
