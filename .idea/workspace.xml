@@ -8,12 +8,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="043acdff-3f68-4fbf-a078-a9b5362853a4" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/app/admin/layout.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/admin/schedules/columns.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/admin/schedules/data-table-features.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/admin/schedules/data-table.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/admin/schedules/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/api/login/route.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/login/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/middleware.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/login-form.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/ui/admin-sidebar.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/ui/field.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/ui/label.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/ui/table.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/examples/form/patterns/login-form.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/ShadcnHelperSettings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ShadcnHelperSettings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/map/map-view.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/map/map-view.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/map/schedule/schedule-list.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/map/schedule/schedule-list.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stores/schedule-store.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/schedule-store.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,8 +58,7 @@
             <option name="modelValue" value="auto" />
           </model>
         </option>
-        <option name="targetType" value="BACKGROUND" />
-        <option name="worktreeMode" value="WORKSPACE" />
+        <option name="targetType" value="LOCAL" />
       </template>
     </option>
   </component>
@@ -54,27 +66,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;copilot.chat.legacySessionMetadata.migrated&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;js.debugger.nextJs.config.created.client&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/puntodamar/Documents/git/personal/next/mabar-olahraga-hari-ini/public/images&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;npm.db:types.executor&quot;: &quot;Run&quot;,
-    &quot;npm.dev.executor&quot;: &quot;Run&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Users/puntodamar/Documents/git/personal/next/mabar-olahraga-hari-ini/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "copilot.chat.legacySessionMetadata.migrated": "true",
+    "git-widget-placeholder": "feature/admin-page",
+    "js.debugger.nextJs.config.created.client": "true",
+    "last_opened_file_path": "/Users/puntodamar/Documents/git/personal/next/mabar-olahraga-hari-ini/public/images",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "npm.db:types.executor": "Run",
+    "npm.dev.executor": "Run",
+    "settings.editor.selected.configurable": "inlay.hints",
+    "ts.external.directory.path": "/Users/puntodamar/Documents/git/personal/next/mabar-olahraga-hari-ini/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/public/images/icons" />
@@ -83,10 +95,10 @@
       <recent name="$PROJECT_DIR$/public" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app" />
       <recent name="$PROJECT_DIR$/src/stores" />
       <recent name="$PROJECT_DIR$/components/map/schedule" />
       <recent name="$PROJECT_DIR$/components/map/place" />
-      <recent name="$PROJECT_DIR$/app" />
       <recent name="$PROJECT_DIR$/components" />
     </key>
   </component>
@@ -144,6 +156,10 @@
       <workItem from="1785022423595" duration="11226000" />
       <workItem from="1785569755916" duration="16739000" />
       <workItem from="1785766747262" duration="6223000" />
+      <workItem from="1786663942521" duration="7000" />
+      <workItem from="1787397941214" duration="465000" />
+      <workItem from="1788062799214" duration="5000" />
+      <workItem from="1788062895832" duration="4477000" />
     </task>
     <servers />
   </component>
