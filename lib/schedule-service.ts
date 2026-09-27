@@ -12,6 +12,7 @@ export const getSchedules = async ({
                                        scoring,
                                        community,
                                        venue,
+                                        time,
                                    }: GetSchedulesParams = {}) => {
     const getCachedSchedules = unstable_cache(
         async () => {
@@ -24,6 +25,7 @@ export const getSchedules = async ({
                 p_scoring: scoring ?? null,
                 p_venue_id: venue ?? null,
                 p_community_id: community ?? null,
+                p_time: time ? `${time}:00` : null,
             }
 
             console.log("Fetching schedules with params:", params);

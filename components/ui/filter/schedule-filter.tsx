@@ -74,6 +74,18 @@ export default function ScheduleFilter() {
         searchParams.get("venue")
     );
 
+    const getNextHourString = () => {
+        const now = new Date();
+        now.setHours(now.getHours() + 1);
+        const hour = now.getHours();
+        return hour.toString().padStart(2, "0") + ":00";
+    };
+
+    const [time, setTime] = useState<string | null>(
+        searchParams.get('time')
+    );
+
+
     useEffect(() => {
         fetch("/api/communities")
             .then((res) => {
@@ -125,6 +137,15 @@ export default function ScheduleFilter() {
         ];
     }, [communities, communityType]);
 
+    const timeOptions = [
+        { label: "Semua", value: null },
+        ...Array.from({ length: 16 }, (_, i) => {
+            const hour = i + 6;
+            const timeStr = hour.toString().padStart(2, "0") + ":00";
+            return { label: timeStr, value: timeStr };
+        })
+    ];
+
     const venueNameOptions = useMemo(() => {
         return [
             { label: "Semua", value: null },
@@ -145,6 +166,7 @@ export default function ScheduleFilter() {
         if (communityType) params.set("communityType", communityType);
         if (community) params.set("community", community);
         if (venue) params.set("venue", venue);
+        if (time) params.set("time", time);
 
         const query = params.toString();
 
@@ -210,6 +232,18 @@ export default function ScheduleFilter() {
                         items={DayLabel}
                         value={day}
                         onValueChange={setDay}
+                    />
+                </div>
+
+                <div className="flex items-center gap-x-2">
+                    <span className="w-25 text-title text-sm">
+                        Waktu Mulai
+                    </span>
+
+                    <SelectFilter
+                        items={timeOptions}
+                        value={time}
+                        onValueChange={setTime}
                     />
                 </div>
 

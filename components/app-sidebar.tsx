@@ -43,6 +43,10 @@ export function AppSidebar() {
                         ? "Mencari Jadwal..."
                         : `Jadwal Hari ${dayLabel}`}
                 </h2>
+                <div className="text-xs text-center italic text-gray-500 mb-4 text-pretty">
+                    Informasi yang tersedia belum tentu sesuai dengan kondisi saat ini.
+                    Jangan lupa untuk selalu konfirmasi dengan admin PB yang bersangkutan.
+                </div>
 
             </SidebarHeader>
 

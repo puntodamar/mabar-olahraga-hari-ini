@@ -8,4 +8,5 @@ export interface GetSchedulesParams {
     scoring?: number;
     community?: number;
     venue?: number;
+    time?: string;
 }

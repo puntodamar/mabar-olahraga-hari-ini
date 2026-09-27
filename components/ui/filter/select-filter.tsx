@@ -32,7 +32,7 @@ export default function SelectFilter<T extends string | number>({items, value, o
                 />
             </SelectTrigger>
 
-            <SelectContent className="w-max min-w-[var(--anchor-width)] max-w-[90vw]">
+            <SelectContent className="w-max min-w-[var(--anchor-width)] max-w-[90vw] text-center">
                 <SelectGroup>
                     {items.map((item) => (
                         <SelectItem

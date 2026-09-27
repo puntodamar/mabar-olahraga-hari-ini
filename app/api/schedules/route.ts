@@ -10,6 +10,7 @@ export async function GET(req: NextRequest) {
     const level = LevelLabel.findIndex((level) => level.value === search.get("level"));
     const gender = GenderLabel.findIndex((gender) => gender.value === search.get("gender"));
     const scoring = ScoringLabel.findIndex((scoring) => scoring.value === search.get("scoring"));
+    const time = search.get("time");
     const lat = search.get("lat");
     const lng = search.get("lng");
     const community = search.get("community");
@@ -25,6 +26,7 @@ export async function GET(req: NextRequest) {
         scoring: scoring ? Number(scoring) : undefined,
         community: community ? Number(community) : undefined,
         venue: venue ? Number(venue) : undefined,
+        time: time ? String(time) : undefined,
     });
 
     return NextResponse.json(schedules);
