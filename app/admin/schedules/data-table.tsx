@@ -28,7 +28,7 @@ export function DataTable<TData extends RowData>({columns, data = [],}: DataTabl
     return (
         <div className="overflow-hidden rounded-md border">
             <Table>
-                <TableHeader>
+                <TableHeader >
                     {table.getHeaderGroups().map((headerGroup) => (
                         <TableRow key={headerGroup.id}>
                             {headerGroup.headers.map((header) => {
@@ -43,7 +43,7 @@ export function DataTable<TData extends RowData>({columns, data = [],}: DataTabl
                         </TableRow>
                     ))}
                 </TableHeader>
-                <TableBody>
+                <TableBody className="bg-white">
                     {table.getRowModel().rows?.length ? (
                         table.getRowModel().rows.map((row) => (
                             <TableRow
