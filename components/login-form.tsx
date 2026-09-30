@@ -2,16 +2,17 @@
 
 import {useState} from "react"
 import {useRouter} from "next/navigation"
-
 import {cn} from "@/lib/utils"
 import {Button} from "@/components/ui/button"
 import {Card, CardContent, CardDescription, CardHeader, CardTitle,} from "@/components/ui/card"
 import {Field, FieldGroup, FieldLabel,} from "@/components/ui/field"
 import {Input} from "@/components/ui/input"
+import {useUserStore, User} from "@/src/stores/user-store";
 
 export function LoginForm({className, ...props}: React.ComponentProps<"div">) {
     const router = useRouter()
 
+    const setUser = useUserStore((state) => state.setUser);
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [error, setError] = useState("")
@@ -36,7 +37,8 @@ export function LoginForm({className, ...props}: React.ComponentProps<"div">) {
                 return
             }
 
-            setError("")
+            const user : User = {email: email}
+            setUser(user)
             router.push("/admin/schedules")
             router.refresh()
         } catch {
