@@ -22,7 +22,7 @@ export const features = tableFeatures({
     rowSelectionFeature,
     rowSortingFeature,
     filteredRowModel: createFilteredRowModel(),
-    paginatedRowModel: createPaginatedRowModel(),
+    // paginatedRowModel: createPaginatedRowModel(),
     sortedRowModel: createSortedRowModel(),
     filterFns: { includesString: filterFn_includesString },
     sortFns: { alphanumeric: sortFn_alphanumeric, text: sortFn_text },
