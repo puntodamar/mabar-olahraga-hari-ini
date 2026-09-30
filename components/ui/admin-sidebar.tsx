@@ -8,13 +8,31 @@ import {
 } from "@/components/ui/sidebar";
 import Image from "next/image";
 import ScheduleList from "@/components/map/schedule/schedule-list";
+import {Button} from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {CalendarRangeIcon, HouseIcon, LogOutIcon, MapPinHouseIcon, UserRoundIcon} from "lucide-react";
 import Link from 'next/link';
-import { usePathname } from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
+import {useUserStore} from "@/src/stores/user-store";
 
 export default function AdminSidebar() {
     const pathname = usePathname();
+
+    const clearUser = useUserStore((state) => state.clearUser);
+    const router = useRouter();
+    const handleLogout = async () => {
+        try {
+            await fetch("/api/logout", {
+                method: "POST",
+            });
+            clearUser();
+
+            router.push("/login");
+            router.refresh();
+        } catch (error) {
+            console.error("Failed to logout:", error);
+        }
+    };
 
     return (
         <Sidebar>
@@ -56,13 +74,12 @@ export default function AdminSidebar() {
             <SidebarFooter className="w-full">
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <Link
-                            href="/logout"
-                            className="flex w-full items-center gap-x-2 px-3 py-2 text-base text-white bg-red-800 hover:bg-red-800 rounded-md transition-colors"
-                        >
+                        <Button
+                            onClick={handleLogout}
+                            className="flex w-full items-center justify-start gap-x-2 px-3 py-2 text-base text-white bg-red-800 hover:bg-red-800 hover:cursor-pointer rounded-md transition-colors">
                             <LogOutIcon className="size-5" />
                             <span>Keluar</span>
-                        </Link>
+                        </Button>
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarFooter>
