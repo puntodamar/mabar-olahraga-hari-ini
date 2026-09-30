@@ -7,6 +7,8 @@ import {Gender} from "@/src/types/enums/Gender";
 import { type DataTableFeatures } from "./data-table-features";
 import {DBScheduleList} from "@/src/types/DBScheduleList";
 import {cn} from "cn";
+import {ArrowUpDown} from "lucide-react";
+import {Button} from "@/components/ui/button";
 
 // Use `accessor` for data columns and `display` for columns without one.
 const columnHelper = createColumnHelper<DataTableFeatures, DBScheduleList>()
@@ -19,8 +21,14 @@ export const columns = columnHelper.columns([
         // header: "Komunitas",
         header: ({ column }) => {
             return (
-                <div className={className}>
-                    Komunitas
+                <div className="text-center">
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                        className="text-white font-bold hover:bg-primary/80 hover:text-white">
+                        Komunitas
+                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                    </Button>
                 </div>
             )
         }
@@ -61,8 +69,14 @@ export const columns = columnHelper.columns([
     columnHelper.accessor("level", {
         header: ({ column }) => {
             return (
-                <div className={cn(className, "text-center")}>
-                    Level
+                <div className="text-center">
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                        className="text-white font-bold hover:bg-primary/80 hover:text-white">
+                        Level
+                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                    </Button>
                 </div>
             )
         },
@@ -79,8 +93,14 @@ export const columns = columnHelper.columns([
     columnHelper.accessor("courts", {
         header: ({ column }) => {
             return (
-                <div className={cn(className, "text-center")}>
-                    Lapangan
+                <div className="text-center">
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                        className="text-white font-bold hover:bg-primary/80 hover:text-white">
+                        Lapangan
+                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                    </Button>
                 </div>
             )
         },
@@ -94,8 +114,14 @@ export const columns = columnHelper.columns([
     columnHelper.accessor("fee", {
         header: ({ column }) => {
             return (
-                <div className={cn(className, "text-center")}>
-                    Biaya
+                <div className="text-center">
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                        className="text-white font-bold hover:bg-primary/80 hover:text-white">
+                        Biaya
+                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                    </Button>
                 </div>
             )
         },
