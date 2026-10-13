@@ -1,6 +1,7 @@
 
 import { unstable_cache } from "next/cache";
 import { supabase } from "@/lib/supabase";
+import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { GetSchedulesParams } from "@/src/database/params/schedule-params";
 import { AdminSchedule, AdminScheduleInput } from "@/src/types/AdminSchedule";
 
@@ -93,7 +94,7 @@ export const getAdminSchedules = async (
 };
 
 export const createSchedule = async (payload: AdminScheduleInput) => {
-    const { data, error } = await supabase
+    const { data, error } = await getSupabaseAdmin()
         .from("schedules")
         .insert(payload)
         .select()
@@ -105,7 +106,7 @@ export const createSchedule = async (payload: AdminScheduleInput) => {
 };
 
 export const updateSchedule = async (id: number, payload: AdminScheduleInput) => {
-    const { data, error } = await supabase
+    const { data, error } = await getSupabaseAdmin()
         .from("schedules")
         .update(payload)
         .eq("id", id)

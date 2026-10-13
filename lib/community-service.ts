@@ -1,5 +1,6 @@
 import {unstable_cache} from "next/cache";
 import {supabase} from "@/lib/supabase";
+import {getSupabaseAdmin} from "@/lib/supabase-admin";
 import {
     AdminCommunity,
     AdminCommunityInput,
@@ -61,8 +62,9 @@ export const getCommunityTypes = async (): Promise<CommunityTypeOption[]> => {
 
 export const createCommunity = async (payload: AdminCommunityInput) => {
     const { contacts, ...community } = payload;
+    const supabaseAdmin = getSupabaseAdmin();
 
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
         .from("communities")
         .insert(community)
         .select()
@@ -71,7 +73,7 @@ export const createCommunity = async (payload: AdminCommunityInput) => {
     if (error) throw error;
 
     if (contacts.whatsapp || contacts.instagram || contacts.tiktok) {
-        const { error: contactError } = await supabase
+        const { error: contactError } = await supabaseAdmin
             .from("community_contacts")
             .insert({ community_id: data.id, ...contacts });
 
@@ -83,8 +85,9 @@ export const createCommunity = async (payload: AdminCommunityInput) => {
 
 export const updateCommunity = async (id: number, payload: AdminCommunityInput) => {
     const { contacts, ...community } = payload;
+    const supabaseAdmin = getSupabaseAdmin();
 
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
         .from("communities")
         .update(community)
         .eq("id", id)
@@ -93,7 +96,7 @@ export const updateCommunity = async (id: number, payload: AdminCommunityInput) 
 
     if (error) throw error;
 
-    const { data: existing } = await supabase
+    const { data: existing } = await supabaseAdmin
         .from("community_contacts")
         .select("id")
         .eq("community_id", id)
@@ -101,21 +104,21 @@ export const updateCommunity = async (id: number, payload: AdminCommunityInput) 
 
     if (contacts.whatsapp || contacts.instagram || contacts.tiktok) {
         if (existing) {
-            const { error: contactError } = await supabase
+            const { error: contactError } = await supabaseAdmin
                 .from("community_contacts")
                 .update(contacts)
                 .eq("community_id", id);
 
             if (contactError) throw contactError;
         } else {
-            const { error: contactError } = await supabase
+            const { error: contactError } = await supabaseAdmin
                 .from("community_contacts")
                 .insert({ community_id: id, ...contacts });
 
             if (contactError) throw contactError;
         }
     } else if (existing) {
-        const { error: deleteError } = await supabase
+        const { error: deleteError } = await supabaseAdmin
             .from("community_contacts")
             .delete()
             .eq("community_id", id);
