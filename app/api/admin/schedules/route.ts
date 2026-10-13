@@ -1,10 +1,14 @@
 import { NextResponse } from "next/server";
 import { createSchedule, getAdminSchedules } from "@/lib/schedule-service";
 
-export async function GET() {
+export async function GET(request: Request) {
     try {
-        const schedules = await getAdminSchedules();
-        return NextResponse.json(schedules);
+        const { searchParams } = new URL(request.url);
+        const page = Number(searchParams.get("page") ?? "0");
+        const pageSizeParam = searchParams.get("pageSize");
+        const pageSize = pageSizeParam === null ? undefined : Number(pageSizeParam);
+        const result = await getAdminSchedules(page, pageSize);
+        return NextResponse.json(result);
     } catch (e) {
         console.error(e);
         return NextResponse.json({ error: "Gagal memuat jadwal" }, { status: 500 });

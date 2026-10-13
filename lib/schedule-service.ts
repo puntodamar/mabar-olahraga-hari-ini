@@ -58,8 +58,11 @@ export const getSchedules = async ({
     return getCachedSchedules();
 };
 
-export const getAdminSchedules = async (): Promise<AdminSchedule[]> => {
-    const { data, error } = await supabase
+export const getAdminSchedules = async (
+    page = 0,
+    pageSize?: number
+): Promise<{ data: AdminSchedule[]; total: number }> => {
+    let query = supabase
         .from("schedules")
         .select(`
             id,
@@ -74,13 +77,19 @@ export const getAdminSchedules = async (): Promise<AdminSchedule[]> => {
             additional_info,
             community:communities ( id, name ),
             place:venues ( id, name )
-        `)
+        `, { count: "exact" })
         .order("day", { ascending: true })
         .order("time_start", { ascending: true });
 
+    if (pageSize !== undefined && Number.isFinite(pageSize)) {
+        query = query.range(page * pageSize, (page + 1) * pageSize - 1);
+    }
+
+    const { data, count, error } = await query;
+
     if (error) throw error;
 
-    return data as unknown as AdminSchedule[];
+    return { data: (data ?? []) as unknown as AdminSchedule[], total: count ?? 0 };
 };
 
 export const createSchedule = async (payload: AdminScheduleInput) => {

@@ -21,8 +21,11 @@ export const getCommunityOptions = unstable_cache(
     }
 );
 
-export const getCommunities = async (): Promise<AdminCommunity[]> => {
-    const { data, error } = await supabase
+export const getCommunities = async (
+    page = 0,
+    pageSize?: number
+): Promise<{ data: AdminCommunity[]; total: number }> => {
+    let query = supabase
         .from("communities")
         .select(`
             id,
@@ -31,12 +34,18 @@ export const getCommunities = async (): Promise<AdminCommunity[]> => {
             community_type_id,
             community_types ( id, name ),
             community_contacts ( whatsapp, instagram, tiktok )
-        `)
+        `, { count: "exact" })
         .order("name", { ascending: true });
+
+    if (pageSize !== undefined && Number.isFinite(pageSize)) {
+        query = query.range(page * pageSize, (page + 1) * pageSize - 1);
+    }
+
+    const { data, count, error } = await query;
 
     if (error) throw error;
 
-    return data as unknown as AdminCommunity[];
+    return { data: (data ?? []) as unknown as AdminCommunity[], total: count ?? 0 };
 };
 
 export const getCommunityTypes = async (): Promise<CommunityTypeOption[]> => {
