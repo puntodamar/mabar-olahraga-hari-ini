@@ -18,14 +18,13 @@ interface DataTableProps<TData extends RowData> {
 
     columns: ColumnDef<DataTableFeatures, TData>[]
     data: TData[]
+    initialSorting?: SortingState
+    emptyMessage?: string
 }
 
-export function DataTable<TData extends RowData>({columns, data = [],}: DataTableProps<TData>) { {
+export function DataTable<TData extends RowData>({columns, data = [], initialSorting = [], emptyMessage = "No results."}: DataTableProps<TData>) {{
 
-    // default sorting state, sort by name ascending
-    const [sorting, setSorting] = useState<SortingState>([
-        { id: "community_name", desc: false },
-    ]);
+    const [sorting, setSorting] = useState<SortingState>(initialSorting);
 
     const table = useTable({
         features,
@@ -73,7 +72,7 @@ export function DataTable<TData extends RowData>({columns, data = [],}: DataTabl
                         ) : (
                             <TableRow>
                                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                                    No results.
+                                    {emptyMessage}
                                 </TableCell>
                             </TableRow>
                         )}

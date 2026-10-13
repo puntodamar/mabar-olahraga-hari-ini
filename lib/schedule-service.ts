@@ -2,6 +2,7 @@
 import { unstable_cache } from "next/cache";
 import { supabase } from "@/lib/supabase";
 import { GetSchedulesParams } from "@/src/database/params/schedule-params";
+import { AdminSchedule, AdminScheduleInput } from "@/src/types/AdminSchedule";
 
 export const getSchedules = async ({
                                        day,
@@ -50,9 +51,59 @@ export const getSchedules = async ({
             String(time ?? "")
         ],
         {
-            revalidate: 3600,
+            revalidate: 1,
         }
     );
 
     return getCachedSchedules();
+};
+
+export const getAdminSchedules = async (): Promise<AdminSchedule[]> => {
+    const { data, error } = await supabase
+        .from("schedules")
+        .select(`
+            id,
+            day,
+            time_start,
+            time_end,
+            fee,
+            level,
+            gender,
+            scoring,
+            courts,
+            additional_info,
+            community:communities ( id, name ),
+            place:venues ( id, name )
+        `)
+        .order("day", { ascending: true })
+        .order("time_start", { ascending: true });
+
+    if (error) throw error;
+
+    return data as unknown as AdminSchedule[];
+};
+
+export const createSchedule = async (payload: AdminScheduleInput) => {
+    const { data, error } = await supabase
+        .from("schedules")
+        .insert(payload)
+        .select()
+        .single();
+
+    if (error) throw error;
+
+    return data;
+};
+
+export const updateSchedule = async (id: number, payload: AdminScheduleInput) => {
+    const { data, error } = await supabase
+        .from("schedules")
+        .update(payload)
+        .eq("id", id)
+        .select()
+        .single();
+
+    if (error) throw error;
+
+    return data;
 };
