@@ -7,10 +7,9 @@ import {
     SidebarMenu, SidebarMenuItem, SidebarFooter
 } from "@/components/ui/sidebar";
 import Image from "next/image";
-import ScheduleList from "@/components/map/schedule/schedule-list";
 import {Button} from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {CalendarRangeIcon, HouseIcon, LogOutIcon, MapPinHouseIcon, UserRoundIcon} from "lucide-react";
+import {CalendarRangeIcon, LogOutIcon, MapPinHouseIcon, UserRoundIcon} from "lucide-react";
 import Link from 'next/link';
 import {usePathname, useRouter} from "next/navigation";
 import {useUserStore} from "@/src/stores/user-store";
@@ -62,7 +61,7 @@ export default function AdminSidebar() {
                             </Link>
                         </SidebarMenuItem>
                         <SidebarMenuItem>
-                            <Link prefetch={false} href={"/admin/communities"} className="flex flex-row gap-x-2 text-base p-2 hover:text-primary hover:bg-primary/10 rounded-md">
+                            <Link prefetch={false} href={"/admin/communities"} className={`flex flex-row gap-x-2 text-base p-2 hover:text-primary hover:bg-primary/10 rounded-md ${pathname === "/admin/communities" ? "bg-primary/10 text-primary" : ""}`}>
                                 <UserRoundIcon className="size-5" />
                                 <span>Komunitas</span>
                             </Link>

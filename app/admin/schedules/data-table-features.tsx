@@ -22,7 +22,23 @@ export const features = tableFeatures({
     rowSelectionFeature,
     rowSortingFeature,
     filteredRowModel: createFilteredRowModel(),
-    // paginatedRowModel: createPaginatedRowModel(),
+    sortedRowModel: createSortedRowModel(),
+    paginatedRowModel: createPaginatedRowModel(),
+    filterFns: { includesString: filterFn_includesString },
+    sortFns: { alphanumeric: sortFn_alphanumeric, text: sortFn_text },
+})
+
+// For server-side (lazy) pagination: rows arrive already sliced to the
+// requested page, so no client-side paginated row model is registered.
+// Without `paginatedRowModel`, `getRowModel()` returns the server-provided
+// rows untouched, preventing the page from being sliced a second time.
+export const featuresWithoutPagination = tableFeatures({
+    columnFilteringFeature,
+    columnVisibilityFeature,
+    rowPaginationFeature,
+    rowSelectionFeature,
+    rowSortingFeature,
+    filteredRowModel: createFilteredRowModel(),
     sortedRowModel: createSortedRowModel(),
     filterFns: { includesString: filterFn_includesString },
     sortFns: { alphanumeric: sortFn_alphanumeric, text: sortFn_text },

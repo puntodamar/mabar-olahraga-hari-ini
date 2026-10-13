@@ -1,7 +1,9 @@
 
 import { unstable_cache } from "next/cache";
 import { supabase } from "@/lib/supabase";
+import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { GetSchedulesParams } from "@/src/database/params/schedule-params";
+import { AdminSchedule, AdminScheduleInput } from "@/src/types/AdminSchedule";
 
 export const getSchedules = async ({
                                        day,
@@ -50,9 +52,68 @@ export const getSchedules = async ({
             String(time ?? "")
         ],
         {
-            revalidate: 3600,
+            revalidate: 1,
         }
     );
 
     return getCachedSchedules();
+};
+
+export const getAdminSchedules = async (
+    page = 0,
+    pageSize?: number
+): Promise<{ data: AdminSchedule[]; total: number }> => {
+    let query = supabase
+        .from("schedules")
+        .select(`
+            id,
+            day,
+            time_start,
+            time_end,
+            fee,
+            level,
+            gender,
+            scoring,
+            courts,
+            additional_info,
+            community:communities ( id, name ),
+            place:venues ( id, name )
+        `, { count: "exact" })
+        .order("day", { ascending: true })
+        .order("time_start", { ascending: true });
+
+    if (pageSize !== undefined && Number.isFinite(pageSize)) {
+        query = query.range(page * pageSize, (page + 1) * pageSize - 1);
+    }
+
+    const { data, count, error } = await query;
+
+    if (error) throw error;
+
+    return { data: (data ?? []) as unknown as AdminSchedule[], total: count ?? 0 };
+};
+
+export const createSchedule = async (payload: AdminScheduleInput) => {
+    const { data, error } = await getSupabaseAdmin()
+        .from("schedules")
+        .insert(payload)
+        .select()
+        .single();
+
+    if (error) throw error;
+
+    return data;
+};
+
+export const updateSchedule = async (id: number, payload: AdminScheduleInput) => {
+    const { data, error } = await getSupabaseAdmin()
+        .from("schedules")
+        .update(payload)
+        .eq("id", id)
+        .select()
+        .single();
+
+    if (error) throw error;
+
+    return data;
 };
