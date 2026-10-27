@@ -75,8 +75,8 @@ export function AdminTablePage<T extends RowData>({
                 {!loading && (
                     <>
                         <div className="flex items-center gap-3 overflow-visible">
-                            <div className="relative overflow-visible p-1 -m-1">
-                                <SearchIcon className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                            <div className="relative overflow-visible p-2 -m-2">
+                                <SearchIcon className="pointer-events-none absolute left-4.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
                                 <Input
                                     type="search"
                                     tabIndex={-1}
@@ -84,7 +84,7 @@ export function AdminTablePage<T extends RowData>({
                                     onChange={(event) => onSearchChange(event.target.value)}
                                     placeholder={searchLabel}
                                     aria-label={searchLabel}
-                                    className="w-56 pl-9 overflow-visible"
+                                    className="w-56 pl-10 overflow-visible"
                                     autoComplete="off"
                                 />
                             </div>
