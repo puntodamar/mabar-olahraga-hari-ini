@@ -84,7 +84,7 @@ export default function AsyncSelectFilter<T extends string | number>({
             return
         }
 
-        if (!loadOnOpen) {
+        if (!loadOnOpen && search === "") {
             setItems([])
             lastFetchedRef.current = ""
             return
