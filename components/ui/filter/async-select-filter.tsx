@@ -26,6 +26,7 @@ type AsyncSelectFilterProps<T extends string | number> = {
     initialItem?: AsyncSelectItem<T> | null
     disabled?: boolean
     className?: string
+    loadOnOpen?: boolean
 }
 
 export default function AsyncSelectFilter<T extends string | number>({
@@ -38,6 +39,7 @@ export default function AsyncSelectFilter<T extends string | number>({
     initialItem,
     disabled,
     className,
+    loadOnOpen = false,
 }: AsyncSelectFilterProps<T>) {
     const [open, setOpen] = useState(false)
     const [search, setSearch] = useState("")
@@ -80,12 +82,17 @@ export default function AsyncSelectFilter<T extends string | number>({
             return
         }
 
+        if (loadOnOpen && search === "") {
+            void load("")
+            return
+        }
+
         const timer = setTimeout(() => {
             void load(search)
         }, 300)
 
         return () => clearTimeout(timer)
-    }, [load, open, search])
+    }, [load, loadOnOpen, open, search])
 
     useEffect(() => {
         if (value == null) {
