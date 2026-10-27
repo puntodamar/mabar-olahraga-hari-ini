@@ -57,7 +57,7 @@ function VenueForm({
     onClose: () => void;
 }) {
     const [name, setName] = useState(venue?.name ?? "");
-    const [mapUrl, setMapUrl] = useState(venue?.map_url ?? "");
+    const [mapUrl, setMapUrl] = useState("");
 
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState("");
@@ -72,8 +72,10 @@ function VenueForm({
 
         const payload: VenueInput = {
             name: name.trim(),
-            map_url: mapUrl.trim() === "" ? null : mapUrl.trim(),
         };
+        if (mapUrl.trim()) {
+            payload.map_url = mapUrl.trim();
+        }
 
         setSaving(true);
         setError("");
