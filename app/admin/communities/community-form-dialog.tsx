@@ -60,7 +60,7 @@ function CommunityForm({
 
     const [name, setName] = useState(community?.name ?? "");
     const [image, setImage] = useState(community?.image ?? "");
-    const [typeId, setTypeId] = useState<number | null>(community?.community_type_id ?? null);
+    const [typeId, setTypeId] = useState<number | null>(community?.community_type_id ?? 1);
     const [whatsapp, setWhatsapp] = useState(community?.community_contacts?.whatsapp ?? "");
     const [instagram, setInstagram] = useState(community?.community_contacts?.instagram ?? "");
     const [tiktok, setTiktok] = useState(community?.community_contacts?.tiktok ?? "");
@@ -76,13 +76,17 @@ function CommunityForm({
             .then((data) => {
                 if (!active) return;
                 setTypes(data);
+                if (community?.community_type_id == null && data.length > 0) {
+                    const badminton = data.find((t: CommunityTypeOption) => t.name?.toLowerCase().includes("badminton"))
+                    setTypeId(badminton ? badminton.id : data[0].id)
+                }
             })
             .catch((e) => console.error(e));
 
         return () => {
             active = false;
         };
-    }, []);
+    }, [community?.community_type_id]);
 
     async function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -167,19 +171,20 @@ function CommunityForm({
                                 value={typeId}
                                 onValueChange={setTypeId}
                                 placeholder="Pilih tipe"
+                                defaultValue={types.find((t) => t.name?.toLowerCase().includes("badminton")) ?? types[0]}
                             />
                         </Field>
 
-                        <Field className="md:col-span-2">
-                            <FieldLabel htmlFor="image">Gambar (URL)</FieldLabel>
-                            <Input
-                                id="image"
-                                type="url"
-                                placeholder="https://..."
-                                value={image}
-                                onChange={(event) => setImage(event.target.value)}
-                            />
-                        </Field>
+                        {/*<Field className="md:col-span-2">*/}
+                        {/*    <FieldLabel htmlFor="image">Gambar (URL)</FieldLabel>*/}
+                        {/*    <Input*/}
+                        {/*        id="image"*/}
+                        {/*        type="url"*/}
+                        {/*        placeholder="https://..."*/}
+                        {/*        value={image}*/}
+                        {/*        onChange={(event) => setImage(event.target.value)}*/}
+                        {/*    />*/}
+                        {/*</Field>*/}
 
                         <Field>
                             <FieldLabel htmlFor="whatsapp">WhatsApp</FieldLabel>
