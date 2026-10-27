@@ -7,10 +7,7 @@
     <option name="selectedModelId" value="auto" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="043acdff-3f68-4fbf-a078-a9b5362853a4" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/admin/schedules/schedule-form-dialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/admin/schedules/schedule-form-dialog.tsx" afterDir="false" />
-    </list>
+    <list default="true" id="043acdff-3f68-4fbf-a078-a9b5362853a4" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -160,7 +157,7 @@
       <workItem from="1793112360252" duration="403000" />
       <workItem from="1793112807984" duration="183000" />
       <workItem from="1793113011699" duration="79000" />
-      <workItem from="1793113107244" duration="2283000" />
+      <workItem from="1793113107244" duration="2680000" />
     </task>
     <servers />
   </component>
