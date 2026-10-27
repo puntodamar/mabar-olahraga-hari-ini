@@ -12,7 +12,6 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
             // Try to update via direct update if location not changing
             const updatePayload: any = {};
             if (body.name !== undefined) updatePayload.name = body.name?.trim();
-            if (body.address !== undefined) updatePayload.address = body.address?.trim() || null;
             if (body.map_url !== undefined) updatePayload.map_url = body.map_url?.trim() || null;
 
             const { data, error } = await supabaseAdmin
