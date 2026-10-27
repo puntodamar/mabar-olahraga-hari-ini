@@ -1,7 +1,25 @@
 "use client";
 
+import { useCallback, useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import SelectFilter from "@/components/ui/filter/select-filter";
 import AsyncSelectFilter from "@/components/ui/filter/async-select-filter";
-import { useCallback } from "react";
+import { AdminSchedule, AdminScheduleInput } from "@/src/types/AdminSchedule";
+import { Day } from "@/src/types/enums/Day";
+import { Level } from "@/src/types/enums/Level";
+import { Gender } from "@/src/types/enums/Gender";
+import { ScoringLabel } from "@/src/consts/filter";
 
 interface CommunityOption {
     id: number;
@@ -61,8 +79,8 @@ function ScheduleForm({
     );
     const [venueId, setVenueId] = useState<number | null>(schedule?.place?.id ?? null);
     const [day, setDay] = useState<number>(schedule?.day ?? 1);
-    const [timeStart, setTimeStart] = useState(schedule?.time_start.slice(0, 5) ?? "");
-    const [timeEnd, setTimeEnd] = useState(schedule?.time_end.slice(0, 5) ?? "");
+    const [timeStart, setTimeStart] = useState(schedule?.time_start ? schedule.time_start.slice(0, 5) : "");
+    const [timeEnd, setTimeEnd] = useState(schedule?.time_end ? schedule.time_end.slice(0, 5) : "");
     const [fee, setFee] = useState(schedule?.fee == null ? "" : String(schedule.fee));
     const [level, setLevel] = useState<number | null>(schedule?.level ?? null);
     const [gender, setGender] = useState<number | null>(schedule?.gender ?? null);
