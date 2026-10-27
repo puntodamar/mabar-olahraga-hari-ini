@@ -102,7 +102,7 @@ export function AdminTablePage<T extends RowData>({
 
             {error && <p className="text-sm text-destructive">{error}</p>}
 
-            <div className="flex-1 overflow-hidden">
+            <div className="flex-1 overflow-visible">
                 {loading ? (
                     <div className="flex h-24 items-center justify-center text-sm text-muted-foreground">
                         {loadingLabel}
