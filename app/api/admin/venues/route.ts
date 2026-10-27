@@ -67,29 +67,23 @@ export async function POST(request: Request) {
         }
 
         const supabaseAdmin = getSupabaseAdmin();
-        const { data, error } = await supabaseAdmin.rpc("create_venue", {
-            p_name: name,
-            p_lat: lat,
-            p_lng: lng,
-        });
+        const { data, error } = await supabaseAdmin
+            .from("venues")
+            .insert({
+                name,
+                address: body.address?.trim() || null,
+                map_url: body.map_url?.trim() || null,
+                location: lat != null && lng != null ? `SRID=4326;POINT(${lng} ${lat})` : null,
+            })
+            .select()
+            .single();
 
         if (error) {
             console.error(error);
             return NextResponse.json({ error: "failed" }, { status: 500 });
         }
 
-        // If RPC doesn't store map_url/address, try to update
-        if ((body.map_url || body.address) && data?.[0]?.id) {
-            await supabaseAdmin
-                .from("venues")
-                .update({
-                    address: body.address?.trim() || null,
-                    map_url: body.map_url?.trim() || null,
-                })
-                .eq("id", data[0].id);
-        }
-
-        return NextResponse.json(data?.[0] ?? data, { status: 201 });
+        return NextResponse.json(data, { status: 201 });
     } catch (e) {
         console.error(e);
         return NextResponse.json({ error: "failed" }, { status: 500 });
