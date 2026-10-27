@@ -64,14 +64,14 @@ export async function POST(request: Request) {
         }
 
         const supabaseAdmin = getSupabaseAdmin();
+        const insertPayload: any = { name };
+        if (body.address !== undefined) insertPayload.address = body.address?.trim() || null;
+        if (body.map_url !== undefined || mapUrl) insertPayload.map_url = (mapUrl || body.map_url)?.trim() || null;
+        if (lat != null && lng != null) insertPayload.location = `SRID=4326;POINT(${lng} ${lat})`;
+
         const { data, error } = await supabaseAdmin
             .from("venues")
-            .insert({
-                name,
-                address: body.address?.trim() || null,
-                map_url: mapUrl?.trim() || null,
-                location: lat != null && lng != null ? `SRID=4326;POINT(${lng} ${lat})` : null,
-            })
+            .insert(insertPayload)
             .select()
             .single();
 
@@ -81,6 +81,11 @@ export async function POST(request: Request) {
         }
 
         return NextResponse.json(data, { status: 201 });
+    } catch (e) {
+        console.error(e);
+        return NextResponse.json({ error: "failed" }, { status: 500 });
+    }
+}
     } catch (e) {
         console.error(e);
         return NextResponse.json({ error: "failed" }, { status: 500 });
