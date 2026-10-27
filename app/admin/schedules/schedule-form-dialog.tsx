@@ -1,24 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import {
-    Dialog,
-    DialogClose,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from "@/components/ui/dialog";
-import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import SelectFilter from "@/components/ui/filter/select-filter";
-import { AdminSchedule, AdminScheduleInput } from "@/src/types/AdminSchedule";
-import { Day } from "@/src/types/enums/Day";
-import { Level } from "@/src/types/enums/Level";
-import { Gender } from "@/src/types/enums/Gender";
-import { ScoringLabel } from "@/src/consts/filter";
+import AsyncSelectFilter from "@/components/ui/filter/async-select-filter";
+import { useCallback } from "react";
 
 interface CommunityOption {
     id: number;
@@ -71,7 +54,6 @@ function ScheduleForm({
     onSaved: () => void;
     onClose: () => void;
 }) {
-    const [communities, setCommunities] = useState<CommunityOption[]>([]);
     const [venues, setVenues] = useState<VenueOption[]>([]);
 
     const [communityId, setCommunityId] = useState<number | null>(
@@ -93,19 +75,30 @@ function ScheduleForm({
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState("");
 
+    const fetchCommunities = useCallback(async (search: string) => {
+        const params = new URLSearchParams()
+        if (search.trim()) params.set("q", search.trim())
+        const response = await fetch(`/api/admin/communities/search?${params.toString()}`)
+        if (!response.ok) return []
+        const data = await response.json()
+        if (!Array.isArray(data)) return []
+        return data.map((item: CommunityOption) => ({
+            label: item.name ?? "-",
+            value: item.id,
+        }))
+    }, [])
+
     useEffect(() => {
         let active = true;
 
-        Promise.all([fetch("/api/admin/communities"), fetch("/api/venues")])
-            .then(([communityResponse, venueResponse]) =>
+        Promise.all([fetch("/api/venues")])
+            .then(([venueResponse]) =>
                 Promise.all([
-                    communityResponse.ok ? communityResponse.json() : [],
                     venueResponse.ok ? venueResponse.json() : [],
                 ])
             )
-            .then(([communityData, venueData]) => {
+            .then(([venueData]) => {
                 if (!active) return;
-                setCommunities(Array.isArray(communityData) ? communityData : (communityData?.data ?? []));
                 setVenues(Array.isArray(venueData) ? venueData : (venueData?.data ?? []));
             })
             .catch((e) => console.error(e));
@@ -187,14 +180,17 @@ function ScheduleForm({
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                         <Field>
                             <FieldLabel htmlFor="community">Komunitas</FieldLabel>
-                            <SelectFilter
-                                items={communities.map((community) => ({
-                                    label: community.name ?? "-",
-                                    value: community.id,
-                                }))}
+                            <AsyncSelectFilter
                                 value={communityId}
-                                onValueChange={setCommunityId}
+                                onValueChange={(value) => setCommunityId(value)}
                                 placeholder="Pilih komunitas"
+                                searchPlaceholder="Cari komunitas..."
+                                fetchItems={fetchCommunities}
+                                initialItem={
+                                    schedule?.community
+                                        ? { label: schedule.community.name ?? "-", value: schedule.community.id }
+                                        : null
+                                }
                             />
                         </Field>
 
@@ -306,7 +302,7 @@ function ScheduleForm({
                             placeholder="Informasi tambahan (opsional)"
                             value={additionalInfo}
                             onChange={(event) => setAdditionalInfo(event.target.value)}
-                            className="w-full min-w-0 rounded-lg border border-input bg-transparent px-2.5 py-1 text-base transition-colors outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50 md:text-sm dark:bg-input/30"
+                            className="w-full min-w-0 rounded-lg border border-input bg-transparent px-2.5 py-1 text-base transition-colors outline-none placeholder:text-muted-foreground focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
                         />
                     </Field>
 

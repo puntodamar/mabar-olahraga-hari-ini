@@ -24,6 +24,25 @@ export const getCommunityOptions = unstable_cache(
     }
 );
 
+export const searchCommunities = async (
+    search: string,
+    limit = 20
+): Promise<{ id: number; name: string | null }[]> => {
+    let query = supabase
+        .from("communities")
+        .select("id, name")
+        .order("name", { ascending: true })
+        .limit(limit);
+
+    if (search && search.trim()) {
+        query = query.ilike("name", `%${escapeLike(search.trim())}%`);
+    }
+
+    const { data, error } = await query;
+    if (error) throw error;
+    return data ?? [];
+};
+
 export const getCommunities = async (
     page = 0,
     pageSize?: number,
