@@ -20,28 +20,24 @@ export async function GET(request: Request) {
 function parseLatLngFromUrl(url: string): { lat: number; lng: number } | null {
     try {
         const u = new URL(url);
-        // @ maps.google.com?ll=lat,lng or ?q=lat,lng or /place/.../@lat,lng,...
         if (u.searchParams.get("ll")) {
-            const [lat, lng] = u.searchParams.get("ll")!.split(",").map(Number);
+            const parts = u.searchParams.get("ll")!.split(",");
+            const lat = Number(parts[0]);
+            const lng = Number(parts[1]);
             if (!isNaN(lat) && !isNaN(lng)) return { lat, lng };
         }
-        if (u.searchParams.get("query")) {
-            const q = u.searchParams.get("query")!;
+        const q = u.searchParams.get("query") || u.searchParams.get("q");
+        if (q) {
             const m = q.match(/(-?\d+\.?\d*),\s*(-?\d+\.?\d*)/);
             if (m) return { lat: Number(m[1]), lng: Number(m[2]) };
         }
-        if (u.searchParams.get("q")) {
-            const q = u.searchParams.get("q")!;
-            const m = q.match(/(-?\d+\.?\d*),\s*(-?\d+\.?\d*)/);
-            if (m) return { lat: Number(m[1]), lng: Number(m[2]) };
-        }
-        // /@lat,lng,zoom
-        const at = u.pathname.match(/@(-?\d+\.?\d*),\s*(-?\d+\.?\d*)/);
+        const at = url.match(/@(-?\d+\.?\d*),\s*(-?\d+\.?\d*)/);
         if (at) return { lat: Number(at[1]), lng: Number(at[2]) };
-        // !3dlat!4dlng
         const d3 = url.match(/!3d(-?\d+\.?\d*)/);
         const d4 = url.match(/!4d(-?\d+\.?\d*)/);
         if (d3 && d4) return { lat: Number(d3[1]), lng: Number(d4[1]) };
+        const pair = url.match(/(-?\d+\.?\d*),\s*(-?\d+\.?\d*)/);
+        if (pair) return { lat: Number(pair[1]), lng: Number(pair[2]) };
         return null;
     } catch {
         return null;
