@@ -171,7 +171,7 @@ function CommunityForm({
                                 value={typeId}
                                 onValueChange={setTypeId}
                                 placeholder="Pilih tipe"
-                                defaultValue={types.find((t) => t.name?.toLowerCase().includes("badminton")) ?? types[0]}
+                                defaultValue={community?.community_type_id ? undefined : (types.find((t) => t.name?.toLowerCase().includes("badminton")) ?? types[0])}
                             />
                         </Field>
 
