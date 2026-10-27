@@ -133,16 +133,6 @@ function VenueForm({
                         </Field>
 
                         <Field>
-                            <FieldLabel htmlFor="address">Alamat</FieldLabel>
-                            <Input
-                                id="address"
-                                placeholder="Alamat lengkap venue"
-                                value={address}
-                                onChange={(event) => setAddress(event.target.value)}
-                            />
-                        </Field>
-
-                        <Field>
                             <FieldLabel htmlFor="map_url">URL Maps</FieldLabel>
                             <Input
                                 id="map_url"
