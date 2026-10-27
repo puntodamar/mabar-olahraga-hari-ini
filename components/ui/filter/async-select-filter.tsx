@@ -79,11 +79,14 @@ export default function AsyncSelectFilter<T extends string | number>({
     useEffect(() => {
         if (!open) {
             setSearch("")
+            setItems([])
+            lastFetchedRef.current = ""
             return
         }
 
-        if (loadOnOpen && search === "") {
-            void load("")
+        if (!loadOnOpen) {
+            setItems([])
+            lastFetchedRef.current = ""
             return
         }
 
