@@ -8,12 +8,21 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
         const supabaseAdmin = getSupabaseAdmin();
 
         const name = body.name?.trim();
-        if (name) {
-            // Try to update via direct update if location not changing
-            const updatePayload: any = {};
-            if (body.name !== undefined) updatePayload.name = body.name?.trim();
-            if (body.map_url !== undefined) updatePayload.map_url = body.map_url?.trim() || null;
+        const mapUrl = body.map_url || body.location_url || body.maps_url;
+        let lat: number | null = null;
+        let lng: number | null = null;
+        if (mapUrl) {
+            const parsed = parseLatLngFromUrl(mapUrl);
+            if (parsed) {
+                lat = parsed.lat;
+                lng = parsed.lng;
+            }
+        }
 
+        if (name || lat != null) {
+            const updatePayload: any = {};
+            if (name) updatePayload.name = name;
+            if (lat != null && lng != null) updatePayload.location = `SRID=4326;POINT(${lng} ${lat})`;
             const { data, error } = await supabaseAdmin
                 .from("venues")
                 .update(updatePayload)
