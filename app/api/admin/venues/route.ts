@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getAdminVenues, createVenue } from "@/lib/venue-service";
+import { getAdminVenues } from "@/lib/venue-service";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
 export async function GET(request: Request) {
@@ -19,25 +19,19 @@ export async function GET(request: Request) {
 
 function parseLatLngFromUrl(url: string): { lat: number; lng: number } | null {
     try {
-        const u = new URL(url);
-        if (u.searchParams.get("ll")) {
-            const parts = u.searchParams.get("ll")!.split(",");
-            const lat = Number(parts[0]);
-            const lng = Number(parts[1]);
-            if (!isNaN(lat) && !isNaN(lng)) return { lat, lng };
-        }
-        const q = u.searchParams.get("query") || u.searchParams.get("q");
-        if (q) {
-            const m = q.match(/(-?\d+\.?\d*),\s*(-?\d+\.?\d*)/);
-            if (m) return { lat: Number(m[1]), lng: Number(m[2]) };
-        }
+        const pair = url.match(/(-?\d+\.?\d*),\s*(-?\d+\.?\d*)/);
+        if (pair) return { lat: Number(pair[1]), lng: Number(pair[2]) };
         const at = url.match(/@(-?\d+\.?\d*),\s*(-?\d+\.?\d*)/);
         if (at) return { lat: Number(at[1]), lng: Number(at[2]) };
         const d3 = url.match(/!3d(-?\d+\.?\d*)/);
         const d4 = url.match(/!4d(-?\d+\.?\d*)/);
         if (d3 && d4) return { lat: Number(d3[1]), lng: Number(d4[1]) };
-        const pair = url.match(/(-?\d+\.?\d*),\s*(-?\d+\.?\d*)/);
-        if (pair) return { lat: Number(pair[1]), lng: Number(pair[2]) };
+        const u = new URL(url);
+        const q = u.searchParams.get("ll") || u.searchParams.get("query") || u.searchParams.get("q");
+        if (q) {
+            const m = q.match(/(-?\d+\.?\d*),\s*(-?\d+\.?\d*)/);
+            if (m) return { lat: Number(m[1]), lng: Number(m[2]) };
+        }
         return null;
     } catch {
         return null;
@@ -81,11 +75,6 @@ export async function POST(request: Request) {
         }
 
         return NextResponse.json(data, { status: 201 });
-    } catch (e) {
-        console.error(e);
-        return NextResponse.json({ error: "failed" }, { status: 500 });
-    }
-}
     } catch (e) {
         console.error(e);
         return NextResponse.json({ error: "failed" }, { status: 500 });
