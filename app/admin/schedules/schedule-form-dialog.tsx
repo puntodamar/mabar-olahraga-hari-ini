@@ -190,6 +190,7 @@ function ScheduleForm({
                         <Field>
                             <FieldLabel htmlFor="community">Komunitas</FieldLabel>
                             <AsyncSelectFilter
+                                loadOnOpen={false}
                                 value={communityId}
                                 onValueChange={(value) => setCommunityId(value)}
                                 placeholder="Pilih komunitas"
@@ -206,6 +207,7 @@ function ScheduleForm({
                         <Field>
                             <FieldLabel htmlFor="venue">Venue</FieldLabel>
                             <AsyncSelectFilter
+                                loadOnOpen={false}
                                 value={venueId}
                                 onValueChange={(value) => setVenueId(value)}
                                 placeholder="Pilih venue"
