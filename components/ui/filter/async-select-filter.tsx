@@ -160,6 +160,10 @@ export default function AsyncSelectFilter<T extends string | number>({
                             <Loader2 className="size-4 animate-spin" />
                             Memuat...
                         </div>
+                    ) : !loadOnOpen && search === "" ? (
+                        <div className="py-4 text-center text-sm text-muted-foreground">
+                            Ketik untuk mencari
+                        </div>
                     ) : items.length === 0 ? (
                         <div className="py-4 text-center text-sm text-muted-foreground">
                             {emptyMessage}
