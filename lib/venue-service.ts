@@ -1,3 +1,7 @@
+import { unstable_cache } from "next/cache"
+import { supabase } from "@/lib/supabase"
+import { getSupabaseAdmin } from "@/lib/supabase-admin"
+
 const escapeLike = (value: string) => value.replace(/[\\%_]/g, "\\$&");
 
 export const getVenues = unstable_cache(
@@ -6,14 +10,12 @@ export const getVenues = unstable_cache(
         if (search && search.trim()) {
             query = query.ilike("name", `%${escapeLike(search.trim())}%`);
         }
-        const {data, error} = await query;
+        const { data, error } = await query;
         if (error) throw error;
         return data ?? [];
     },
     ["venues"],
-    {
-        revalidate: 3600,
-    }
+    { revalidate: 3600 }
 )
 
 export const getAdminVenues = async (
@@ -58,44 +60,22 @@ export const searchVenues = async (
     return data ?? [];
 };
 
-import { getSupabaseAdmin } from "@/lib/supabase-admin";
-
 export const createVenue = async (payload: any) => {
     const supabaseAdmin = getSupabaseAdmin();
-    const { data, error } = await supabaseAdmin
-        .from("venues")
-        .insert(payload)
-        .select()
-        .single();
+    const { data, error } = await supabaseAdmin.from("venues").insert(payload).select().single();
     if (error) throw error;
     return data;
 };
 
 export const updateVenue = async (id: number, payload: any) => {
     const supabaseAdmin = getSupabaseAdmin();
-    const { data, error } = await supabaseAdmin
-        .from("venues")
-        .update(payload)
-        .eq("id", id)
-        .select()
-        .single();
+    const { data, error } = await supabaseAdmin.from("venues").update(payload).eq("id", id).select().single();
     if (error) throw error;
     return data;
 };
 
 export const deleteVenue = async (id: number) => {
     const supabaseAdmin = getSupabaseAdmin();
-    const { error } = await supabaseAdmin
-        .from("venues")
-        .delete()
-        .eq("id", id);
+    const { error } = await supabaseAdmin.from("venues").delete().eq("id", id);
     if (error) throw error;
 };
-//     const { data, error } = await supabase
-//         .from("places")
-//         .select("*")
-//
-//     console.log(data, error)
-//
-//     return data
-// }
