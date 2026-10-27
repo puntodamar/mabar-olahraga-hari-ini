@@ -35,7 +35,7 @@ export default function CommunityFormDialog({
 }: CommunityFormDialogProps) {
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-visible">
+            <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-x-visible overflow-y-visible">
                 <CommunityForm
                     key={community?.id ?? "new"}
                     community={community}
