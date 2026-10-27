@@ -1,25 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import {
-    Dialog,
-    DialogClose,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from "@/components/ui/dialog";
-import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import SelectFilter from "@/components/ui/filter/select-filter";
 import AsyncSelectFilter from "@/components/ui/filter/async-select-filter";
-import { AdminSchedule, AdminScheduleInput } from "@/src/types/AdminSchedule";
-import { Day } from "@/src/types/enums/Day";
-import { Level } from "@/src/types/enums/Level";
-import { Gender } from "@/src/types/enums/Gender";
-import { ScoringLabel } from "@/src/consts/filter";
+import { useCallback } from "react";
 
 interface CommunityOption {
     id: number;
@@ -72,8 +54,6 @@ function ScheduleForm({
     onSaved: () => void;
     onClose: () => void;
 }) {
-    const [venues, setVenues] = useState<VenueOption[]>([]);
-
     const [communityId, setCommunityId] = useState<number | null>(
         schedule?.community?.id ?? null
     );
@@ -106,25 +86,18 @@ function ScheduleForm({
         }))
     }, [])
 
-    useEffect(() => {
-        let active = true;
-
-        Promise.all([fetch("/api/venues")])
-            .then(([venueResponse]) =>
-                Promise.all([
-                    venueResponse.ok ? venueResponse.json() : [],
-                ])
-            )
-            .then(([venueData]) => {
-                if (!active) return;
-                setVenues(Array.isArray(venueData) ? venueData : (venueData?.data ?? []));
-            })
-            .catch((e) => console.error(e));
-
-        return () => {
-            active = false;
-        };
-    }, []);
+    const fetchVenues = useCallback(async (search: string) => {
+        const params = new URLSearchParams()
+        if (search.trim()) params.set("q", search.trim())
+        const response = await fetch(`/api/admin/venues/search?${params.toString()}`)
+        if (!response.ok) return []
+        const data = await response.json()
+        if (!Array.isArray(data)) return []
+        return data.map((item: VenueOption) => ({
+            label: item.name,
+            value: item.id,
+        }))
+    }, [])
 
     async function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -214,14 +187,17 @@ function ScheduleForm({
 
                         <Field>
                             <FieldLabel htmlFor="venue">Venue</FieldLabel>
-                            <SelectFilter
-                                items={venues.map((venue) => ({
-                                    label: venue.name,
-                                    value: venue.id,
-                                }))}
+                            <AsyncSelectFilter
                                 value={venueId}
-                                onValueChange={setVenueId}
+                                onValueChange={(value) => setVenueId(value)}
                                 placeholder="Pilih venue"
+                                searchPlaceholder="Cari venue..."
+                                fetchItems={fetchVenues}
+                                initialItem={
+                                    schedule?.place
+                                        ? { label: schedule.place.name, value: schedule.place.id }
+                                        : null
+                                }
                             />
                         </Field>
 
