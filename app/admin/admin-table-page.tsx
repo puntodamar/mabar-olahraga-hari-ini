@@ -74,7 +74,7 @@ export function AdminTablePage<T extends RowData>({
             <div className="flex items-center justify-between gap-4 overflow-visible pb-1">
                 {!loading && (
                     <>
-                        <div className="flex items-center gap-3 overflow-visible">
+                        <div className="flex items-center gap-3 overflow-visible m-2">
                             <div className="relative overflow-visible p-2 -m-2">
                                 <SearchIcon className="pointer-events-none absolute left-4.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
                                 <Input
