@@ -71,7 +71,7 @@ export function AdminTablePage<T extends RowData>({
 
     return (
         <div className="flex flex-col h-full gap-4">
-            <div className="flex items-center justify-between gap-4 overflow-visible">
+            <div className="flex items-center justify-between gap-4 overflow-visible pb-1">
                 {!loading && (
                     <>
                         <div className="flex items-center gap-3 overflow-visible">
