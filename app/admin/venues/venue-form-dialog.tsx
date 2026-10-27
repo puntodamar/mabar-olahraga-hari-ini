@@ -24,8 +24,7 @@ interface VenueFormDialogProps {
 
 interface VenueInput {
     name: string;
-    address: string | null;
-    map_url: string | null;
+    map_url?: string | null;
 }
 
 export default function VenueFormDialog({
@@ -58,7 +57,6 @@ function VenueForm({
     onClose: () => void;
 }) {
     const [name, setName] = useState(venue?.name ?? "");
-    const [address, setAddress] = useState(venue?.address ?? "");
     const [mapUrl, setMapUrl] = useState(venue?.map_url ?? "");
 
     const [saving, setSaving] = useState(false);
@@ -74,7 +72,6 @@ function VenueForm({
 
         const payload: VenueInput = {
             name: name.trim(),
-            address: address.trim() === "" ? null : address.trim(),
             map_url: mapUrl.trim() === "" ? null : mapUrl.trim(),
         };
 
