@@ -60,7 +60,7 @@ function CommunityForm({
 
     const [name, setName] = useState(community?.name ?? "");
     const [image, setImage] = useState(community?.image ?? "");
-    const [typeId, setTypeId] = useState<number | null>(community?.community_type_id ?? 1);
+    const [typeId, setTypeId] = useState<number | null>(community?.community_type_id ?? null);
     const [whatsapp, setWhatsapp] = useState(community?.community_contacts?.whatsapp ?? "");
     const [instagram, setInstagram] = useState(community?.community_contacts?.instagram ?? "");
     const [tiktok, setTiktok] = useState(community?.community_contacts?.tiktok ?? "");
@@ -76,9 +76,10 @@ function CommunityForm({
             .then((data) => {
                 if (!active) return;
                 setTypes(data);
-                if (community?.community_type_id == null && data.length > 0) {
+                if (community?.community_type_id == null && typeId == null) {
                     const badminton = data.find((t: CommunityTypeOption) => t.name?.toLowerCase().includes("badminton"))
-                    setTypeId(badminton ? badminton.id : data[0].id)
+                    if (badminton) setTypeId(badminton.id)
+                    else if (data.length > 0) setTypeId(data[0].id)
                 }
             })
             .catch((e) => console.error(e));
@@ -86,7 +87,7 @@ function CommunityForm({
         return () => {
             active = false;
         };
-    }, [community?.community_type_id]);
+    }, [community?.community_type_id, typeId]);
 
     async function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -171,7 +172,6 @@ function CommunityForm({
                                 value={typeId}
                                 onValueChange={setTypeId}
                                 placeholder="Pilih tipe"
-                                defaultValue={community?.community_type_id ? undefined : (types.find((t) => t.name?.toLowerCase().includes("badminton")) ?? types[0])}
                             />
                         </Field>
 
