@@ -159,6 +159,7 @@ function CommunityForm({
                                 value={name}
                                 onChange={(event) => setName(event.target.value)}
                                 required
+                                className="overflow-visible"
                             />
                         </Field>
 
