@@ -80,12 +80,13 @@ export function AdminTablePage<T extends RowData>({
                                 <SearchIcon className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
                                 <Input
                                     type="search"
-                                    autoFocus={false}
+                                    tabIndex={-1}
                                     value={search}
                                     onChange={(event) => onSearchChange(event.target.value)}
                                     placeholder={searchLabel}
                                     aria-label={searchLabel}
                                     className="w-56 pl-8"
+                                    autoComplete="off"
                                 />
                             </div>
                             <p className="text-sm text-muted-foreground">
