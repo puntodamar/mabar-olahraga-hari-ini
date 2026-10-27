@@ -154,43 +154,45 @@ export default function AsyncSelectFilter<T extends string | number>({
                         className="h-8"
                     />
                 </div>
-                <div className="max-h-60 overflow-y-auto">
-                    {loading ? (
-                        <div className="flex items-center justify-center gap-2 py-4 text-sm text-muted-foreground">
-                            <Loader2 className="size-4 animate-spin" />
-                            Memuat...
-                        </div>
-                    ) : items.length === 0 ? (
-                        <div className="py-4 text-center text-sm text-muted-foreground">
-                            {emptyMessage}
-                        </div>
-                    ) : (
-                        <div className="flex flex-col">
-                            {value != null && (
-                                <button
-                                    type="button"
-                                    onClick={handleClear}
-                                    className="px-2 py-1.5 text-left text-sm text-muted-foreground hover:bg-accent"
-                                >
-                                    Kosongkan
-                                </button>
-                            )}
-                            {items.map((item) => (
-                                <button
-                                    type="button"
-                                    key={String(item.value)}
-                                    onClick={() => handleSelect(item)}
-                                    className={cn(
-                                        "px-2 py-1.5 text-left text-sm hover:bg-accent",
-                                        value === item.value && "bg-accent"
-                                    )}
-                                >
-                                    <span className="truncate">{item.label}</span>
-                                </button>
-                            ))}
-                        </div>
-                    )}
-                </div>
+                {!( !loadOnOpen && search === "" ) && (
+                    <div className="max-h-60 overflow-y-auto">
+                        {loading ? (
+                            <div className="flex items-center justify-center gap-2 py-4 text-sm text-muted-foreground">
+                                <Loader2 className="size-4 animate-spin" />
+                                Memuat...
+                            </div>
+                        ) : items.length === 0 ? (
+                            <div className="py-4 text-center text-sm text-muted-foreground">
+                                {emptyMessage}
+                            </div>
+                        ) : (
+                            <div className="flex flex-col">
+                                {value != null && (
+                                    <button
+                                        type="button"
+                                        onClick={handleClear}
+                                        className="px-2 py-1.5 text-left text-sm text-muted-foreground hover:bg-accent"
+                                    >
+                                        Kosongkan
+                                    </button>
+                                )}
+                                {items.map((item) => (
+                                    <button
+                                        type="button"
+                                        key={String(item.value)}
+                                        onClick={() => handleSelect(item)}
+                                        className={cn(
+                                            "px-2 py-1.5 text-left text-sm hover:bg-accent",
+                                            value === item.value && "bg-accent"
+                                        )}
+                                    >
+                                        <span className="truncate">{item.label}</span>
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                )}
             </PopoverContent>
         </Popover>
     )
