@@ -47,15 +47,16 @@ function parseLatLngFromUrl(url: string): { lat: number; lng: number } | null {
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-        const name = body.name?.trim();
+        const name = (body.name ?? body.p_name)?.trim();
         if (!name) {
             return NextResponse.json({ error: "name required" }, { status: 400 });
         }
 
         let lat: number | null = null;
         let lng: number | null = null;
-        if (body.map_url || body.location_url) {
-            const parsed = parseLatLngFromUrl(body.map_url || body.location_url);
+        const mapUrl = body.map_url || body.location_url || body.maps_url;
+        if (mapUrl) {
+            const parsed = parseLatLngFromUrl(mapUrl);
             if (parsed) {
                 lat = parsed.lat;
                 lng = parsed.lng;
@@ -68,15 +69,15 @@ export async function POST(request: Request) {
             .insert({
                 name,
                 address: body.address?.trim() || null,
-                map_url: body.map_url?.trim() || null,
+                map_url: mapUrl?.trim() || null,
                 location: lat != null && lng != null ? `SRID=4326;POINT(${lng} ${lat})` : null,
             })
             .select()
             .single();
 
         if (error) {
-            console.error(error);
-            return NextResponse.json({ error: "failed" }, { status: 500 });
+            console.error("venue insert error:", error);
+            return NextResponse.json({ error: error.message }, { status: 500 });
         }
 
         return NextResponse.json(data, { status: 201 });
