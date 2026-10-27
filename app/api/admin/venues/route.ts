@@ -59,7 +59,6 @@ export async function POST(request: Request) {
 
         const supabaseAdmin = getSupabaseAdmin();
         const insertPayload: any = { name };
-        if (body.address !== undefined) insertPayload.address = body.address?.trim() || null;
         if (body.map_url !== undefined || mapUrl) insertPayload.map_url = (mapUrl || body.map_url)?.trim() || null;
         if (lat != null && lng != null) insertPayload.location = `SRID=4326;POINT(${lng} ${lat})`;
         else insertPayload.location = `SRID=4326;POINT(0 0)`;
