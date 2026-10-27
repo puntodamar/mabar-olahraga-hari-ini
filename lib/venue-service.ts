@@ -1,15 +1,18 @@
 const escapeLike = (value: string) => value.replace(/[\\%_]/g, "\\$&");
 
 export const getVenues = unstable_cache(
-    async () => {
-        const {data, error} = await supabase.from("venues").select("*").order("name", { ascending: true });
+    async (search?: string) => {
+        let query = supabase.from("venues").select("*").order("name", { ascending: true });
+        if (search && search.trim()) {
+            query = query.ilike("name", `%${escapeLike(search.trim())}%`);
+        }
+        const {data, error} = await query;
         if (error) throw error;
-        return data;
+        return data ?? [];
     },
     ["venues"],
     {
         revalidate: 3600,
-        // revalidate: 1
     }
 )
 
