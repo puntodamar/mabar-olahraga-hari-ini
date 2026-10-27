@@ -72,27 +72,31 @@ export function AdminTablePage<T extends RowData>({
     return (
         <div className="flex flex-col h-full gap-4">
             <div className="flex items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
-                    <div className="relative">
-                        <SearchIcon className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-                        <Input
-                            type="search"
-                            value={search}
-                            onChange={(event) => onSearchChange(event.target.value)}
-                            placeholder={searchLabel}
-                            aria-label={searchLabel}
-                            className="w-56 pl-8"
-                        />
-                    </div>
-                    <p className="text-sm text-muted-foreground">
-                        {!loading && countLabel(total)}
-                    </p>
-                </div>
+
                 {!loading && (
-                    <Button onClick={handleAdd} className="text-white">
-                        <PlusIcon />
-                        <span>{addLabel}</span>
-                    </Button>
+                    <>
+                        <div className="flex items-center gap-3">
+                            <div className="relative">
+                                <SearchIcon className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                                <Input
+                                    type="search"
+                                    autoFocus={false}
+                                    value={search}
+                                    onChange={(event) => onSearchChange(event.target.value)}
+                                    placeholder={searchLabel}
+                                    aria-label={searchLabel}
+                                    className="w-56 pl-8"
+                                />
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                {!loading && countLabel(total)}
+                            </p>
+                        </div>
+                        <Button onClick={handleAdd} className="text-white">
+                            <PlusIcon />
+                            <span>{addLabel}</span>
+                        </Button>
+                    </>
                 )}
             </div>
 
