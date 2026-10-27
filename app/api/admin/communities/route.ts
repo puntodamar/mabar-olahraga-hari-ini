@@ -7,7 +7,8 @@ export async function GET(request: Request) {
         const page = Number(searchParams.get("page") ?? "0");
         const pageSizeParam = searchParams.get("pageSize");
         const pageSize = pageSizeParam === null ? undefined : Number(pageSizeParam);
-        const result = await getCommunities(page, pageSize);
+        const search = searchParams.get("search") ?? undefined;
+        const result = await getCommunities(page, pageSize, search);
         return NextResponse.json(result);
     } catch (e) {
         console.error(e);

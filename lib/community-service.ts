@@ -7,6 +7,8 @@ import {
     CommunityTypeOption,
 } from "@/src/types/AdminCommunity";
 
+const escapeLike = (value: string) => value.replace(/[\\%_]/g, "\\$&");
+
 export const getCommunityOptions = unstable_cache(
     async () => {
         const { data, error } = await supabase
@@ -24,7 +26,8 @@ export const getCommunityOptions = unstable_cache(
 
 export const getCommunities = async (
     page = 0,
-    pageSize?: number
+    pageSize?: number,
+    search?: string
 ): Promise<{ data: AdminCommunity[]; total: number }> => {
     let query = supabase
         .from("communities")
@@ -37,6 +40,10 @@ export const getCommunities = async (
             community_contacts ( whatsapp, instagram, tiktok )
         `, { count: "exact" })
         .order("name", { ascending: true });
+
+    if (search) {
+        query = query.ilike("name", `%${escapeLike(search)}%`);
+    }
 
     if (pageSize !== undefined && Number.isFinite(pageSize)) {
         query = query.range(page * pageSize, (page + 1) * pageSize - 1);

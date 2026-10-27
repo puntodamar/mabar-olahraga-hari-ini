@@ -105,8 +105,8 @@ function ScheduleForm({
             )
             .then(([communityData, venueData]) => {
                 if (!active) return;
-                setCommunities(communityData);
-                setVenues(venueData);
+                setCommunities(Array.isArray(communityData) ? communityData : (communityData?.data ?? []));
+                setVenues(Array.isArray(venueData) ? venueData : (venueData?.data ?? []));
             })
             .catch((e) => console.error(e));
 

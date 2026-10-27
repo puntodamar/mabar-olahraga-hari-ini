@@ -8,25 +8,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="043acdff-3f68-4fbf-a078-a9b5362853a4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/admin/layout.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/admin/schedules/columns.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/admin/schedules/data-table-features.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/admin/schedules/data-table.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/admin/schedules/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/api/login/route.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/login/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/middleware.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/login-form.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/ui/admin-sidebar.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/ui/field.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/ui/label.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/ui/table.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/examples/form/patterns/login-form.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/ShadcnHelperSettings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ShadcnHelperSettings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/admin/admin-table-page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/admin/admin-table-page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/admin/communities/community-manager.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/admin/communities/community-manager.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/admin/schedules/schedule-form-dialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/admin/schedules/schedule-form-dialog.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/admin/schedules/schedule-manager.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/admin/schedules/schedule-manager.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/api/admin/communities/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/admin/communities/route.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/api/admin/schedules/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/admin/schedules/route.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hooks/use-paginated-fetch.ts" beforeDir="false" afterPath="$PROJECT_DIR$/hooks/use-paginated-fetch.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/community-service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/community-service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/schedule-service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/schedule-service.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,6 +32,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;puntodamar&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/puntodamar/mabar-olahraga-hari-ini.git&quot;,
+    &quot;accountId&quot;: &quot;e65fdf18-db7d-4ed5-a4fe-c693b1710810&quot;
+  }
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -66,27 +69,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "copilot.chat.legacySessionMetadata.migrated": "true",
-    "git-widget-placeholder": "feature/admin-page",
-    "js.debugger.nextJs.config.created.client": "true",
-    "last_opened_file_path": "/Users/puntodamar/Documents/git/personal/next/mabar-olahraga-hari-ini/public/images",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "npm.db:types.executor": "Run",
-    "npm.dev.executor": "Run",
-    "settings.editor.selected.configurable": "inlay.hints",
-    "ts.external.directory.path": "/Users/puntodamar/Documents/git/personal/next/mabar-olahraga-hari-ini/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;copilot.chat.legacySessionMetadata.migrated&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;js.debugger.nextJs.config.created.client&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/puntodamar/Documents/git/personal/next/mabar-olahraga-hari-ini/public/images&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.db:types.executor&quot;: &quot;Run&quot;,
+    &quot;npm.dev.executor&quot;: &quot;Run&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/puntodamar/Documents/git/personal/next/mabar-olahraga-hari-ini/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/public/images/icons" />
@@ -160,6 +163,12 @@
       <workItem from="1787397941214" duration="465000" />
       <workItem from="1788062799214" duration="5000" />
       <workItem from="1788062895832" duration="4477000" />
+      <workItem from="1792241960260" duration="4492000" />
+      <workItem from="1793112233708" duration="110000" />
+      <workItem from="1793112360252" duration="403000" />
+      <workItem from="1793112807984" duration="183000" />
+      <workItem from="1793113011699" duration="79000" />
+      <workItem from="1793113107244" duration="531000" />
     </task>
     <servers />
   </component>

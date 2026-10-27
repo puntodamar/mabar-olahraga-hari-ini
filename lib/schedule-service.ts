@@ -5,6 +5,8 @@ import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { GetSchedulesParams } from "@/src/database/params/schedule-params";
 import { AdminSchedule, AdminScheduleInput } from "@/src/types/AdminSchedule";
 
+const escapeLike = (value: string) => value.replace(/[\\%_]/g, "\\$&");
+
 export const getSchedules = async ({
                                        day,
                                        level,
@@ -61,8 +63,22 @@ export const getSchedules = async ({
 
 export const getAdminSchedules = async (
     page = 0,
-    pageSize?: number
+    pageSize?: number,
+    search?: string
 ): Promise<{ data: AdminSchedule[]; total: number }> => {
+    let communityIds: number[] | null = null;
+    if (search) {
+        const { data: matched, error: searchError } = await supabase
+            .from("communities")
+            .select("id")
+            .ilike("name", `%${escapeLike(search)}%`);
+        if (searchError) throw searchError;
+        communityIds = (matched ?? []).map((row) => row.id);
+        if (communityIds.length === 0) {
+            return { data: [], total: 0 };
+        }
+    }
+
     let query = supabase
         .from("schedules")
         .select(`
@@ -81,6 +97,10 @@ export const getAdminSchedules = async (
         `, { count: "exact" })
         .order("day", { ascending: true })
         .order("time_start", { ascending: true });
+
+    if (communityIds) {
+        query = query.in("community_id", communityIds);
+    }
 
     if (pageSize !== undefined && Number.isFinite(pageSize)) {
         query = query.range(page * pageSize, (page + 1) * pageSize - 1);

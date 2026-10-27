@@ -15,8 +15,10 @@ export default function CommunityManager() {
     return (
         <AdminTablePage
             {...paginated}
+            onSearchChange={paginated.setSearch}
             columns={getCommunityColumns}
             countLabel={(total) => `${total} komunitas`}
+            searchLabel="Cari nama komunitas..."
             loadingLabel="Memuat komunitas..."
             addLabel="Tambah Komunitas"
             emptyMessage="Belum ada komunitas."

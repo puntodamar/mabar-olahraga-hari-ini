@@ -15,8 +15,10 @@ export default function ScheduleManager() {
     return (
         <AdminTablePage
             {...paginated}
+            onSearchChange={paginated.setSearch}
             columns={getScheduleColumns}
             countLabel={(total) => `${total} jadwal`}
+            searchLabel="Cari nama komunitas..."
             loadingLabel="Memuat jadwal..."
             addLabel="Tambah Jadwal"
             emptyMessage="Belum ada jadwal."
