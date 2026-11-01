@@ -19,13 +19,13 @@ export async function GET(request: Request) {
 
 function parseLatLngFromUrl(url: string): { lat: number; lng: number } | null {
     try {
-        const pair = url.match(/(-?\d+\.?\d*),\s*(-?\d+\.?\d*)/);
-        if (pair) return { lat: Number(pair[1]), lng: Number(pair[2]) };
-        const at = url.match(/@(-?\d+\.?\d*),\s*(-?\d+\.?\d*)/);
-        if (at) return { lat: Number(at[1]), lng: Number(at[2]) };
         const d3 = url.match(/!3d(-?\d+\.?\d*)/);
         const d4 = url.match(/!4d(-?\d+\.?\d*)/);
         if (d3 && d4) return { lat: Number(d3[1]), lng: Number(d4[1]) };
+        const at = url.match(/@(-?\d+\.?\d*),\s*(-?\d+\.?\d*)/);
+        if (at) return { lat: Number(at[1]), lng: Number(at[2]) };
+        const pair = url.match(/(-?\d+\.?\d*),\s*(-?\d+\.?\d*)/);
+        if (pair) return { lat: Number(pair[1]), lng: Number(pair[2]) };
         const u = new URL(url);
         const q = u.searchParams.get("ll") || u.searchParams.get("query") || u.searchParams.get("q");
         if (q) {
