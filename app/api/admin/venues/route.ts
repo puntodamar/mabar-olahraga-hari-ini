@@ -48,7 +48,7 @@ export async function POST(request: Request) {
 
         let lat: number | null = null;
         let lng: number | null = null;
-        const mapUrl = body.map_url || body.location_url || body.maps_url;
+        const mapUrl = body.map_url || body.location_url || body.maps_url || body.google_maps_url;
         if (mapUrl) {
             const parsed = parseLatLngFromUrl(mapUrl);
             if (parsed) {
@@ -59,8 +59,7 @@ export async function POST(request: Request) {
 
         const supabaseAdmin = getSupabaseAdmin();
         const insertPayload: any = { name };
-        if (lat != null && lng != null) insertPayload.location = `SRID=4326;POINT(${lng} ${lat})`;
-        else insertPayload.location = `SRID=4326;POINT(0 0)`;
+        insertPayload.location = lat != null && lng != null ? `SRID=4326;POINT(${lng} ${lat})` : `SRID=4326;POINT(0 0)`;
 
         const { data, error } = await supabaseAdmin
             .from("venues")
