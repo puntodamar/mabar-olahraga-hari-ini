@@ -298,17 +298,17 @@ export default function ScheduleFilter() {
                     />
                 </div>
 
-                <div className="flex items-center gap-x-2">
-                    <span className="w-25 text-title text-sm">
-                        Komunitas
-                    </span>
+                {/*<div className="flex items-center gap-x-2">*/}
+                {/*    <span className="w-25 text-title text-sm">*/}
+                {/*        Komunitas*/}
+                {/*    </span>*/}
 
-                    <SelectFilter
-                        items={communityNameOptions}
-                        value={community}
-                        onValueChange={setCommunity}
-                    />
-                </div>
+                {/*    <SelectFilter*/}
+                {/*        items={communityNameOptions}*/}
+                {/*        value={community}*/}
+                {/*        onValueChange={setCommunity}*/}
+                {/*    />*/}
+                {/*</div>*/}
 
                 <div className="flex items-center gap-x-2">
                     <span className="w-25 text-title text-sm">
