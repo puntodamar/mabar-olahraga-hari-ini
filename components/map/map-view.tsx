@@ -23,6 +23,7 @@ export default function MapView() {
     const {
         geolocation,
         getPermissionState,
+        getUserLocation,
         lastKnownLocation,
         setLastKnownLocation,
         listenPermissionChanges,
@@ -65,42 +66,18 @@ export default function MapView() {
     /**
      * Request the user's location.
      *
-     * Use the browser API directly here instead of
-     * waiting for the Permissions API to report "granted".
+     * Uses the store's getUserLocation, which races its own timer because
+     * in-app browsers can leave getCurrentPosition pending forever.
      */
     const handleAllow = () => {
-        if (!navigator.geolocation) {
-            console.error("Geolocation is not supported by this browser.");
-            return;
-        }
-
-        // console.log("Requesting user location...");
-
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const location = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude,
-                };
-
-                // console.log("Location acquired:", location);
-                // console.log("Accuracy:", position.coords.accuracy);
-
+        void getUserLocation()
+            .then((location) => {
                 setLastKnownLocation(location);
                 setLocationDialogOpen(false);
-            },
-            (error) => {
-                console.error("Geolocation error:", {
-                    code: error.code,
-                    message: error.message,
-                });
-            },
-            {
-                enableHighAccuracy: true,
-                timeout: 15000,
-                maximumAge: 0,
-            }
-        );
+            })
+            .catch((error) => {
+                console.error("Geolocation error:", error);
+            });
     };
 
     /**

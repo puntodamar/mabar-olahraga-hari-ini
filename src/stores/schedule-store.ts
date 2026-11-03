@@ -15,6 +15,10 @@ interface ScheduleStore {
     fetchSchedules: (query?: string, location?: LatLng | null) => Promise<void>;
 }
 
+// Only the newest request may write state, so an earlier (unlocated) response
+// can never overwrite a later one.
+let latestRequestId = 0;
+
 export const useScheduleStore = create<ScheduleStore>((set) => ({
     init: true,
     loading: false,
@@ -27,7 +31,7 @@ export const useScheduleStore = create<ScheduleStore>((set) => ({
     setSchedules: (schedules) => set({ schedules }),
 
     fetchSchedules: async (query = "", location) => {
-        const controller = new AbortController();
+        const requestId = ++latestRequestId;
 
         try {
             set({
@@ -43,12 +47,7 @@ export const useScheduleStore = create<ScheduleStore>((set) => ({
                 ? `/api/schedules?${params.toString()}`
                 : "/api/schedules";
 
-            const response = await fetch(
-                endpoint,
-                {
-                    signal: controller.signal,
-                }
-            );
+            const response = await fetch(endpoint);
 
             if (!response.ok) {
                 throw new Error(`Error fetching schedules: ${response.status} ${response.statusText}`);
@@ -56,17 +55,17 @@ export const useScheduleStore = create<ScheduleStore>((set) => ({
 
             const schedules: DBScheduleList[] = await response.json();
 
+            if (requestId !== latestRequestId) return;
+
             set({
                 schedules,
                 loading: false,
                 init: false,
             });
         } catch (e) {
-            if (e instanceof DOMException && e.name === "AbortError") {
-                return;
-            }
-
             console.error(e);
+
+            if (requestId !== latestRequestId) return;
 
             set({
                 loading: false,

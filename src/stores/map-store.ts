@@ -56,8 +56,8 @@ export const useMapStore = create<MapStore>((set, get) => ({
         };
     },
 
-    getUserLocation: () =>
-        new Promise((resolve, reject) => {
+    getUserLocation: () => {
+        const position = new Promise<LatLng>((resolve, reject) => {
             navigator.geolocation.getCurrentPosition(
                 ({ coords }) =>
                     resolve({
@@ -71,7 +71,17 @@ export const useMapStore = create<MapStore>((set, get) => ({
                     maximumAge: 5 * 60 * 1000,
                 }
             );
-        }),
+        });
+
+        // In-app browsers (Facebook, Threads) ignore the "timeout" option and
+        // can leave getCurrentPosition pending forever, so race our own timer.
+        return Promise.race([
+            position,
+            new Promise<never>((_, reject) =>
+                setTimeout(() => reject(new Error("Geolocation timed out")), 15000)
+            ),
+        ]);
+    },
 
     getLastKnownLocation: () => get().lastKnownLocation
 }));

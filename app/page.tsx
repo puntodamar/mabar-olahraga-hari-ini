@@ -37,26 +37,39 @@ function HomeContent() {
     } = useMapStore();
 
     useEffect(() => {
+        const query = searchParams.toString();
+        const cachedLocation = getLastKnownLocation();
+
+        // Fetch right away: in-app browsers (Facebook, Threads) can leave
+        // geolocation pending forever, which used to block this call.
+        void fetchSchedules(query, cachedLocation);
+
+        if (cachedLocation) return;
+
+        let cancelled = false;
+
         async function initSchedules() {
-            let location = getLastKnownLocation();
+            const permission = await getPermissionState();
 
-            if (!location) {
-                const permission = await getPermissionState();
+            if (permission !== "granted") return;
 
-                if (permission === "granted") {
-                    try {
-                        location = await getUserLocation();
-                        setLastKnownLocation(location);
-                    } catch (error) {
-                        console.error(error);
-                    }
-                }
+            try {
+                const location = await getUserLocation();
+
+                if (cancelled) return;
+
+                setLastKnownLocation(location);
+                await fetchSchedules(query, location);
+            } catch (error) {
+                console.error(error);
             }
-
-            await fetchSchedules(searchParams.toString(), location);
         }
 
         void initSchedules();
+
+        return () => {
+            cancelled = true;
+        };
     }, [
         fetchSchedules,
         searchParams,
