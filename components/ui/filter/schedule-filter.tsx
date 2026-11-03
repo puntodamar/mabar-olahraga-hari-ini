@@ -22,6 +22,34 @@ import { useScheduleStore } from "@/src/stores/schedule-store";
 import { useEffect, useMemo, useState } from "react";
 import { useVenueStore } from "@/src/stores/venue-store";
 
+// Tracking params injected when the URL is opened from in-app browsers or
+// ad/social clicks. They are not app filters and must not suppress the
+// initial query.
+const TRACKING_PARAMS = new Set([
+    "fbclid",
+    "fb_action_ids",
+    "fb_source",
+    "gclid",
+    "gbraid",
+    "wbraid",
+    "msclkid",
+    "yclid",
+    "ttclid",
+    "twclid",
+    "igshid",
+    "li_fat_id",
+    "mc_eid",
+    "_hsenc",
+    "_hsmi",
+    "s_kwcid",
+    "epik",
+    "ireid",
+    "dclid",
+    "scm",
+    "share_source",
+    "share_medium",
+]);
+
 export default function ScheduleFilter() {
     const router = useRouter();
     const pathname = usePathname();
@@ -179,34 +207,18 @@ export default function ScheduleFilter() {
     };
 
     useEffect(() => {
-        // Don't automatically query if filters are already
-        // present in the URL.
-        if (searchParams.toString()) {
-            return;
-        }
-
-        if (!navigator.geolocation) {
-            handleSearch();
-            return;
-        }
-
-        navigator.geolocation.getCurrentPosition(
-            () => {
-                // Location has been successfully obtained.
-                // Trigger the initial query.
-                handleSearch();
-            },
-            () => {
-                // Permission denied / location unavailable.
-                // Still perform the initial query.
-                handleSearch();
-            },
-            {
-                enableHighAccuracy: true,
-                timeout: 10000,
-                maximumAge: 300000,
-            }
+        // Don't automatically query if filters are already present in the
+        // URL. Tracking params (fbclid etc.) don't count as filters.
+        const hasFilters = [...searchParams.keys()].some(
+            (key) =>
+                !TRACKING_PARAMS.has(key) && !key.startsWith("utm_")
         );
+
+        if (hasFilters) {
+            return;
+        }
+
+        handleSearch();
     }, []);
 
     return (
