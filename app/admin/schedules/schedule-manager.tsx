@@ -52,10 +52,20 @@ const emptyFilters: ScheduleFilters = {
     venueId: null,
 };
 
+// Same default as the public schedule filter: today in Jakarta, 1 = Senin ... 7 = Minggu.
+const todayDay = (() => {
+    const jsDay = new Date(
+        new Date().toLocaleString("en-US", { timeZone: "Asia/Jakarta" })
+    ).getDay();
+    return jsDay === 0 ? 7 : jsDay;
+})();
+
+const initialFilters: ScheduleFilters = { ...emptyFilters, day: todayDay };
+
 export default function ScheduleManager() {
     const [open, setOpen] = useState(false);
-    const [draft, setDraft] = useState<ScheduleFilters>(emptyFilters);
-    const [applied, setApplied] = useState<ScheduleFilters>(emptyFilters);
+    const [draft, setDraft] = useState<ScheduleFilters>(initialFilters);
+    const [applied, setApplied] = useState<ScheduleFilters>(initialFilters);
 
     const filtersQuery = useMemo(() => {
         const params = new URLSearchParams();
@@ -80,8 +90,8 @@ export default function ScheduleManager() {
     }, [draft]);
 
     const resetFilters = useCallback(() => {
-        setDraft(emptyFilters);
-        setApplied(emptyFilters);
+        setDraft(initialFilters);
+        setApplied(initialFilters);
     }, []);
 
     const fetchCommunities = useCallback(async (search: string) => {
