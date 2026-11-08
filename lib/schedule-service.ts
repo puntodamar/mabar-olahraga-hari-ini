@@ -61,10 +61,18 @@ export const getSchedules = async ({
     return getCachedSchedules();
 };
 
+export interface AdminScheduleFilters {
+    day?: number;
+    level?: number;
+    communityId?: number;
+    venueId?: number;
+}
+
 export const getAdminSchedules = async (
     page = 0,
     pageSize?: number,
-    search?: string
+    search?: string,
+    filters: AdminScheduleFilters = {}
 ): Promise<{ data: AdminSchedule[]; total: number }> => {
     let communityIds: number[] | null = null;
     if (search) {
@@ -100,6 +108,22 @@ export const getAdminSchedules = async (
 
     if (communityIds) {
         query = query.in("community_id", communityIds);
+    }
+
+    if (filters.day != null) {
+        query = query.eq("day", filters.day);
+    }
+
+    if (filters.level != null) {
+        query = query.eq("level", filters.level);
+    }
+
+    if (filters.communityId != null) {
+        query = query.eq("community_id", filters.communityId);
+    }
+
+    if (filters.venueId != null) {
+        query = query.eq("venue_id", filters.venueId);
     }
 
     if (pageSize !== undefined && Number.isFinite(pageSize)) {

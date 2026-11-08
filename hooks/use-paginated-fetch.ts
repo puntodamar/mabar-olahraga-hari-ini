@@ -11,11 +11,14 @@ interface PaginatedResponse<T> {
 interface UsePaginatedFetchOptions {
     url: string
     errorMessage: string
+    /** Extra query string, e.g. "day=1&level=2", without the leading "?" */
+    filtersQuery?: string
 }
 
 export function usePaginatedFetch<T>({
     url,
     errorMessage,
+    filtersQuery,
 }: UsePaginatedFetchOptions) {
     const [rows, setRows] = useState<T[]>([])
     const [total, setTotal] = useState(0)
@@ -27,6 +30,7 @@ export function usePaginatedFetch<T>({
     const [debouncedSearch, setDebouncedSearch] = useState("")
     const totalRef = useRef(0)
     const lastSearchRef = useRef("")
+    const lastFiltersRef = useRef("")
 
     useEffect(() => {
         const handle = setTimeout(() => setDebouncedSearch(search), 300)
@@ -41,12 +45,14 @@ export function usePaginatedFetch<T>({
         const size = pagination.pageSize
         let page = pagination.pageIndex
         const searchChanged = lastSearchRef.current !== debouncedSearch
-        if (searchChanged) {
+        const filtersChanged = lastFiltersRef.current !== filtersQuery
+        if (searchChanged || filtersChanged) {
             page = 0
         } else if (Number.isFinite(size) && totalRef.current > 0) {
             page = Math.min(page, Math.max(0, Math.ceil(totalRef.current / size) - 1))
         }
         lastSearchRef.current = debouncedSearch
+        lastFiltersRef.current = filtersQuery ?? ""
 
         const params = new URLSearchParams()
         if (Number.isFinite(size)) {
@@ -56,7 +62,7 @@ export function usePaginatedFetch<T>({
         if (debouncedSearch) {
             params.set("search", debouncedSearch)
         }
-        const query = params.toString()
+        const query = [params.toString(), filtersQuery].filter(Boolean).join("&")
 
         Promise.resolve()
             .then(() => setRefreshing(true))
@@ -84,7 +90,7 @@ export function usePaginatedFetch<T>({
                 setLoading(false)
                 setRefreshing(false)
             })
-    }, [pagination, url, errorMessage, debouncedSearch])
+    }, [pagination, url, errorMessage, debouncedSearch, filtersQuery])
 
     useEffect(() => {
         void reload()

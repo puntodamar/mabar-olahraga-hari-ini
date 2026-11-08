@@ -4,7 +4,6 @@ import {Suspense, useEffect} from "react";
 
 import { APIProvider } from "@vis.gl/react-google-maps";
 import { useSearchParams } from "next/navigation";
-
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import MapView from "@/components/map/map-view";

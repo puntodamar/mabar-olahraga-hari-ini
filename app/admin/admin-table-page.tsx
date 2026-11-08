@@ -29,6 +29,7 @@ interface AdminTablePageProps<T extends RowData> {
     columns: (onEdit: (row: T) => void) => ColumnDef<DataTableFeatures, T>[]
     countLabel: (total: number) => string
     searchLabel: string
+    filters?: ReactNode
     loadingLabel: string
     addLabel: string
     emptyMessage: string
@@ -49,6 +50,7 @@ export function AdminTablePage<T extends RowData>({
     columns: buildColumns,
     countLabel,
     searchLabel,
+    filters,
     loadingLabel,
     addLabel,
     emptyMessage,
@@ -71,10 +73,10 @@ export function AdminTablePage<T extends RowData>({
 
     return (
         <div className="flex flex-col h-full gap-4">
-            <div className="flex items-center justify-between gap-4 overflow-visible pb-1">
+            <div className="flex flex-wrap items-center justify-between gap-4 overflow-visible pb-1">
                 {!loading && (
                     <>
-                        <div className="flex items-center gap-3 overflow-visible m-2">
+                        <div className="flex flex-wrap items-center gap-3 overflow-visible m-2">
                             <div className="relative overflow-visible p-2 -m-2">
                                 <SearchIcon className="pointer-events-none absolute left-4.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
                                 <Input
@@ -88,6 +90,7 @@ export function AdminTablePage<T extends RowData>({
                                     autoComplete="off"
                                 />
                             </div>
+                            {filters}
                             <p className="text-sm text-muted-foreground">
                                 {!loading && countLabel(total)}
                             </p>
@@ -102,7 +105,7 @@ export function AdminTablePage<T extends RowData>({
 
             {error && <p className="text-sm text-destructive">{error}</p>}
 
-            <div className="flex-1 overflow-visible">
+            <div className="flex-1 min-h-0 overflow-visible">
                 {loading ? (
                     <div className="flex h-24 items-center justify-center text-sm text-muted-foreground">
                         {loadingLabel}

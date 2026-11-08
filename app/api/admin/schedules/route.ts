@@ -8,7 +8,16 @@ export async function GET(request: Request) {
         const pageSizeParam = searchParams.get("pageSize");
         const pageSize = pageSizeParam === null ? undefined : Number(pageSizeParam);
         const search = searchParams.get("search") ?? undefined;
-        const result = await getAdminSchedules(page, pageSize, search);
+        const param = (key: string) => {
+            const value = searchParams.get(key);
+            return value === null || value === "" ? undefined : Number(value);
+        };
+        const result = await getAdminSchedules(page, pageSize, search, {
+            day: param("day"),
+            level: param("level"),
+            communityId: param("community"),
+            venueId: param("venue"),
+        });
         return NextResponse.json(result);
     } catch (e) {
         console.error(e);
