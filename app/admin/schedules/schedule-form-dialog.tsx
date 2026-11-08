@@ -80,11 +80,11 @@ function ScheduleForm({
     const [timeStart, setTimeStart] = useState(schedule?.time_start ? schedule.time_start.slice(0, 5) : "");
     const [timeEnd, setTimeEnd] = useState(schedule?.time_end ? schedule.time_end.slice(0, 5) : "");
     const [fee, setFee] = useState(schedule?.fee == null ? "" : String(schedule.fee));
-    const [level, setLevel] = useState<number | null>(schedule?.level ?? null);
-    const [gender, setGender] = useState<number | null>(schedule?.gender ?? null);
-    const [scoring, setScoring] = useState<number | null>(schedule?.scoring ?? null);
+    const [level, setLevel] = useState<number | null>(schedule ? schedule.level : 1);
+    const [gender, setGender] = useState<number | null>(schedule ? schedule.gender : 1);
+    const [scoring, setScoring] = useState<number | null>(schedule ? schedule.scoring : 2);
     const [courts, setCourts] = useState(
-        schedule?.courts == null ? "" : String(schedule.courts)
+        schedule ? (schedule.courts == null ? "" : String(schedule.courts)) : "1"
     );
     const [additionalInfo, setAdditionalInfo] = useState(schedule?.additional_info ?? "");
 
