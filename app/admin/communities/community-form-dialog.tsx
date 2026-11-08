@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/dialog";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import SelectFilter from "@/components/ui/filter/select-filter";
 import {
     AdminCommunity,
     AdminCommunityInput,
@@ -60,7 +59,6 @@ function CommunityForm({
 
     const [name, setName] = useState(community?.name ?? "");
     const [image, setImage] = useState(community?.image ?? "");
-    const [typeId, setTypeId] = useState<number | null>(community?.community_type_id ?? null);
     const [whatsapp, setWhatsapp] = useState(community?.community_contacts?.whatsapp ?? "");
     const [instagram, setInstagram] = useState(community?.community_contacts?.instagram ?? "");
     const [tiktok, setTiktok] = useState(community?.community_contacts?.tiktok ?? "");
@@ -76,18 +74,19 @@ function CommunityForm({
             .then((data) => {
                 if (!active) return;
                 setTypes(data);
-                if (community?.community_type_id == null && typeId == null) {
-                    const badminton = data.find((t: CommunityTypeOption) => t.name?.toLowerCase().includes("badminton"))
-                    if (badminton) setTypeId(badminton.id)
-                    else if (data.length > 0) setTypeId(data[0].id)
-                }
             })
             .catch((e) => console.error(e));
 
         return () => {
             active = false;
         };
-    }, [community?.community_type_id, typeId]);
+    }, []);
+
+    // type is hardcoded to badminton for now
+    const badminton = types.find((type) =>
+        type.name?.toLowerCase().includes("badminton")
+    );
+    const communityTypeId = badminton?.id ?? community?.community_type_id ?? null;
 
     async function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -100,7 +99,7 @@ function CommunityForm({
         const payload: AdminCommunityInput = {
             name: name.trim(),
             image: image.trim() === "" ? null : image.trim(),
-            community_type_id: typeId,
+            community_type_id: communityTypeId,
             contacts: {
                 whatsapp: whatsapp.trim() === "" ? null : whatsapp.trim(),
                 instagram: instagram.trim() === "" ? null : instagram.trim(),
@@ -165,14 +164,11 @@ function CommunityForm({
 
                         <Field>
                             <FieldLabel htmlFor="type">Tipe</FieldLabel>
-                            <SelectFilter
-                                items={types.map((type) => ({
-                                    label: type.name,
-                                    value: type.id,
-                                }))}
-                                value={typeId}
-                                onValueChange={setTypeId}
-                                placeholder="Pilih tipe"
+                            <Input
+                                id="type"
+                                value="Badminton"
+                                readOnly
+                                disabled
                             />
                         </Field>
 
