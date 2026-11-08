@@ -17,7 +17,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             <AdminSidebar />
 
             <SidebarInset className="flex flex-col h-screen overflow-hidden bg-muted">
-                <header className="flex shrink-0 items-center gap-2 px-4 z-40">
+                <header className="flex shrink-0 items-center gap-2 px-4 z-40 pt-3">
                     <SidebarTrigger className="p-3 bg-primary text-white size-10 hover:bg-primary hover:text-white hover:cursor-pointer lg:hidden" />
                 </header>
 
