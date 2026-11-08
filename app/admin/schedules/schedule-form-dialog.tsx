@@ -199,7 +199,7 @@ function ScheduleForm({
             <form onSubmit={handleSubmit}>
                 <FieldGroup>
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-                        <Field>
+                        <Field required>
                             <FieldLabel htmlFor="community">Komunitas</FieldLabel>
                             <AsyncSelectFilter
                                 loadOnOpen={false}
@@ -216,7 +216,7 @@ function ScheduleForm({
                             />
                         </Field>
 
-                        <Field>
+                        <Field required>
                             <FieldLabel htmlFor="venue">Venue</FieldLabel>
                             <AsyncSelectFilter
                                 loadOnOpen={false}
@@ -233,7 +233,7 @@ function ScheduleForm({
                             />
                         </Field>
 
-                        <Field>
+                        <Field required>
                             <FieldLabel htmlFor="day">Hari</FieldLabel>
                             <SelectFilter
                                 items={dayItems}
@@ -255,7 +255,7 @@ function ScheduleForm({
                             />
                         </Field>
 
-                        <Field>
+                        <Field required>
                             <FieldLabel htmlFor="time_start">Waktu Mulai</FieldLabel>
                             <Input
                                 id="time_start"
@@ -266,7 +266,7 @@ function ScheduleForm({
                             />
                         </Field>
 
-                        <Field>
+                        <Field required>
                             <FieldLabel htmlFor="time_end">Waktu Selesai</FieldLabel>
                             <Input
                                 id="time_end"

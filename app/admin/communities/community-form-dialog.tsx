@@ -96,6 +96,14 @@ function CommunityForm({
             return;
         }
 
+        if (
+            !community &&
+            [whatsapp, instagram, tiktok].every((value) => value.trim() === "")
+        ) {
+            setError("Minimal satu kontak (WhatsApp/Instagram/TikTok) wajib diisi.");
+            return;
+        }
+
         const payload: AdminCommunityInput = {
             name: name.trim(),
             image: image.trim() === "" ? null : image.trim(),
@@ -150,7 +158,7 @@ function CommunityForm({
             <form onSubmit={handleSubmit}>
                 <FieldGroup>
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-                        <Field>
+                        <Field required>
                             <FieldLabel htmlFor="name">Nama</FieldLabel>
                             <Input
                                 id="name"

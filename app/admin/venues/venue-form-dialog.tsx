@@ -70,6 +70,11 @@ function VenueForm({
             return;
         }
 
+        if (!venue && !mapUrl.trim()) {
+            setError("URL maps wajib diisi.");
+            return;
+        }
+
         const payload: VenueInput = {
             name: name.trim(),
         };
@@ -120,7 +125,7 @@ function VenueForm({
             <form onSubmit={handleSubmit}>
                 <FieldGroup>
                     <div className="grid grid-cols-1 gap-5">
-                        <Field>
+                        <Field required={!venue}>
                             <FieldLabel htmlFor="name">Nama Venue</FieldLabel>
                             <Input
                                 id="name"
@@ -131,7 +136,7 @@ function VenueForm({
                             />
                         </Field>
 
-                        <Field>
+                        <Field required={!venue}>
                             <FieldLabel htmlFor="map_url">URL Maps</FieldLabel>
                             <Input
                                 id="map_url"
