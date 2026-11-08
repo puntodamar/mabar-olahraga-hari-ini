@@ -1,10 +1,10 @@
 "use client";
 
 import { AdminTablePage } from "../admin-table-page";
-import { getVenueColumns } from "./columns";
+import { getVenueColumns } from "./table/columns";
 import VenueFormDialog from "./venue-form-dialog";
 import { usePaginatedFetch } from "@/hooks/use-paginated-fetch";
-import { AdminVenue } from "./columns";
+import { AdminVenue } from "./table/columns";
 
 export default function VenueManager() {
     const paginated = usePaginatedFetch<AdminVenue>({

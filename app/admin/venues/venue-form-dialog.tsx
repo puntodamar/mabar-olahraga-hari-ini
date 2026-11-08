@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { AdminVenue } from "./columns";
+import { AdminVenue } from "./table/columns";
 
 interface VenueFormDialogProps {
     open: boolean;
