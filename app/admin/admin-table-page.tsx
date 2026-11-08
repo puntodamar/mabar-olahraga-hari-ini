@@ -77,8 +77,13 @@ export function AdminTablePage<T extends RowData>({
                 {!loading && (
                     <>
                         <div className="flex flex-wrap items-center gap-3 overflow-visible m-2">
-                            <div className="relative overflow-visible p-2 -m-2">
-                                <SearchIcon className="pointer-events-none absolute left-4.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                            {/*<p className="text-sm text-muted-foreground">*/}
+                            {/*    {!loading && countLabel(total)}*/}
+                            {/*</p>*/}
+                        </div>
+                        <div className="flex flex-row gap-x-2">
+                            <div className="relative overflow-visible p-2 -m-2 ">
+                                <SearchIcon className="pointer-events-none absolute left-4.5 top-1/2 size-4  -translate-y-1/2" />
                                 <Input
                                     type="search"
                                     tabIndex={-1}
@@ -86,19 +91,16 @@ export function AdminTablePage<T extends RowData>({
                                     onChange={(event) => onSearchChange(event.target.value)}
                                     placeholder={searchLabel}
                                     aria-label={searchLabel}
-                                    className="w-56 pl-10 overflow-visible"
+                                    className="h-8 w-56 pl-10 overflow-visible bg-white focus-visible:ring-0"
                                     autoComplete="off"
                                 />
                             </div>
                             {filters}
-                            <p className="text-sm text-muted-foreground">
-                                {!loading && countLabel(total)}
-                            </p>
+                            <Button onClick={handleAdd} className="text-white">
+                                <PlusIcon />
+                                <span>{addLabel}</span>
+                            </Button>
                         </div>
-                        <Button onClick={handleAdd} className="text-white">
-                            <PlusIcon />
-                            <span>{addLabel}</span>
-                        </Button>
                     </>
                 )}
             </div>

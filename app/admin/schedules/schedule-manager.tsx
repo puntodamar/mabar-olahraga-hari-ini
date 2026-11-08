@@ -1,11 +1,19 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
+import { FilterIcon } from "lucide-react";
 import { AdminTablePage } from "../admin-table-page";
 import { getScheduleColumns } from "./columns";
 import ScheduleFormDialog from "./schedule-form-dialog";
 import SelectFilter from "@/components/ui/filter/select-filter";
 import AsyncSelectFilter from "@/components/ui/filter/async-select-filter";
+import { Button } from "@/components/ui/button";
+import { Field, FieldLabel } from "@/components/ui/field";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { usePaginatedFetch } from "@/hooks/use-paginated-fetch";
 import { AdminSchedule } from "@/src/types/AdminSchedule";
 import { Day } from "@/src/types/enums/Day";
@@ -30,26 +38,51 @@ interface VenueOption {
     name: string;
 }
 
+interface ScheduleFilters {
+    day: number | null;
+    level: number | null;
+    communityId: number | null;
+    venueId: number | null;
+}
+
+const emptyFilters: ScheduleFilters = {
+    day: null,
+    level: null,
+    communityId: null,
+    venueId: null,
+};
+
 export default function ScheduleManager() {
-    const [dayFilter, setDayFilter] = useState<number | null>(null);
-    const [levelFilter, setLevelFilter] = useState<number | null>(null);
-    const [communityFilter, setCommunityFilter] = useState<number | null>(null);
-    const [venueFilter, setVenueFilter] = useState<number | null>(null);
+    const [open, setOpen] = useState(false);
+    const [draft, setDraft] = useState<ScheduleFilters>(emptyFilters);
+    const [applied, setApplied] = useState<ScheduleFilters>(emptyFilters);
 
     const filtersQuery = useMemo(() => {
         const params = new URLSearchParams();
-        if (dayFilter != null) params.set("day", String(dayFilter));
-        if (levelFilter != null) params.set("level", String(levelFilter));
-        if (communityFilter != null) params.set("community", String(communityFilter));
-        if (venueFilter != null) params.set("venue", String(venueFilter));
+        if (applied.day != null) params.set("day", String(applied.day));
+        if (applied.level != null) params.set("level", String(applied.level));
+        if (applied.communityId != null) params.set("community", String(applied.communityId));
+        if (applied.venueId != null) params.set("venue", String(applied.venueId));
         return params.toString();
-    }, [dayFilter, levelFilter, communityFilter, venueFilter]);
+    }, [applied]);
+
+    const activeCount = Object.values(applied).filter((v) => v != null).length;
 
     const paginated = usePaginatedFetch<AdminSchedule>({
         url: "/api/admin/schedules",
         errorMessage: "Gagal memuat jadwal.",
         filtersQuery,
     });
+
+    const applyFilters = useCallback(() => {
+        setApplied(draft);
+        setOpen(false);
+    }, [draft]);
+
+    const resetFilters = useCallback(() => {
+        setDraft(emptyFilters);
+        setApplied(emptyFilters);
+    }, []);
 
     const fetchCommunities = useCallback(async (search: string) => {
         const params = new URLSearchParams()
@@ -88,44 +121,69 @@ export default function ScheduleManager() {
             addLabel="Tambah Jadwal"
             emptyMessage="Belum ada jadwal."
             filters={
-                <>
-                    <div className="w-36 overflow-visible">
-                        <SelectFilter
-                            items={filterDayItems}
-                            value={dayFilter}
-                            onValueChange={setDayFilter}
-                            placeholder="Semua hari"
-                        />
-                    </div>
-                    <div className="w-40 overflow-visible">
-                        <SelectFilter
-                            items={filterLevelItems}
-                            value={levelFilter}
-                            onValueChange={setLevelFilter}
-                            placeholder="Semua level"
-                        />
-                    </div>
-                    <div className="w-44 overflow-visible">
-                        <AsyncSelectFilter
-                            loadOnOpen
-                            value={communityFilter}
-                            onValueChange={setCommunityFilter}
-                            placeholder="Semua komunitas"
-                            searchPlaceholder="Cari komunitas..."
-                            fetchItems={fetchCommunities}
-                        />
-                    </div>
-                    <div className="w-40 overflow-visible">
-                        <AsyncSelectFilter
-                            loadOnOpen
-                            value={venueFilter}
-                            onValueChange={setVenueFilter}
-                            placeholder="Semua lokasi"
-                            searchPlaceholder="Cari lokasi..."
-                            fetchItems={fetchVenues}
-                        />
-                    </div>
-                </>
+                <DropdownMenu open={open} onOpenChange={setOpen}>
+                    <DropdownMenuTrigger
+                        render={
+                            <Button variant="outline" className={activeCount > 0 ? "border-primary text-primary" : ""}>
+                                <FilterIcon />
+                                <span>Filter</span>
+                                {activeCount > 0 && <span className="text-xs">({activeCount})</span>}
+                            </Button>
+                        }
+                    />
+                    <DropdownMenuContent className="w-[420px] max-w-[90vw] p-3">
+                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                            <Field>
+                                <FieldLabel>Hari</FieldLabel>
+                                <SelectFilter
+                                    items={filterDayItems}
+                                    value={draft.day}
+                                    onValueChange={(value) => setDraft((old) => ({ ...old, day: value }))}
+                                    placeholder="Semua hari"
+                                />
+                            </Field>
+                            <Field>
+                                <FieldLabel>Level</FieldLabel>
+                                <SelectFilter
+                                    items={filterLevelItems}
+                                    value={draft.level}
+                                    onValueChange={(value) => setDraft((old) => ({ ...old, level: value }))}
+                                    placeholder="Semua level"
+                                />
+                            </Field>
+                            <Field>
+                                <FieldLabel>Komunitas</FieldLabel>
+                                <AsyncSelectFilter
+                                    loadOnOpen
+                                    value={draft.communityId}
+                                    onValueChange={(value) => setDraft((old) => ({ ...old, communityId: value }))}
+                                    placeholder="Semua komunitas"
+                                    searchPlaceholder="Cari komunitas..."
+                                    fetchItems={fetchCommunities}
+                                />
+                            </Field>
+                            <Field>
+                                <FieldLabel>Lokasi</FieldLabel>
+                                <AsyncSelectFilter
+                                    loadOnOpen
+                                    value={draft.venueId}
+                                    onValueChange={(value) => setDraft((old) => ({ ...old, venueId: value }))}
+                                    placeholder="Semua lokasi"
+                                    searchPlaceholder="Cari lokasi..."
+                                    fetchItems={fetchVenues}
+                                />
+                            </Field>
+                        </div>
+                        <div className="mt-4 grid grid-cols-2 gap-2">
+                            <Button variant="outline" type="button" onClick={resetFilters}>
+                                Reset
+                            </Button>
+                            <Button type="button" onClick={applyFilters} className="text-white">
+                                Filter
+                            </Button>
+                        </div>
+                    </DropdownMenuContent>
+                </DropdownMenu>
             }
             dialog={({ open, onOpenChange, editing, onSaved }) => (
                 <ScheduleFormDialog
