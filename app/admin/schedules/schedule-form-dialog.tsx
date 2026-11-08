@@ -39,9 +39,21 @@ interface ScheduleFormDialogProps {
 }
 
 const dayItems = Day.map((label, index) => ({ label, value: index + 1 }));
-const levelItems = Level.map((label, index) => ({ label, value: index }));
+
+// '-' is the default (unknown)
+const levelItems = [
+    { label: "-", value: null as number | null },
+    ...Level.map((label, index) => ({ label, value: index })).filter(
+        (item) => item.label !== "belum tersedia"
+    ),
+];
 const genderItems = Gender.map((label, index) => ({ label, value: index }));
-const scoringItems = ScoringLabel.map((item, index) => ({ label: item.label, value: index }));
+const scoringItems = [
+    { label: "-", value: null as number | null },
+    ...ScoringLabel.map((item, index) => ({ label: item.label, value: index })).filter(
+        (item) => item.label !== "Semua"
+    ),
+];
 
 export default function ScheduleFormDialog({
     open,
@@ -80,9 +92,9 @@ function ScheduleForm({
     const [timeStart, setTimeStart] = useState(schedule?.time_start ? schedule.time_start.slice(0, 5) : "");
     const [timeEnd, setTimeEnd] = useState(schedule?.time_end ? schedule.time_end.slice(0, 5) : "");
     const [fee, setFee] = useState(schedule?.fee == null ? "" : String(schedule.fee));
-    const [level, setLevel] = useState<number | null>(schedule ? schedule.level : 1);
+    const [level, setLevel] = useState<number | null>(schedule ? schedule.level : null);
     const [gender, setGender] = useState<number | null>(schedule ? schedule.gender : 1);
-    const [scoring, setScoring] = useState<number | null>(schedule ? schedule.scoring : 2);
+    const [scoring, setScoring] = useState<number | null>(schedule ? schedule.scoring : null);
     const [courts, setCourts] = useState(
         schedule ? (schedule.courts == null ? "" : String(schedule.courts)) : "1"
     );
