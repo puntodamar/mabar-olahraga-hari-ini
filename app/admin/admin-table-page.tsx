@@ -5,8 +5,8 @@ import type { ColumnDef, OnChangeFn, PaginationState, RowData } from "@tanstack/
 import { PlusIcon, SearchIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { DataTable } from "./schedules/data-table"
-import type { DataTableFeatures } from "./schedules/data-table-features"
+import { DataTable } from "./schedules/table/data-table"
+import type { DataTableFeatures } from "./schedules/table/data-table-features"
 
 interface AdminTableDialogState<T> {
     open: boolean
