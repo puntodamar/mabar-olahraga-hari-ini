@@ -1,7 +1,7 @@
 "use client";
 
 import { AdminTablePage } from "../admin-table-page";
-import { getCommunityColumns } from "./columns";
+import { getCommunityColumns } from "./table/columns";
 import CommunityFormDialog from "./community-form-dialog";
 import { usePaginatedFetch } from "@/hooks/use-paginated-fetch";
 import { AdminCommunity } from "@/src/types/AdminCommunity";

@@ -1,7 +1,7 @@
 "use client"
 
 import { createColumnHelper } from "@tanstack/react-table";
-import { type DataTableFeatures } from "../schedules/table/data-table-features";
+import { type DataTableFeatures } from "../../schedules/table/data-table-features";
 import { AdminCommunity } from "@/src/types/AdminCommunity";
 import { cn } from "@/lib/utils";
 import { ArrowUpDown, PencilIcon } from "lucide-react";
