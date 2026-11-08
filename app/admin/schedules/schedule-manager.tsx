@@ -10,10 +10,10 @@ import AsyncSelectFilter from "@/components/ui/filter/async-select-filter";
 import { Button } from "@/components/ui/button";
 import { Field, FieldLabel } from "@/components/ui/field";
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
 import {
     Dialog,
     DialogClose,
@@ -170,8 +170,8 @@ export default function ScheduleManager() {
                 addLabel="Tambah Jadwal"
                 emptyMessage="Belum ada jadwal."
                 filters={
-                    <DropdownMenu open={open} onOpenChange={setOpen}>
-                        <DropdownMenuTrigger
+                    <Popover open={open} onOpenChange={setOpen}>
+                        <PopoverTrigger
                             render={
                                 <Button variant="outline" className={activeCount > 0 ? "border-primary text-primary" : ""}>
                                     <FilterIcon />
@@ -180,7 +180,7 @@ export default function ScheduleManager() {
                                 </Button>
                             }
                         />
-                        <DropdownMenuContent className="w-[420px] max-w-[90vw] p-3">
+                        <PopoverContent align="end" className="w-[420px] max-w-[90vw] p-3">
                             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                                 <Field>
                                     <FieldLabel>Hari</FieldLabel>
@@ -231,8 +231,8 @@ export default function ScheduleManager() {
                                     Filter
                                 </Button>
                             </div>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                        </PopoverContent>
+                    </Popover>
                 }
                 dialog={({ open, onOpenChange, editing, onSaved }) => (
                     <ScheduleFormDialog
