@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { updateSchedule } from "@/lib/schedule-service";
+import { deleteSchedule, updateSchedule } from "@/lib/schedule-service";
 
 export async function PUT(
     request: Request,
@@ -13,5 +13,19 @@ export async function PUT(
     } catch (e) {
         console.error(e);
         return NextResponse.json({ error: "Gagal memperbarui jadwal" }, { status: 500 });
+    }
+}
+
+export async function DELETE(
+    _request: Request,
+    { params }: { params: Promise<{ id: string }> }
+) {
+    try {
+        const { id } = await params;
+        await deleteSchedule(Number(id));
+        return NextResponse.json({ success: true });
+    } catch (e) {
+        console.error(e);
+        return NextResponse.json({ error: "Gagal menghapus jadwal" }, { status: 500 });
     }
 }

@@ -7,14 +7,17 @@ import { Gender } from "@/src/types/enums/Gender";
 import { type DataTableFeatures } from "./data-table-features";
 import { AdminSchedule } from "@/src/types/AdminSchedule";
 import { cn } from "@/lib/utils";
-import { ArrowUpDown, PencilIcon } from "lucide-react";
+import { ArrowUpDown, PencilIcon, Trash2Icon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const columnHelper = createColumnHelper<DataTableFeatures, AdminSchedule>()
 
 const className = "font-bold text-white text-md";
 
-export function getScheduleColumns(onEdit: (schedule: AdminSchedule) => void) {
+export function getScheduleColumns(
+    onEdit: (schedule: AdminSchedule) => void,
+    onDelete: (schedule: AdminSchedule) => void
+) {
     return columnHelper.columns([
         columnHelper.accessor("community.name", {
             header: ({ column }) => {
@@ -163,7 +166,7 @@ export function getScheduleColumns(onEdit: (schedule: AdminSchedule) => void) {
             header: () => <div className={cn(className, "text-center")}>Aksi</div>,
             cell: ({ row }) => {
                 return (
-                    <div className="flex justify-center">
+                    <div className="flex justify-center gap-1">
                         <Button
                             variant="ghost"
                             size="icon-sm"
@@ -172,6 +175,15 @@ export function getScheduleColumns(onEdit: (schedule: AdminSchedule) => void) {
                         >
                             <PencilIcon />
                             <span className="sr-only">Ubah</span>
+                        </Button>
+                        <Button
+                            variant="ghost"
+                            size="icon-sm"
+                            className="text-destructive hover:bg-destructive/10 hover:text-destructive"
+                            onClick={() => onDelete(row.original)}
+                        >
+                            <Trash2Icon className="" />
+                            <span className="sr-only">Hapus</span>
                         </Button>
                     </div>
                 )

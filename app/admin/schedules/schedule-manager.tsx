@@ -14,6 +14,15 @@ import {
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
 import { usePaginatedFetch } from "@/hooks/use-paginated-fetch";
 import { AdminSchedule } from "@/src/types/AdminSchedule";
 import { Day } from "@/src/types/enums/Day";
@@ -66,6 +75,9 @@ export default function ScheduleManager() {
     const [open, setOpen] = useState(false);
     const [draft, setDraft] = useState<ScheduleFilters>(initialFilters);
     const [applied, setApplied] = useState<ScheduleFilters>(initialFilters);
+    const [deleting, setDeleting] = useState<AdminSchedule | null>(null);
+    const [removing, setRemoving] = useState(false);
+    const [deleteError, setDeleteError] = useState("");
 
     const filtersQuery = useMemo(() => {
         const params = new URLSearchParams();
@@ -84,6 +96,8 @@ export default function ScheduleManager() {
         filtersQuery,
     });
 
+    const { reload } = paginated;
+
     const applyFilters = useCallback(() => {
         setApplied(draft);
         setOpen(false);
@@ -93,6 +107,30 @@ export default function ScheduleManager() {
         setDraft(initialFilters);
         setApplied(initialFilters);
     }, []);
+
+    const requestDelete = useCallback((schedule: AdminSchedule) => {
+        setDeleteError("");
+        setDeleting(schedule);
+    }, []);
+
+    const confirmDelete = useCallback(async () => {
+        if (!deleting) return;
+        setRemoving(true);
+        setDeleteError("");
+        try {
+            const response = await fetch(`/api/admin/schedules/${deleting.id}`, {
+                method: "DELETE",
+            });
+            if (!response.ok) throw new Error("Failed to delete schedule");
+            setDeleting(null);
+            reload();
+        } catch (e) {
+            console.error(e);
+            setDeleteError("Gagal menghapus jadwal.");
+        } finally {
+            setRemoving(false);
+        }
+    }, [deleting, reload]);
 
     const fetchCommunities = useCallback(async (search: string) => {
         const params = new URLSearchParams()
@@ -121,88 +159,123 @@ export default function ScheduleManager() {
     }, [])
 
     return (
-        <AdminTablePage
-            {...paginated}
-            onSearchChange={paginated.setSearch}
-            columns={getScheduleColumns}
-            countLabel={(total) => `${total} jadwal`}
-            searchLabel="Cari nama komunitas..."
-            loadingLabel="Memuat jadwal..."
-            addLabel="Tambah Jadwal"
-            emptyMessage="Belum ada jadwal."
-            filters={
-                <DropdownMenu open={open} onOpenChange={setOpen}>
-                    <DropdownMenuTrigger
-                        render={
-                            <Button variant="outline" className={activeCount > 0 ? "border-primary text-primary" : ""}>
-                                <FilterIcon />
-                                <span>Filter</span>
-                                {activeCount > 0 && <span className="text-xs">({activeCount})</span>}
-                            </Button>
-                        }
+        <>
+            <AdminTablePage
+                {...paginated}
+                onSearchChange={paginated.setSearch}
+                columns={(onEdit) => getScheduleColumns(onEdit, requestDelete)}
+                countLabel={(total) => `${total} jadwal`}
+                searchLabel="Cari nama komunitas..."
+                loadingLabel="Memuat jadwal..."
+                addLabel="Tambah Jadwal"
+                emptyMessage="Belum ada jadwal."
+                filters={
+                    <DropdownMenu open={open} onOpenChange={setOpen}>
+                        <DropdownMenuTrigger
+                            render={
+                                <Button variant="outline" className={activeCount > 0 ? "border-primary text-primary" : ""}>
+                                    <FilterIcon />
+                                    <span>Filter</span>
+                                    {activeCount > 0 && <span className="text-xs">({activeCount})</span>}
+                                </Button>
+                            }
+                        />
+                        <DropdownMenuContent className="w-[420px] max-w-[90vw] p-3">
+                            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                                <Field>
+                                    <FieldLabel>Hari</FieldLabel>
+                                    <SelectFilter
+                                        items={filterDayItems}
+                                        value={draft.day}
+                                        onValueChange={(value) => setDraft((old) => ({ ...old, day: value }))}
+                                        placeholder="Semua hari"
+                                    />
+                                </Field>
+                                <Field>
+                                    <FieldLabel>Level</FieldLabel>
+                                    <SelectFilter
+                                        items={filterLevelItems}
+                                        value={draft.level}
+                                        onValueChange={(value) => setDraft((old) => ({ ...old, level: value }))}
+                                        placeholder="Semua level"
+                                    />
+                                </Field>
+                                <Field>
+                                    <FieldLabel>Komunitas</FieldLabel>
+                                    <AsyncSelectFilter
+                                        loadOnOpen
+                                        value={draft.communityId}
+                                        onValueChange={(value) => setDraft((old) => ({ ...old, communityId: value }))}
+                                        placeholder="Semua komunitas"
+                                        searchPlaceholder="Cari komunitas..."
+                                        fetchItems={fetchCommunities}
+                                    />
+                                </Field>
+                                <Field>
+                                    <FieldLabel>Lokasi</FieldLabel>
+                                    <AsyncSelectFilter
+                                        loadOnOpen
+                                        value={draft.venueId}
+                                        onValueChange={(value) => setDraft((old) => ({ ...old, venueId: value }))}
+                                        placeholder="Semua lokasi"
+                                        searchPlaceholder="Cari lokasi..."
+                                        fetchItems={fetchVenues}
+                                    />
+                                </Field>
+                            </div>
+                            <div className="mt-4 grid grid-cols-2 gap-2">
+                                <Button variant="outline" type="button" onClick={resetFilters}>
+                                    Reset
+                                </Button>
+                                <Button type="button" onClick={applyFilters} className="text-white">
+                                    Filter
+                                </Button>
+                            </div>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                }
+                dialog={({ open, onOpenChange, editing, onSaved }) => (
+                    <ScheduleFormDialog
+                        open={open}
+                        onOpenChange={onOpenChange}
+                        schedule={editing}
+                        onSaved={onSaved}
                     />
-                    <DropdownMenuContent className="w-[420px] max-w-[90vw] p-3">
-                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                            <Field>
-                                <FieldLabel>Hari</FieldLabel>
-                                <SelectFilter
-                                    items={filterDayItems}
-                                    value={draft.day}
-                                    onValueChange={(value) => setDraft((old) => ({ ...old, day: value }))}
-                                    placeholder="Semua hari"
-                                />
-                            </Field>
-                            <Field>
-                                <FieldLabel>Level</FieldLabel>
-                                <SelectFilter
-                                    items={filterLevelItems}
-                                    value={draft.level}
-                                    onValueChange={(value) => setDraft((old) => ({ ...old, level: value }))}
-                                    placeholder="Semua level"
-                                />
-                            </Field>
-                            <Field>
-                                <FieldLabel>Komunitas</FieldLabel>
-                                <AsyncSelectFilter
-                                    loadOnOpen
-                                    value={draft.communityId}
-                                    onValueChange={(value) => setDraft((old) => ({ ...old, communityId: value }))}
-                                    placeholder="Semua komunitas"
-                                    searchPlaceholder="Cari komunitas..."
-                                    fetchItems={fetchCommunities}
-                                />
-                            </Field>
-                            <Field>
-                                <FieldLabel>Lokasi</FieldLabel>
-                                <AsyncSelectFilter
-                                    loadOnOpen
-                                    value={draft.venueId}
-                                    onValueChange={(value) => setDraft((old) => ({ ...old, venueId: value }))}
-                                    placeholder="Semua lokasi"
-                                    searchPlaceholder="Cari lokasi..."
-                                    fetchItems={fetchVenues}
-                                />
-                            </Field>
-                        </div>
-                        <div className="mt-4 grid grid-cols-2 gap-2">
-                            <Button variant="outline" type="button" onClick={resetFilters}>
-                                Reset
-                            </Button>
-                            <Button type="button" onClick={applyFilters} className="text-white">
-                                Filter
-                            </Button>
-                        </div>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            }
-            dialog={({ open, onOpenChange, editing, onSaved }) => (
-                <ScheduleFormDialog
-                    open={open}
-                    onOpenChange={onOpenChange}
-                    schedule={editing}
-                    onSaved={onSaved}
-                />
-            )}
-        />
+                )}
+            />
+
+            <Dialog
+                open={deleting != null}
+                onOpenChange={(next) => {
+                    if (!next) setDeleting(null);
+                }}
+            >
+                <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                        <DialogTitle>Hapus jadwal?</DialogTitle>
+                        <DialogDescription>
+                            {deleting &&
+                                `PB. ${deleting.community?.name ?? "-"} · ${Day[deleting.day - 1] ?? "-"} · ${deleting.time_start.slice(0, 5)} - ${deleting.time_end.slice(0, 5)}`}
+                        </DialogDescription>
+                    </DialogHeader>
+
+                    {deleteError && <p className="text-sm text-destructive">{deleteError}</p>}
+
+                    <DialogFooter className="mt-4">
+                        <DialogClose render={<Button variant="outline" type="button" disabled={removing} />}>
+                            Batal
+                        </DialogClose>
+                        <Button
+                            type="button"
+                            variant="destructive"
+                            disabled={removing}
+                            onClick={confirmDelete}
+                        >
+                            {removing ? "Menghapus..." : "Hapus"}
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+        </>
     );
 }

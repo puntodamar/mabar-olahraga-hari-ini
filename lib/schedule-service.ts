@@ -161,3 +161,12 @@ export const updateSchedule = async (id: number, payload: AdminScheduleInput) =>
 
     return data;
 };
+
+export const deleteSchedule = async (id: number) => {
+    const { error } = await getSupabaseAdmin()
+        .from("schedules")
+        .delete()
+        .eq("id", id);
+
+    if (error) throw error;
+};
